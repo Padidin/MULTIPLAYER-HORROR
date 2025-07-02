@@ -15,13 +15,22 @@ public class MainMenuManager : MonoBehaviour
         if (inputNameAccount.text != null)
         {
             PlayerPrefs.SetString("username", inputNameAccount.text);
+            inputNameAccount.text = null;
         }
     }
 
     private void Update()
     {
         accountName = PlayerPrefs.GetString("username");
-        usernameTeks.text = "User : " + accountName;
+
+        if (PlayerPrefs.HasKey("username"))
+        {
+            usernameTeks.text = "User : " + accountName;
+        }
+        if (!PlayerPrefs.HasKey("username"))
+        {
+            usernameTeks.text = "User : -";
+        }
     }
 
     public void MultiplayerButton()
