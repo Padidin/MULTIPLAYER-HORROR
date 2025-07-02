@@ -15,13 +15,24 @@ public class CreateOrJoinManager : MonoBehaviourPunCallbacks
 
     public void CreateRoomButton()
     {
-        KodeRoom = Random.Range(10000, 99999);
-        PhotonNetwork.CreateRoom(KodeRoom.ToString());
+        string kodeRoom = Random.Range(10000, 99999).ToString();
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+        PhotonNetwork.CreateRoom(kodeRoom, options);
+
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+        props["prefabName"] = "Player1Prefab";
+        props["role"] = "creator";
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
 
     public void JoinRoomButton()
     {
         PhotonNetwork.JoinRoom(kodeJoin.text);
+
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+        props["prefabName"] = "Player2Prefab";
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
 
     public override void OnJoinedRoom()

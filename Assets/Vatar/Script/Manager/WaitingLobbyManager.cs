@@ -11,5 +11,5 @@ public class WaitingLobbyManager : MonoBehaviour
     private void Start()
     {
         kodeRoomTeks.text = PhotonNetwork.CurrentRoom.Name;
-    }
+    }   
 }
