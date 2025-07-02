@@ -6,17 +6,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LobbyMultiplayerManager : MonoBehaviourPunCallbacks
+public class CreateOrJoinManager : MonoBehaviourPunCallbacks
 {
-    public string namaScene;
+    public string namaSceneWaitingLobby;
+    public string namaSceneMainMenu;
     public InputField kodeJoin;
-    [SerializeField] private int KodeRoom;
+    private int KodeRoom;
 
     public void CreateRoomButton()
     {
         KodeRoom = Random.Range(10000, 99999);
         PhotonNetwork.CreateRoom(KodeRoom.ToString());
-        PhotonNetwork.LoadLevel(namaScene);
     }
 
     public void JoinRoomButton()
@@ -26,6 +26,17 @@ public class LobbyMultiplayerManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel(namaScene);
+        PhotonNetwork.LoadLevel(namaSceneWaitingLobby);
+    }
+
+    public void BackToMainMenuButton()
+    {
+        PhotonNetwork.LeaveLobby();
+        PhotonNetwork.Disconnect();
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        SceneManager.LoadScene(namaSceneMainMenu);
     }
 }
