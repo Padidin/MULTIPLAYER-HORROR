@@ -10,6 +10,9 @@ public class MainMenuManager : MonoBehaviour
     public InputField inputNameAccount;
     public Text usernameTeks;
 
+    [Header("Nama Scene")]
+    public string namaSceneMultiPlayer;
+    public string namaSceneSinglePlayer;
     public void ConfirmAccountName()
     {
         if (inputNameAccount.text != null)
@@ -33,11 +36,16 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public void SinglePlayerButton()
+    {
+        SceneManager.LoadScene(namaSceneSinglePlayer);
+    }
+
     public void MultiplayerButton()
     {
         if (PlayerPrefs.HasKey("username"))
         {
-            SceneManager.LoadScene("LoadingScene");
+            SceneManager.LoadScene(namaSceneMultiPlayer);
         }   
     }
 
