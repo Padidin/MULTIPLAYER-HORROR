@@ -15,8 +15,11 @@ public class CreateOrJoinManager : MonoBehaviourPunCallbacks
 
     public void CreateRoomButton()
     {
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 2;
+
         KodeRoom = Random.Range(10000, 99999);
-        PhotonNetwork.CreateRoom(KodeRoom.ToString());
+        PhotonNetwork.CreateRoom(KodeRoom.ToString(), roomOptions);
     }
 
     public void JoinRoomButton()

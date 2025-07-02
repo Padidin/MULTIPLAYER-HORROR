@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class MainMenuManager : MonoBehaviour
     [Header("Nama Scene")]
     public string namaSceneMultiPlayer;
     public string namaSceneSinglePlayer;
+
     public void ConfirmAccountName()
     {
         if (inputNameAccount.text != null)
@@ -25,6 +27,7 @@ public class MainMenuManager : MonoBehaviour
     private void Update()
     {
         accountName = PlayerPrefs.GetString("username");
+        PhotonNetwork.NickName = accountName;
 
         if (PlayerPrefs.HasKey("username"))
         {
