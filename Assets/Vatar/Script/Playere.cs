@@ -75,7 +75,9 @@ public class Playere : MonoBehaviour
         Vector3 currentVelocity = rb.velocity;
         Vector3 targetVelocity = move * speed;
         rb.velocity = new Vector3(targetVelocity.x, currentVelocity.y, targetVelocity.z);
+
     }
+
 
     void LookAround()
     {
@@ -98,7 +100,6 @@ public class Playere : MonoBehaviour
         if (!wasGrounded && isGrounded && isJumpingFromCrouch)
         {
             isJumpingFromCrouch = false;
-            StartCoroutine(CrouchRoutine()); // auto crouch setelah lompat jika sebelumnya crouch
         }
     }
 
@@ -130,14 +131,14 @@ public class Playere : MonoBehaviour
             anim.SetTrigger("ToCrouch");
             yield return new WaitForSeconds(0.4f);
             isCrouching = true;
-            cameraTransform.localPosition = crouchCamLocalPos;
+            //cameraTransform.localPosition = crouchCamLocalPos;
         }
         else
         {
             anim.SetTrigger("ToStand");
             yield return new WaitForSeconds(0.4f);
             isCrouching = false;
-            cameraTransform.localPosition = standCamLocalPos;
+           // cameraTransform.localPosition = standCamLocalPos;
         }
 
         isCrouchTransitioning = false;
