@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 
 public class Playere : MonoBehaviour
 {
@@ -29,39 +30,57 @@ public class Playere : MonoBehaviour
 
     private KeyCode crouchKey = KeyCode.C;
 
+    PhotonView view;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+        view = GetComponent<PhotonView>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         standCamLocalPos = cameraTransform.localPosition;
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
+
+        if (!view.IsMine)
+        {
+            cameraTransform.gameObject.SetActive(false);
+        }
+        else
+        {
+            cameraTransform.gameObject.SetActive(true);
+        }
     }
 
     void Update()
     {
-        LookAround();
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (view.IsMine)
         {
-            Jump();
-        }
+            LookAround();
 
-        if (Input.GetKeyDown(crouchKey))
-        {
-            StartCoroutine(CrouchRoutine());
-        }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Jump();
+            }
 
-        UpdateAnimation();
+            if (Input.GetKeyDown(crouchKey))
+            {
+                StartCoroutine(CrouchRoutine());
+            }
+
+            UpdateAnimation();
+        }
     }
 
     void FixedUpdate()
     {
-        CheckGround();
-        Move();
+        if (view.IsMine)
+        {
+            CheckGround();
+            Move();
+        }
     }
 
     void Move()
@@ -86,6 +105,7 @@ public class Playere : MonoBehaviour
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -60f, 60f);
+
 
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
