@@ -2,13 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class CharacterSelectManager : MonoBehaviour
+public class CharacterSelectManager : MonoBehaviourPunCallbacks
 {
     public PlayableDirector SwitchChar1;
     public PlayableDirector SwitchChar2;
+    public GameObject OwnerOnly;
     public bool char1 = true;
     public bool char2;
+
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            OwnerOnly.SetActive(true);
+        }
+        else
+        {
+            OwnerOnly.SetActive(false);
+        }
+    }
 
     public void SwtichCharacter1()
     {
