@@ -29,6 +29,7 @@ public class Playere : MonoBehaviour
 
     private KeyCode crouchKey = KeyCode.C;
 
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
