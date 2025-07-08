@@ -2492,7 +2492,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 904186447}
         m_TargetAssemblyTypeName: CharacterSelectManager, Assembly-CSharp
-        m_MethodName: SwtichCharacter1
+        m_MethodName: SwitchCharacter1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2723,6 +2723,7 @@ GameObject:
   m_Component:
   - component: {fileID: 904186446}
   - component: {fileID: 904186447}
+  - component: {fileID: 904186448}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -2762,6 +2763,28 @@ MonoBehaviour:
   OwnerOnly: {fileID: 1703278695}
   char1: 1
   char2: 0
+--- !u!114 &904186448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904186445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &920241325
 GameObject:
   m_ObjectHideFlags: 0
@@ -4886,7 +4909,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 45
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -4912,8 +4935,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259615205}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.048520032, y: 0.9100498, z: -0.11140128, w: -0.39628908}
-  m_LocalPosition: {x: 207.7, y: 13.42, z: 263.6}
+  m_LocalRotation: {x: 0, y: -0.8106953, z: 0, w: 0.58546835}
+  m_LocalPosition: {x: 212.58, y: 3.7399998, z: 247.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6111,7 +6134,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 904186447}
         m_TargetAssemblyTypeName: CharacterSelectManager, Assembly-CSharp
-        m_MethodName: SwtichCharacter2
+        m_MethodName: SwitchCharacter2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
