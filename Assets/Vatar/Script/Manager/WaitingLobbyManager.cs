@@ -12,6 +12,9 @@ public class WaitingLobbyManager : MonoBehaviourPunCallbacks
     public string namaSceneSelanjutnya;
     public string namaSceneSebelumnya;
 
+    public Color Red;
+    public Color Green;
+
     [Header("PlayerProps")]
     public Text Player1;
     public Text Player2;
@@ -66,11 +69,13 @@ public class WaitingLobbyManager : MonoBehaviourPunCallbacks
         {
             if (!ClientReady)
             {
-                statusPlayer2.text = "Unready";
+                statusPlayer2.text = "UnReady";
+                statusPlayer2.color = Red;
             }
             else
             {
                 statusPlayer2.text = "Ready";
+                statusPlayer2.color = Green;
             }
         }
         else
