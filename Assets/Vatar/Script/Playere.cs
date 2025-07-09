@@ -15,6 +15,13 @@ public class Playere : MonoBehaviour
     public float groundCheckRadius = 0.5f;
     public LayerMask groundMask;
 
+    [Header("Audio")]
+    public AudioClip walkClip;
+    public AudioClip jumpClip;
+
+    private AudioSource walkSource;
+    private AudioSource sfxSource;
+
     private Rigidbody rb;
     private Animator anim;
 
@@ -29,7 +36,6 @@ public class Playere : MonoBehaviour
 
     private KeyCode crouchKey = KeyCode.C;
 
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -40,10 +46,20 @@ public class Playere : MonoBehaviour
 
         standCamLocalPos = cameraTransform.localPosition;
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
+
+        // Buat AudioSource terpisah
+        walkSource = gameObject.AddComponent<AudioSource>();
+        walkSource.loop = true;
+        walkSource.playOnAwake = false;
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
     }
 
     void Update()
     {
+        if (PauseManager.GameIsPaused) return;
+
         LookAround();
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -61,6 +77,8 @@ public class Playere : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (PauseManager.GameIsPaused) return;
+
         CheckGround();
         Move();
     }
@@ -76,9 +94,7 @@ public class Playere : MonoBehaviour
         Vector3 currentVelocity = rb.velocity;
         Vector3 targetVelocity = move * speed;
         rb.velocity = new Vector3(targetVelocity.x, currentVelocity.y, targetVelocity.z);
-
     }
-
 
     void LookAround()
     {
@@ -120,6 +136,16 @@ public class Playere : MonoBehaviour
         rb.velocity = jumpVelocity;
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        if (AudioManager.Instance != null && jumpClip != null)
+        {
+            Debug.Log($"Jump Sound Played! Volume: {AudioManager.Instance.sfxVolume}");
+            sfxSource.PlayOneShot(jumpClip, AudioManager.Instance.sfxVolume);
+        }
+        else
+        {
+            Debug.LogWarning("Jump sound not played: missing AudioManager or jumpClip");
+        }
     }
 
     IEnumerator CrouchRoutine()
@@ -132,14 +158,12 @@ public class Playere : MonoBehaviour
             anim.SetTrigger("ToCrouch");
             yield return new WaitForSeconds(0.4f);
             isCrouching = true;
-            //cameraTransform.localPosition = crouchCamLocalPos;
         }
         else
         {
             anim.SetTrigger("ToStand");
             yield return new WaitForSeconds(0.4f);
             isCrouching = false;
-           // cameraTransform.localPosition = standCamLocalPos;
         }
 
         isCrouchTransitioning = false;
@@ -153,6 +177,20 @@ public class Playere : MonoBehaviour
 
         anim.SetFloat("MoveSpeed", speed);
         anim.SetBool("IsCrouching", isCrouching);
+
+        float sfxVolume = AudioManager.Instance != null ? AudioManager.Instance.sfxVolume : 1f;
+        walkSource.volume = sfxVolume;
+
+        if (isGrounded && !walkSource.isPlaying && speed > 0.1f && sfxVolume > 0f)
+        {
+            walkSource.clip = walkClip;
+            walkSource.Play();
+        }
+        else if (speed <= 0.1f || !isGrounded || sfxVolume <= 0f)
+        {
+            if (walkSource.clip == walkClip)
+                walkSource.Stop();
+        }
     }
 
     void OnDrawGizmosSelected()

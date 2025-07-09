@@ -5,8 +5,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     public InventoryItem[] items = new InventoryItem[6];
-    public InventorySlotUI[] uiSlots; 
-    public Transform playerHandTransform; 
+    public InventorySlotUI[] uiSlots;
+    public Transform playerHandTransform;
     private GameObject heldItemInstance;
     private int currentHeldIndex = -1;
 
@@ -30,7 +30,7 @@ public class InventoryManager : MonoBehaviour
                 return true;
             }
         }
-        return false; 
+        return false;
     }
 
     void Update()
@@ -92,7 +92,7 @@ public class InventoryManager : MonoBehaviour
             rb.isKinematic = false;
             rb.useGravity = true;
 
-            rb.AddForce(playerHandTransform.forward * 3f + Vector3.up * 2f, ForceMode.Impulse);
+            rb.AddForce(playerHandTransform.forward * 0.3f + Vector3.up * 2f, ForceMode.Impulse);
 
             Vector3 randomTorque = new Vector3(
                 Random.Range(-200f, 200f),
