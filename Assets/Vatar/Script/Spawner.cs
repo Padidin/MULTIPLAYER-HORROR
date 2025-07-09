@@ -14,13 +14,43 @@ public class Spawner : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
+        StartCoroutine(SpawnCharacter());
+    }
+
+    IEnumerator SpawnCharacter()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("ChosenCharacter"))
         {
-            PhotonNetwork.Instantiate(Player1.name, player1POS.position, Quaternion.identity);
+            string chosenChar = PhotonNetwork.LocalPlayer.CustomProperties["ChosenCharacter"].ToString();
+
+            GameObject prefab = null;
+            Transform spawnPos = null;
+
+            if (chosenChar == "Karakter1")
+            {
+                prefab = Player1;
+                spawnPos = player1POS;
+            }
+            else if (chosenChar == "Karakter2")
+            {
+                prefab = Player2;
+                spawnPos = player2POS;
+            }
+
+            if (prefab != null && spawnPos != null)
+            {
+                PhotonNetwork.Instantiate(prefab.name, spawnPos.position, Quaternion.identity);
+            }
+            else
+            {
+                Debug.LogError("Prefab atau posisi spawn tidak ditemukan.");
+            }
         }
         else
         {
-            PhotonNetwork.Instantiate(Player2.name, player2POS.position, Quaternion.identity);
+            Debug.LogError("ChosenCharacter belum diset di CustomProperties.");
         }
     }
 }
