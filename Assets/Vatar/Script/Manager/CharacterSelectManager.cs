@@ -5,12 +5,14 @@ using UnityEngine.Playables;
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using UnityEngine.UI;
 
 public class CharacterSelectManager : MonoBehaviourPunCallbacks
 {
     public PlayableDirector SwitchChar1;
     public PlayableDirector SwitchChar2;
     public GameObject OwnerOnly;
+    public Text countdownText;
     public bool char1 = true;
     public bool char2;
     public string NextScene;
@@ -57,13 +59,30 @@ public class CharacterSelectManager : MonoBehaviourPunCallbacks
 
     IEnumerator LoadMultiPlayer()
     {
-        yield return new WaitForSeconds(5f);
+        int countdown = 5;
+
+        while (countdown > 0)
+        {
+            if (countdownText != null)
+            {
+                countdownText.text = "GAME STARTING IN " + countdown + "...";
+            }
+
+            yield return new WaitForSeconds(1f);
+            countdown--;
+        }
+
+        if (countdownText != null)
+        {
+            countdownText.text = "Loading...";
+        }
 
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel(NextScene);
         }
     }
+
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
