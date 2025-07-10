@@ -4,6 +4,7 @@ using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class WaitingLobbyManager : MonoBehaviourPunCallbacks
 {
@@ -12,6 +13,7 @@ public class WaitingLobbyManager : MonoBehaviourPunCallbacks
     public string namaSceneSelanjutnya;
     public string namaSceneSebelumnya;
 
+    public GameObject LoadingLayer;
     public Color Red;
     public Color Green;
 
@@ -22,10 +24,11 @@ public class WaitingLobbyManager : MonoBehaviourPunCallbacks
 
     public bool ClientReady;
 
+    private AsyncOperation asyncLoad;
+
     private void Start()
     {
         kodeRoomTeks.text = PhotonNetwork.CurrentRoom.Name;
-        PhotonNetwork.AutomaticallySyncScene = true;
         RoomProperties();
     }
 
@@ -33,13 +36,14 @@ public class WaitingLobbyManager : MonoBehaviourPunCallbacks
     {
         CekPlayer();
         CekStatusPlayer();
+        LoadingNextScene();
     }
 
     void RoomProperties()
     {
-        Hashtable roomProps = new Hashtable();
-        roomProps["ClientReady"] = false;
-        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
+        Hashtable WaitiLobbyScene = new Hashtable();
+        WaitiLobbyScene["ClientReady"] = false;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(WaitiLobbyScene);
     }
 
     void CekPlayer()
@@ -105,7 +109,7 @@ public class WaitingLobbyManager : MonoBehaviourPunCallbacks
         {
             if (ClientReady)
             {
-                PhotonNetwork.LoadLevel(namaSceneSelanjutnya);
+                photonView.RPC("StartLoadNextScene", RpcTarget.All);
             }
         }
         
@@ -113,26 +117,34 @@ public class WaitingLobbyManager : MonoBehaviourPunCallbacks
         {
             if (ClientReady)
             {
-                Hashtable roomProps = new Hashtable();
-                roomProps["ClientReady"] = false;
-                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
+                Hashtable WaitiLobbyScene = new Hashtable();
+                WaitiLobbyScene["ClientReady"] = false;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(WaitiLobbyScene);
             }
             else
             {
-                Hashtable roomProps = new Hashtable();
-                roomProps["ClientReady"] = true;
-                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
+                Hashtable WaitiLobbyScene = new Hashtable();
+                WaitiLobbyScene["ClientReady"] = true;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(WaitiLobbyScene);
             }
         }
+    }
+
+    [PunRPC]
+    void StartLoadNextScene()
+    {
+        asyncLoad = SceneManager.LoadSceneAsync(namaSceneSelanjutnya);
+        asyncLoad.allowSceneActivation = false;
+        LoadingLayer.SetActive(true);
     }
 
     public void LeaveButton()
     {
         if (PhotonNetwork.InRoom)
         {
-            Hashtable roomProps = new Hashtable();
-            roomProps["ClientReady"] = false;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
+            Hashtable WaitiLobbyScene = new Hashtable();
+            WaitiLobbyScene["ClientReady"] = false;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(WaitiLobbyScene);
 
             PhotonNetwork.LeaveRoom();
         }
@@ -143,5 +155,30 @@ public class WaitingLobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(namaSceneSebelumnya);
 
     }
+
+    void LoadingNextScene()
+    {
+        if (asyncLoad != null && asyncLoad.progress >= 0.9f && PhotonNetwork.IsMasterClient)
+        {
+            if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("LoadDone", out object value) == true)
+            {
+                photonView.RPC("PindahScene", RpcTarget.All);
+            }
+        }
+
+        if (asyncLoad != null && asyncLoad.progress >= 0.9f && !PhotonNetwork.IsMasterClient)
+        {
+            Hashtable WaitiLobbyScene = new Hashtable();
+            WaitiLobbyScene["LoadDone"] = true;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(WaitiLobbyScene);
+        }
+    }
+
+    [PunRPC]
+    void PindahScene()
+    {
+        asyncLoad.allowSceneActivation = true;
+    }
+
 
 }
