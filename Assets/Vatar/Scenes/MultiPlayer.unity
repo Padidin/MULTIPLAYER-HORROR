@@ -1802,7 +1802,7 @@ GameObject:
   - component: {fileID: 280913526}
   - component: {fileID: 280913525}
   m_Layer: 5
-  m_Name: Text (Legacy) (1)
+  m_Name: Text Notif Inventory penuh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2172,7 +2172,7 @@ GameObject:
   - component: {fileID: 387687403}
   - component: {fileID: 387687402}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: Text untuk input kode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2485,7 +2485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a739cd6998b5cc24794657aa6c91752c, type: 3}
       propertyPath: m_Name
-      value: LP_Safe
+      value: BRANKAS
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a739cd6998b5cc24794657aa6c91752c, type: 3}
       propertyPath: m_Layer
@@ -3786,6 +3786,7 @@ RectTransform:
   m_Children:
   - {fileID: 987998353}
   - {fileID: 1626464584}
+  - {fileID: 271031868}
   - {fileID: 143234091}
   - {fileID: 1778958808}
   - {fileID: 340067509}
@@ -3795,7 +3796,6 @@ RectTransform:
   - {fileID: 2093208545}
   - {fileID: 1094527502}
   - {fileID: 1065591991}
-  - {fileID: 271031868}
   m_Father: {fileID: 1095829194}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4256,7 +4256,7 @@ GameObject:
   - component: {fileID: 781896874}
   - component: {fileID: 781896875}
   m_Layer: 5
-  m_Name: Text Interact
+  m_Name: Text Interact Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5626,7 +5626,7 @@ GameObject:
   - component: {fileID: 1158152040}
   - component: {fileID: 1158152039}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7963,7 +7963,7 @@ GameObject:
   - component: {fileID: 1482139122}
   - component: {fileID: 1482139121}
   m_Layer: 5
-  m_Name: Text Interact (1)
+  m_Name: Text Interact Brankas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9263,7 +9263,7 @@ GameObject:
   - component: {fileID: 1934749900}
   - component: {fileID: 1934749899}
   m_Layer: 5
-  m_Name: Text (Legacy) (1)
+  m_Name: Text kalau kode salah
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10577,7 +10577,7 @@ SceneRoots:
   - {fileID: 8822846326905823999}
   - {fileID: 6506389619898075024}
   - {fileID: 407026609}
+  - {fileID: 419737216}
   - {fileID: 1174147533}
   - {fileID: 17465266}
-  - {fileID: 419737216}
   - {fileID: 2147274156}
