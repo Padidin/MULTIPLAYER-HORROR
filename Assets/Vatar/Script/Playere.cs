@@ -47,7 +47,6 @@ public class Playere : MonoBehaviour
         standCamLocalPos = cameraTransform.localPosition;
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
 
-        // Buat AudioSource terpisah
         walkSource = gameObject.AddComponent<AudioSource>();
         walkSource.loop = true;
         walkSource.playOnAwake = false;
@@ -139,12 +138,7 @@ public class Playere : MonoBehaviour
 
         if (AudioManager.Instance != null && jumpClip != null)
         {
-            Debug.Log($"Jump Sound Played! Volume: {AudioManager.Instance.sfxVolume}");
             sfxSource.PlayOneShot(jumpClip, AudioManager.Instance.sfxVolume);
-        }
-        else
-        {
-            Debug.LogWarning("Jump sound not played: missing AudioManager or jumpClip");
         }
     }
 
