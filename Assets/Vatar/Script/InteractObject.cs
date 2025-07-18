@@ -2,50 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class InteractObject : MonoBehaviour
+public class InteractObject : MonoBehaviourPunCallbacks
 {
     public bool triggerBathup = false;
     public bool triggerRak = false;
-
-    public bool canInteractBathup = false;
-    public bool canInteractRak = false;
 
     private void Update()
     {
         if (triggerBathup && Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(BathupInteract());
+            photonView.RPC("InteractBathup", RpcTarget.Others);
         }
 
         if (triggerRak && Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(BathupInteract());
+            photonView.RPC("InteractRak", RpcTarget.Others);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bathup"))
+        if (other.CompareTag("TombolBathup"))
         {
             triggerBathup = true;
         }
-        if (other.CompareTag("Rak"))
+        if (other.CompareTag("TombolRak"))
         {
             triggerRak = true;
         }
     }
 
-    IEnumerator BathupInteract()
+    private void OnTriggerExit(Collider other)
     {
-        canInteractBathup = true;
-        yield return new WaitForSeconds(5f);
-        canInteractBathup = false;
+        if (other.CompareTag("TombolBathup"))
+        {
+            triggerBathup = false;
+        }
+        if (other.CompareTag("Tombol Rak"))
+        {
+            triggerRak = false;
+        }
     }
-    IEnumerator RakInteract()
-    {
-        canInteractRak = true;
-        yield return new WaitForSeconds(5f);
-        canInteractRak = false;
-    }
+
 }
