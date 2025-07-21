@@ -8,7 +8,6 @@ public class Playere : MonoBehaviour
     public float crouchSpeed = 2.5f;
     public float mouseSensitivity = 1f;
     public float jumpForce = 6f;
-    public Transform cameraTransform;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -18,6 +17,12 @@ public class Playere : MonoBehaviour
     [Header("Audio")]
     public AudioClip walkClip;
     public AudioClip jumpClip;
+
+    [Header("Camera Follow")]
+    public Transform cameraTransform;
+    public Transform cameraFollowTarget;
+    public Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
+    public float cameraFollowSpeed = 5f;
 
     private AudioSource walkSource;
     private AudioSource sfxSource;
@@ -73,6 +78,22 @@ public class Playere : MonoBehaviour
 
         UpdateAnimation();
     }
+
+    void LateUpdate()
+    {
+        if (PauseManager.GameIsPaused) return;
+
+        SmoothFollowCamera();
+    }
+
+    void SmoothFollowCamera()
+    {
+        if (cameraTransform == null || cameraFollowTarget == null) return;
+
+        Vector3 targetPosition = cameraFollowTarget.position + cameraOffset;
+        cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, cameraFollowSpeed * Time.deltaTime);
+    }
+
 
     void FixedUpdate()
     {
