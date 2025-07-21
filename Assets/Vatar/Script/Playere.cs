@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Photon.Pun;
 
 public class Playere : MonoBehaviour
 {
@@ -16,6 +15,13 @@ public class Playere : MonoBehaviour
     public float groundCheckRadius = 0.5f;
     public LayerMask groundMask;
 
+    [Header("Audio")]
+    public AudioClip walkClip;
+    public AudioClip jumpClip;
+
+    private AudioSource walkSource;
+    private AudioSource sfxSource;
+
     private Rigidbody rb;
     private Animator anim;
 
@@ -30,13 +36,10 @@ public class Playere : MonoBehaviour
 
     private KeyCode crouchKey = KeyCode.C;
 
-    PhotonView view;
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-        view = GetComponent<PhotonView>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -44,43 +47,39 @@ public class Playere : MonoBehaviour
         standCamLocalPos = cameraTransform.localPosition;
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
 
-        if (!view.IsMine)
-        {
-            cameraTransform.gameObject.SetActive(false);
-        }
-        else
-        {
-            cameraTransform.gameObject.SetActive(true);
-        }
+        walkSource = gameObject.AddComponent<AudioSource>();
+        walkSource.loop = true;
+        walkSource.playOnAwake = false;
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
     }
 
     void Update()
     {
-        if (view.IsMine)
+        if (PauseManager.GameIsPaused) return;
+
+        LookAround();
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            LookAround();
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Jump();
-            }
-
-            if (Input.GetKeyDown(crouchKey))
-            {
-                StartCoroutine(CrouchRoutine());
-            }
-
-            UpdateAnimation();
+            Jump();
         }
+
+        if (Input.GetKeyDown(crouchKey))
+        {
+            StartCoroutine(CrouchRoutine());
+        }
+
+        UpdateAnimation();
     }
 
     void FixedUpdate()
     {
-        if (view.IsMine)
-        {
-            CheckGround();
-            Move();
-        }
+        if (PauseManager.GameIsPaused) return;
+
+        CheckGround();
+        Move();
     }
 
     void Move()
@@ -94,9 +93,7 @@ public class Playere : MonoBehaviour
         Vector3 currentVelocity = rb.velocity;
         Vector3 targetVelocity = move * speed;
         rb.velocity = new Vector3(targetVelocity.x, currentVelocity.y, targetVelocity.z);
-
     }
-
 
     void LookAround()
     {
@@ -105,7 +102,6 @@ public class Playere : MonoBehaviour
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -60f, 60f);
-
 
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
@@ -139,6 +135,11 @@ public class Playere : MonoBehaviour
         rb.velocity = jumpVelocity;
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        if (AudioManager.Instance != null && jumpClip != null)
+        {
+            sfxSource.PlayOneShot(jumpClip, AudioManager.Instance.sfxVolume);
+        }
     }
 
     IEnumerator CrouchRoutine()
@@ -151,14 +152,12 @@ public class Playere : MonoBehaviour
             anim.SetTrigger("ToCrouch");
             yield return new WaitForSeconds(0.4f);
             isCrouching = true;
-            //cameraTransform.localPosition = crouchCamLocalPos;
         }
         else
         {
             anim.SetTrigger("ToStand");
             yield return new WaitForSeconds(0.4f);
             isCrouching = false;
-           // cameraTransform.localPosition = standCamLocalPos;
         }
 
         isCrouchTransitioning = false;
@@ -172,6 +171,20 @@ public class Playere : MonoBehaviour
 
         anim.SetFloat("MoveSpeed", speed);
         anim.SetBool("IsCrouching", isCrouching);
+
+        float sfxVolume = AudioManager.Instance != null ? AudioManager.Instance.sfxVolume : 1f;
+        walkSource.volume = sfxVolume;
+
+        if (isGrounded && !walkSource.isPlaying && speed > 0.1f && sfxVolume > 0f)
+        {
+            walkSource.clip = walkClip;
+            walkSource.Play();
+        }
+        else if (speed <= 0.1f || !isGrounded || sfxVolume <= 0f)
+        {
+            if (walkSource.clip == walkClip)
+                walkSource.Stop();
+        }
     }
 
     void OnDrawGizmosSelected()
