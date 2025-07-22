@@ -91,22 +91,14 @@ public class InventoryManager : MonoBehaviour
         {
             rb.isKinematic = false;
             rb.useGravity = true;
-
             rb.AddForce(playerHandTransform.forward * 0.3f + Vector3.up * 2f, ForceMode.Impulse);
-
-            Vector3 randomTorque = new Vector3(
-                Random.Range(-200f, 200f),
-                Random.Range(-200f, 200f),
-                Random.Range(-200f, 200f)
-            );
-            rb.AddTorque(randomTorque, ForceMode.Impulse);
+            rb.AddTorque(Random.insideUnitSphere * 200f, ForceMode.Impulse);
         }
 
         items[currentHeldIndex] = null;
         uiSlots[currentHeldIndex].Clear();
         UnequipItem();
     }
-
 
     void UnequipItem()
     {
@@ -134,4 +126,51 @@ public class InventoryManager : MonoBehaviour
                 uiSlots[i].Highlight(false);
         }
     }
+
+    public bool HasEmptySlot()
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] == null)
+                return true;
+        }
+        return false;
+    }
+
+    public bool IsHoldingItem()
+    {
+        return currentHeldIndex != -1;
+    }
+    public void ReplaceHeldItem(InventoryItem newItem)
+    {
+        if (currentHeldIndex != -1)
+        {
+            items[currentHeldIndex] = newItem;
+
+            if (uiSlots[currentHeldIndex] != null)
+                uiSlots[currentHeldIndex].SetIcon(newItem.icon);
+
+            if (heldItemInstance != null)
+                Destroy(heldItemInstance);
+
+            heldItemInstance = Instantiate(newItem.prefab, playerHandTransform);
+            heldItemInstance.transform.localPosition = Vector3.zero;
+            heldItemInstance.transform.localRotation = Quaternion.identity;
+
+            Rigidbody rb = heldItemInstance.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
+
+            HighlightSlot(currentHeldIndex);
+        }
+        else
+        {
+            AddItem(newItem); 
+        }
+    }
+
+
 }

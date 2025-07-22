@@ -5,9 +5,9 @@ public class InventorySlotUI : MonoBehaviour
 {
     public Image backgroundImage;
     public Image iconImage;
-    public Image borderImage; 
+    public Image borderImage;
 
-    Color normalColor = new Color(0f, 0f, 0f, 0.66f); 
+    Color normalColor = new Color(0f, 0f, 0f, 0.66f);
 
     void Start()
     {
@@ -36,7 +36,7 @@ public class InventorySlotUI : MonoBehaviour
     {
         iconImage.sprite = null;
         iconImage.enabled = false;
-        iconImage.color = new Color(1, 1, 1, 0); 
+        iconImage.color = new Color(1, 1, 1, 0);
 
         backgroundImage.color = normalColor;
 

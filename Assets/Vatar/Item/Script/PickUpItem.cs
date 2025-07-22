@@ -9,8 +9,10 @@ public class PickupItem : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (InventoryManager.Instance.AddItem(itemData))
+            if (InventoryManager.Instance.HasEmptySlot() || InventoryManager.Instance.IsHoldingItem())
             {
+                InventoryManager.Instance.ReplaceHeldItem(itemData);
+
                 UIManager.Instance.ShowInteractText(false);
                 Destroy(gameObject);
             }
@@ -21,12 +23,17 @@ public class PickupItem : MonoBehaviour
         }
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            UIManager.Instance.ShowInteractText(true);
+
+            if (!InventoryManager.Instance.IsHoldingItem())
+            {
+                UIManager.Instance.ShowInteractText(true);
+            }
         }
     }
 

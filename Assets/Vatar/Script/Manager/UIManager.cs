@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,34 +5,51 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public GameObject interactTextObject; 
-    public Text notificationText;       
+    public Text interactText;
+    public Text notificationText;
 
-    void Awake()
+    private void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     public void ShowInteractText(bool show)
     {
-        if (interactTextObject != null)
-            interactTextObject.SetActive(show);
+        if (interactText != null)
+            interactText.gameObject.SetActive(show);
+    }
+
+    public void SetInteractText(string message)
+    {
+        if (interactText != null)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                interactText.text = message;
+                interactText.gameObject.SetActive(true);
+            }
+            else
+            {
+                interactText.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void ShowNotification(string message)
     {
-        StopAllCoroutines();
-        StartCoroutine(ShowNotifRoutine(message));
-    }
-
-    private IEnumerator ShowNotifRoutine(string msg)
-    {
         if (notificationText != null)
         {
-            notificationText.text = msg;
+            notificationText.text = message;
             notificationText.gameObject.SetActive(true);
-            yield return new WaitForSeconds(2f);
-            notificationText.gameObject.SetActive(false);
+            CancelInvoke(nameof(HideNotification));
+            Invoke(nameof(HideNotification), 2f);
         }
+    }
+
+    private void HideNotification()
+    {
+        if (notificationText != null)
+            notificationText.gameObject.SetActive(false);
     }
 }
