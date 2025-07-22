@@ -78,27 +78,37 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    void DropCurrentItem()
+    public void DropCurrentItem()
     {
-        if (currentHeldIndex == -1 || items[currentHeldIndex] == null)
-            return;
-
-        Vector3 dropPos = playerHandTransform.position + playerHandTransform.forward * 1.5f;
-        GameObject dropped = Instantiate(items[currentHeldIndex].prefab, dropPos, Quaternion.identity);
-
-        Rigidbody rb = dropped.GetComponent<Rigidbody>();
-        if (rb != null)
+        if (heldItemInstance != null && currentHeldIndex != -1)
         {
-            rb.isKinematic = false;
-            rb.useGravity = true;
-            rb.AddForce(playerHandTransform.forward * 0.3f + Vector3.up * 2f, ForceMode.Impulse);
-            rb.AddTorque(Random.insideUnitSphere * 200f, ForceMode.Impulse);
-        }
+            GameObject droppedItem = Instantiate(items[currentHeldIndex].prefab, playerHandTransform.position + playerHandTransform.forward * 0.5f, Quaternion.identity);
+            Rigidbody rb = droppedItem.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+                rb.useGravity = true;
+                rb.interpolation = RigidbodyInterpolation.Interpolate;
 
-        items[currentHeldIndex] = null;
-        uiSlots[currentHeldIndex].Clear();
-        UnequipItem();
+                rb.AddForce(playerHandTransform.forward * 2f, ForceMode.Impulse);
+
+                Vector3 randomTorque = new Vector3(
+                    Random.Range(-5f, 5f),
+                    Random.Range(-5f, 5f),
+                    Random.Range(-5f, 5f)
+                );
+                rb.AddTorque(randomTorque, ForceMode.Impulse);
+            }
+
+            Destroy(heldItemInstance);
+            heldItemInstance = null;
+            items[currentHeldIndex] = null;
+            uiSlots[currentHeldIndex].Clear();
+            currentHeldIndex = -1;
+        }
     }
+
+
 
     void UnequipItem()
     {
@@ -141,36 +151,39 @@ public class InventoryManager : MonoBehaviour
     {
         return currentHeldIndex != -1;
     }
+
     public void ReplaceHeldItem(InventoryItem newItem)
     {
-        if (currentHeldIndex != -1)
-        {
-            items[currentHeldIndex] = newItem;
-
-            if (uiSlots[currentHeldIndex] != null)
-                uiSlots[currentHeldIndex].SetIcon(newItem.icon);
-
-            if (heldItemInstance != null)
-                Destroy(heldItemInstance);
-
-            heldItemInstance = Instantiate(newItem.prefab, playerHandTransform);
-            heldItemInstance.transform.localPosition = Vector3.zero;
-            heldItemInstance.transform.localRotation = Quaternion.identity;
-
-            Rigidbody rb = heldItemInstance.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.isKinematic = true;
-                rb.useGravity = false;
-            }
-
-            HighlightSlot(currentHeldIndex);
-        }
-        else
+        if (IsHoldingItem())
         {
             AddItem(newItem); 
         }
+        else
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i] == null)
+                {
+                    items[i] = newItem;
+                    if (uiSlots[i] != null)
+                        uiSlots[i].SetIcon(newItem.icon);
+
+                    heldItemInstance = Instantiate(newItem.prefab, playerHandTransform);
+                    heldItemInstance.transform.localPosition = Vector3.zero;
+                    heldItemInstance.transform.localRotation = Quaternion.identity;
+
+                    Rigidbody rb = heldItemInstance.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        rb.isKinematic = true;
+                        rb.useGravity = false;
+                    }
+
+                    currentHeldIndex = i;
+                    HighlightSlot(i);
+                    break;
+                }
+            }
+        }
     }
-
-
 }

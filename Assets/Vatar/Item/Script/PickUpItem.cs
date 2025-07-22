@@ -9,10 +9,9 @@ public class PickupItem : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (InventoryManager.Instance.HasEmptySlot() || InventoryManager.Instance.IsHoldingItem())
+            if (InventoryManager.Instance.HasEmptySlot())
             {
-                InventoryManager.Instance.ReplaceHeldItem(itemData);
-
+                InventoryManager.Instance.AddItem(itemData);
                 UIManager.Instance.ShowInteractText(false);
                 Destroy(gameObject);
             }
@@ -22,6 +21,7 @@ public class PickupItem : MonoBehaviour
             }
         }
     }
+
 
 
     private void OnTriggerEnter(Collider other)

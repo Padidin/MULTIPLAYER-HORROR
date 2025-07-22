@@ -8470,7 +8470,6 @@ MonoBehaviour:
   crouchSpeed: 1.5
   mouseSensitivity: 1
   jumpForce: 5
-  cameraTransform: {fileID: 1865937037}
   groundCheck: {fileID: 1455702034}
   groundCheckRadius: 0.5
   groundMask:
@@ -8478,6 +8477,10 @@ MonoBehaviour:
     m_Bits: 8
   walkClip: {fileID: 8300000, guid: 44d75ef5900972146b768b408cd38b86, type: 3}
   jumpClip: {fileID: 8300000, guid: f9e54b96511ea7f46ad69e662ed71e87, type: 3}
+  cameraTransform: {fileID: 1865937037}
+  cameraFollowTarget: {fileID: 0}
+  cameraOffset: {x: 0, y: 0, z: 0}
+  cameraFollowSpeed: 5
 --- !u!1 &1518193261
 GameObject:
   m_ObjectHideFlags: 0
@@ -11414,7 +11417,6 @@ MonoBehaviour:
   crouchSpeed: 1.5
   mouseSensitivity: 1
   jumpForce: 5
-  cameraTransform: {fileID: 2032657211}
   groundCheck: {fileID: 659790795}
   groundCheckRadius: 0.5
   groundMask:
@@ -11422,6 +11424,10 @@ MonoBehaviour:
     m_Bits: 8
   walkClip: {fileID: 8300000, guid: 44d75ef5900972146b768b408cd38b86, type: 3}
   jumpClip: {fileID: 8300000, guid: f9e54b96511ea7f46ad69e662ed71e87, type: 3}
+  cameraTransform: {fileID: 2032657211}
+  cameraFollowTarget: {fileID: 0}
+  cameraOffset: {x: 0, y: 0, z: 0}
+  cameraFollowSpeed: 5
 --- !u!114 &1875498782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11563,7 +11569,6 @@ MonoBehaviour:
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
-    serializedVersion: 2
     m_Bits: 4294967295
   m_UseGeometry: 0
   m_DefaultArea: 0
@@ -11577,6 +11582,8 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: c9666457db2628a488e69f6aa5695a51, type: 2}
   m_BuildHeightMesh: 0
+  m_LastPosition: {x: -5.691425, y: 0.07, z: -2.7012105}
+  m_LastRotation: {x: -0, y: -0, z: -0, w: 1}
 --- !u!1 &1934749898
 GameObject:
   m_ObjectHideFlags: 0
@@ -11896,7 +11903,7 @@ Transform:
   m_GameObject: {fileID: 2032657208}
   serializedVersion: 2
   m_LocalRotation: {x: -0.050587304, y: -0.0069029867, z: 0.0056994087, w: 0.9986795}
-  m_LocalPosition: {x: 0.238, y: 1.5293412, z: -0.834}
+  m_LocalPosition: {x: 0, y: 1.5293412, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12846,7 +12853,6 @@ MonoBehaviour:
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
-    serializedVersion: 2
     m_Bits: 4294967295
   m_UseGeometry: 0
   m_DefaultArea: 0
@@ -12860,6 +12866,8 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: b7d8cd1e0d8a88c47886fc9dd69044d0, type: 2}
   m_BuildHeightMesh: 0
+  m_LastPosition: {x: 0, y: 0, z: 0}
+  m_LastRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1001 &4945886362562652376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12942,7 +12950,6 @@ MonoBehaviour:
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
-    serializedVersion: 2
     m_Bits: 4294967295
   m_UseGeometry: 0
   m_DefaultArea: 1
@@ -12956,6 +12963,8 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 607101d82e02b65478eaa269db03cbc6, type: 2}
   m_BuildHeightMesh: 0
+  m_LastPosition: {x: 4.857882, y: 0.7517842, z: 12.800386}
+  m_LastRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
 --- !u!1001 &6506389619898075024
 PrefabInstance:
   m_ObjectHideFlags: 0
