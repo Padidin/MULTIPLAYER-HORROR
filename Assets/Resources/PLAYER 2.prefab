@@ -425,12 +425,17 @@ MonoBehaviour:
   crouchSpeed: 1.5
   mouseSensitivity: 1
   jumpForce: 5
-  cameraTransform: {fileID: 1681627600730797361}
   groundCheck: {fileID: 5314872430452951573}
   groundCheckRadius: 0.5
   groundMask:
     serializedVersion: 2
     m_Bits: 8
+  walkClip: {fileID: 0}
+  jumpClip: {fileID: 0}
+  cameraTransform: {fileID: 1681627600730797361}
+  cameraFollowTarget: {fileID: 0}
+  cameraOffset: {x: 0, y: 0, z: 0}
+  cameraFollowSpeed: 5
 --- !u!136 &161018184924676259
 CapsuleCollider:
   m_ObjectHideFlags: 0
