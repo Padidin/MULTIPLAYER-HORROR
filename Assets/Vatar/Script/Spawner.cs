@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviourPunCallbacks
 
     IEnumerator SpawnCharacter()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
 
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("ChosenCharacter"))
         {

@@ -97,6 +97,22 @@ public class CharacterSelectManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnJoinedRoom()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            if (PhotonNetwork.MasterClient.CustomProperties.ContainsKey("ChosenCharacter"))
+            {
+                string masterChoice = PhotonNetwork.MasterClient.CustomProperties["ChosenCharacter"].ToString();
+                string myChoice = masterChoice == "Karakter1" ? "Karakter2" : "Karakter1";
+
+                ExitGames.Client.Photon.Hashtable myProps = new ExitGames.Client.Photon.Hashtable();
+                myProps["ChosenCharacter"] = myChoice;
+                PhotonNetwork.LocalPlayer.SetCustomProperties(myProps);
+            }
+        }
+    }
+
     public void SwitchCharacter1()
     {
         if (char1 == false)
