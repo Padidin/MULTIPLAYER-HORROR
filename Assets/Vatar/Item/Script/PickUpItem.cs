@@ -1,6 +1,7 @@
+using Photon.Pun;
 using UnityEngine;
 
-public class PickupItem : MonoBehaviour
+public class PickupItem : MonoBehaviourPun
 {
     public InventoryItem itemData;
     private bool playerInRange = false;
@@ -11,9 +12,9 @@ public class PickupItem : MonoBehaviour
         {
             if (InventoryManager.Instance.HasEmptySlot())
             {
+                photonView.RPC("OnPickedUp", RpcTarget.AllBuffered);
                 InventoryManager.Instance.AddItem(itemData);
                 UIManager.Instance.ShowInteractText(false);
-                Destroy(gameObject);
             }
             else
             {
@@ -22,11 +23,15 @@ public class PickupItem : MonoBehaviour
         }
     }
 
-
+    [PunRPC]
+    void OnPickedUp()
+    {
+        PhotonNetwork.Destroy(gameObject);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
             playerInRange = true;
 
@@ -39,7 +44,7 @@ public class PickupItem : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
             playerInRange = false;
             UIManager.Instance.ShowInteractText(false);
