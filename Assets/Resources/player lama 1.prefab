@@ -1810,6 +1810,7 @@ GameObject:
   - component: {fileID: 1237234247789463752}
   - component: {fileID: 1642651326541500905}
   - component: {fileID: 7313170025308404491}
+  - component: {fileID: 5669137261123639640}
   m_Layer: 0
   m_Name: Canvas Inventory dll
   m_TagString: Untagged
@@ -1859,8 +1860,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1297294651
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &1642651326541500905
 MonoBehaviour:
@@ -1902,6 +1903,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5669137261123639640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5727164645246960345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd5367ac163e544aaeb980ce21e17b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6846026514664487657
 GameObject:
   m_ObjectHideFlags: 0
@@ -2896,9 +2909,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2284670089634375991}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4136509818826916298}
   m_SourcePrefab: {fileID: 100100000, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
 --- !u!1 &6939286742078227119 stripped
 GameObject:
@@ -3109,19 +3119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactText: {fileID: 9095480657704945981}
   notificationText: {fileID: 7217755787542723563}
---- !u!114 &4136509818826916298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6939286742078227119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bd5367ac163e544aaeb980ce21e17b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myCanvas: {fileID: 1237234247789463752}
 --- !u!4 &7257563343025192286 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8632223734158982496, guid: f4c41153e6037d94498b317de6d9e981, type: 3}

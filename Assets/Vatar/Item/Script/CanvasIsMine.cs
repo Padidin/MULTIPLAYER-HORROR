@@ -1,19 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
 using Photon.Pun;
 
-public class CanvasIsMine : MonoBehaviourPunCallbacks
+public class CanvasIsMine : MonoBehaviourPun
 {
-    public Canvas myCanvas;
-
     void Start()
     {
-        if (!photonView.IsMine && myCanvas != null)
+        if (!photonView.IsMine)
         {
-            myCanvas.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
-
 }
