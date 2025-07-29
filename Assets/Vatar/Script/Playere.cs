@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 
-public class Playere : MonoBehaviour
+public class Playere : MonoBehaviourPunCallbacks
 {
     [Header("Basic Movement")]
     public float moveSpeed = 5f;
@@ -46,23 +47,30 @@ public class Playere : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        standCamLocalPos = cameraTransform.localPosition;
-        crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
-
         walkSource = gameObject.AddComponent<AudioSource>();
         walkSource.loop = true;
         walkSource.playOnAwake = false;
 
         sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.playOnAwake = false;
+
+        standCamLocalPos = cameraTransform.localPosition;
+        crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
+
+        if (!photonView.IsMine)
+        {
+            cameraTransform.gameObject.SetActive(false);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     void Update()
     {
-        if (PauseManager.GameIsPaused) return;
+        if (!photonView.IsMine || PauseManager.GameIsPaused) return;
 
         LookAround();
 
@@ -81,7 +89,7 @@ public class Playere : MonoBehaviour
 
     void LateUpdate()
     {
-        if (PauseManager.GameIsPaused) return;
+        if (!photonView.IsMine || PauseManager.GameIsPaused) return;
 
         SmoothFollowCamera();
     }
@@ -94,10 +102,9 @@ public class Playere : MonoBehaviour
         cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, cameraFollowSpeed * Time.deltaTime);
     }
 
-
     void FixedUpdate()
     {
-        if (PauseManager.GameIsPaused) return;
+        if (!photonView.IsMine || PauseManager.GameIsPaused) return;
 
         CheckGround();
         Move();
