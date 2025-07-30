@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class InteractObject : MonoBehaviourPunCallbacks
 {
@@ -12,39 +9,45 @@ public class InteractObject : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        if (!photonView.IsMine) return; // hanya local player yang bisa input
+
         if (triggerBathup && Input.GetKeyDown(KeyCode.E))
         {
-            photonView.RPC("InteractBathup", RpcTarget.Others);
+            CallRPCToOther("InteractBathup");
         }
 
         if (triggerRak && Input.GetKeyDown(KeyCode.E))
         {
-            photonView.RPC("InteractRak", RpcTarget.Others);
+            CallRPCToOther("InteractRak");
+        }
+    }
+
+    void CallRPCToOther(string rpcName)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject p in players)
+        {
+            PhotonView view = p.GetComponent<PhotonView>();
+
+            // Cari player lain (bukan kita sendiri)
+            if (view != null && !view.IsMine)
+            {
+                view.RPC(rpcName, view.Owner, null); // panggil hanya ke player tersebut
+                break;
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("TombolBathup"))
-        {
-            triggerBathup = true;
-        }
-        if (other.CompareTag("TombolRak"))
-        {
-            triggerRak = true;
-        }
+        if (other.CompareTag("TombolBathup")) triggerBathup = true;
+        if (other.CompareTag("TombolRak")) triggerRak = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("TombolBathup"))
-        {
-            triggerBathup = false;
-        }
-        if (other.CompareTag("Tombol Rak"))
-        {
-            triggerRak = false;
-        }
+        if (other.CompareTag("TombolBathup")) triggerBathup = false;
+        if (other.CompareTag("TombolRak")) triggerRak = false;
     }
-
 }

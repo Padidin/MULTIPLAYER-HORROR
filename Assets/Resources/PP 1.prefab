@@ -356,6 +356,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PP 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
       propertyPath: m_Controller
       value: 
@@ -398,6 +402,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7879515044583818078}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8407669351531791951}
   m_SourcePrefab: {fileID: 100100000, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
 --- !u!1 &6939286742078227119 stripped
 GameObject:
@@ -567,6 +574,24 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+--- !u!114 &-8407669351531791951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6939286742078227119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcadbf8241206a46834bd27938ce35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canInteractBathup: 0
+  canInteractRak: 0
+  triggerBathup: 0
+  bathupObject: {fileID: 0}
+  bathupTarget: {fileID: 0}
+  moveSpeed: 1
 --- !u!4 &7257563343025192286 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8632223734158982496, guid: f4c41153e6037d94498b317de6d9e981, type: 3}
