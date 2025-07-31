@@ -66,6 +66,13 @@ public class Playere : MonoBehaviourPunCallbacks
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+
+        if (!photonView.IsMine)
+        {
+            // Nonaktifkan komponen yang hanya boleh untuk local player
+            GetComponentInChildren<Camera>().enabled = false;
+            GetComponentInChildren<AudioListener>().enabled = false;
+        }
     }
 
     void Update()
