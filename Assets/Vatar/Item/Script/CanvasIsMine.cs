@@ -1,12 +1,18 @@
 using Photon.Pun;
+using UnityEngine;
 
 public class CanvasIsMine : MonoBehaviourPun
 {
-    void Start()
+    void Awake()
+{
+    if (!photonView.IsMine)
     {
-        if (!photonView.IsMine)
-        {
-            gameObject.SetActive(false);
-        }
+        Debug.Log("Canvas dimatikan karena bukan milik saya: " + gameObject.name);
+        gameObject.SetActive(false);
     }
+    else
+    {
+        Debug.Log("Canvas aktif milik saya: " + gameObject.name);
+    }
+}
 }

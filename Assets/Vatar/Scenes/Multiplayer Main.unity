@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 17465270}
   - component: {fileID: 17465271}
   - component: {fileID: 17465272}
+  - component: {fileID: 17465273}
   m_Layer: 0
   m_Name: ======MANAGER SCENE=========================
   m_TagString: Untagged
@@ -216,6 +217,18 @@ MonoBehaviour:
   Player2: {fileID: 4169217341411612302, guid: 6e12f9414f0960c49adaeec900f06e4e, type: 3}
   player1POS: {fileID: 1148741139}
   player2POS: {fileID: 1277768886}
+--- !u!114 &17465273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17465264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24cc065bef38dd478227c8af68b5384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &41251984
 GameObject:
   m_ObjectHideFlags: 0
@@ -6252,6 +6265,7 @@ MonoBehaviour:
   cameraFollowTarget: {fileID: 0}
   cameraOffset: {x: 0, y: 0, z: 0}
   cameraFollowSpeed: 5
+  canvasInventory: {fileID: 0}
 --- !u!1 &1581738634
 GameObject:
   m_ObjectHideFlags: 0

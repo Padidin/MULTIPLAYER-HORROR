@@ -40,7 +40,26 @@ public class Playere : MonoBehaviourPunCallbacks
     private Vector3 crouchCamLocalPos;
     private float xRotation = 0f;
 
+    public GameObject canvasInventory;
+
     private KeyCode crouchKey = KeyCode.C;
+
+    private void Awake()
+    {
+        if (photonView.IsMine)
+        {
+            canvasInventory.SetActive(true);
+        }
+
+        /*if (!photonView.IsMine)
+        {
+            canvasInventory.SetActive(false);
+        }
+        else
+        {
+            canvasInventory.SetActive(true);
+        }*/
+    }
 
     void Start()
     {

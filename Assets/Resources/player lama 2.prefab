@@ -1186,7 +1186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7337472640006534738
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1959,7 +1959,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8123019936049173547
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2660,7 +2660,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4051968316535634307
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3042,6 +3042,7 @@ MonoBehaviour:
   cameraFollowTarget: {fileID: 0}
   cameraOffset: {x: 0, y: 0, z: 0}
   cameraFollowSpeed: 5
+  canvasInventory: {fileID: 6280342482597187652}
 --- !u!136 &161018184924676259
 CapsuleCollider:
   m_ObjectHideFlags: 0

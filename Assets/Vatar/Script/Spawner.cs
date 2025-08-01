@@ -12,14 +12,14 @@ public class Spawner : MonoBehaviourPunCallbacks
     public Transform player1POS;
     public Transform player2POS;
 
-    private void Start()
+    public void StartSpawn()
     {
         StartCoroutine(SpawnCharacter());
     }
 
     IEnumerator SpawnCharacter()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("ChosenCharacter"))
         {
