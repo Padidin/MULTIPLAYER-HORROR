@@ -25,6 +25,10 @@ public class Playere : MonoBehaviourPunCallbacks
     public Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
     public float cameraFollowSpeed = 5f;
 
+    [Header("Canvas Inventory")]
+    public GameObject ArghaInventory;
+    public GameObject IrulInventory;
+
     private AudioSource walkSource;
     private AudioSource sfxSource;
 
@@ -49,6 +53,26 @@ public class Playere : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             canvasInventory.SetActive(true);
+        }
+
+
+        ArghaInventory = GameObject.FindGameObjectWithTag("ArghaInventory");
+        IrulInventory = GameObject.FindGameObjectWithTag("IrulInventory");
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("ChosenCharacter"))
+        {
+            string chosenChar = PhotonNetwork.LocalPlayer.CustomProperties["ChosenCharacter"].ToString();
+
+            if(chosenChar == "Karakter1" && photonView.IsMine)
+            {
+                ArghaInventory.SetActive(true);
+                IrulInventory.SetActive(false);
+            }
+            else if(chosenChar == "Karakte2" && photonView.IsMine)
+            {
+                ArghaInventory.SetActive(false);
+                IrulInventory.SetActive(true);
+            }
         }
 
         /*if (!photonView.IsMine)
