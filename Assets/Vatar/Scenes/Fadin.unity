@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7973a93be713f3419de891a7c0270b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactTextObject: {fileID: 781896872}
+  interactText: {fileID: 0}
   notificationText: {fileID: 280913525}
 --- !u!114 &17465269
 MonoBehaviour:
@@ -9840,6 +9840,9 @@ MonoBehaviour:
   cameraFollowTarget: {fileID: 26510619}
   cameraOffset: {x: 0, y: 0, z: 0}
   cameraFollowSpeed: 5
+  ArghaInventory: {fileID: 0}
+  IrulInventory: {fileID: 0}
+  canvasInventory: {fileID: 0}
 --- !u!114 &1875498782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10781,6 +10784,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3236933536377609446, guid: 202429cd7acf89f47a33a8f803e7a7eb, type: 3}
+      propertyPath: sceneViewId
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4332877593912678622, guid: 202429cd7acf89f47a33a8f803e7a7eb, type: 3}
       propertyPath: itemData
       value: 
@@ -10846,6 +10853,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7324634038062402526, guid: 0e0e77854a1d04b45b0c81b2ba5516df, type: 3}
+      propertyPath: sceneViewId
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 142285010613569978, guid: 0e0e77854a1d04b45b0c81b2ba5516df, type: 3}
       propertyPath: m_Camera
       value: 
@@ -11037,6 +11048,10 @@ PrefabInstance:
       propertyPath: itemData
       value: 
       objectReference: {fileID: 11400000, guid: db16a538588e6ca438a5fba03d55bb70, type: 2}
+    - target: {fileID: 3068141072875896392, guid: 2c54fbef5c1fbc741b2efbab97864073, type: 3}
+      propertyPath: sceneViewId
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4316856654655164444, guid: 2c54fbef5c1fbc741b2efbab97864073, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.013
@@ -11098,6 +11113,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4670642163633446141, guid: 9f699ca8711b28241bc754dd3430368c, type: 3}
+      propertyPath: sceneViewId
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 7178120308383653374, guid: 9f699ca8711b28241bc754dd3430368c, type: 3}
       propertyPath: m_Name
       value: Cube (1)

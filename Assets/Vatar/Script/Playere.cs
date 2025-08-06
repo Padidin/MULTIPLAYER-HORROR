@@ -50,10 +50,10 @@ public class Playere : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        if (photonView.IsMine)
+        /*if (photonView.IsMine)
         {
             canvasInventory.SetActive(true);
-        }
+        }*/
 
 
         ArghaInventory = GameObject.FindGameObjectWithTag("ArghaInventory");
@@ -68,7 +68,7 @@ public class Playere : MonoBehaviourPunCallbacks
                 ArghaInventory.SetActive(true);
                 IrulInventory.SetActive(false);
             }
-            else if(chosenChar == "Karakte2" && photonView.IsMine)
+            else if(chosenChar == "Karakter2" && photonView.IsMine)
             {
                 ArghaInventory.SetActive(false);
                 IrulInventory.SetActive(true);
