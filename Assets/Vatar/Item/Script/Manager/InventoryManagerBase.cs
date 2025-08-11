@@ -1,22 +1,12 @@
 ﻿using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManagerBase : MonoBehaviour
 {
-    public static InventoryManager Instance;
-
     public InventoryItem[] items = new InventoryItem[6];
     public InventorySlotUI[] uiSlots;
     public Transform playerHandTransform;
     private GameObject heldItemInstance;
     private int currentHeldIndex = -1;
-
-    void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     public bool AddItem(InventoryItem item)
     {
@@ -108,8 +98,6 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-
-
     void UnequipItem()
     {
         if (heldItemInstance != null)
@@ -156,7 +144,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (IsHoldingItem())
         {
-            AddItem(newItem); 
+            AddItem(newItem);
         }
         else
         {

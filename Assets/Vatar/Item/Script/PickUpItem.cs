@@ -4,16 +4,17 @@ using UnityEngine;
 public class PickupItem : MonoBehaviourPun
 {
     public InventoryItem itemData;
+    public InventoryManagerBase InventoryManager;
     private bool playerInRange = false;
 
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (InventoryManager.Instance.HasEmptySlot())
+            if (InventoryManager.HasEmptySlot())
             {
                 photonView.RPC("OnPickedUp", RpcTarget.AllBuffered);
-                InventoryManager.Instance.AddItem(itemData);
+                InventoryManager.AddItem(itemData);
                 UIManager.Instance.ShowInteractText(false);
             }
             else
@@ -35,7 +36,7 @@ public class PickupItem : MonoBehaviourPun
         {
             playerInRange = true;
 
-            if (!InventoryManager.Instance.IsHoldingItem())
+            if (!InventoryManager.IsHoldingItem())
             {
                 UIManager.Instance.ShowInteractText(true);
             }

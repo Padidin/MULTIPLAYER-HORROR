@@ -913,8 +913,6 @@ GameObject:
   - component: {fileID: 3858577518853398032}
   - component: {fileID: 2508687119643688509}
   - component: {fileID: 2049532277395295039}
-  - component: {fileID: 8215262420212458894}
-  - component: {fileID: 158467128774004617}
   - component: {fileID: 8541080652913116563}
   - component: {fileID: 9193578771543733650}
   - component: {fileID: 7660043855459947530}
@@ -1053,47 +1051,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &8215262420212458894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1984704693674800734}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8206d1341806527498060a4516cf2f5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  items:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  uiSlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  playerHandTransform: {fileID: 5596906809569044276}
---- !u!114 &158467128774004617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1984704693674800734}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7973a93be713f3419de891a7c0270b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactText: {fileID: 0}
-  notificationText: {fileID: 0}
 --- !u!114 &8541080652913116563
 MonoBehaviour:
   m_ObjectHideFlags: 0

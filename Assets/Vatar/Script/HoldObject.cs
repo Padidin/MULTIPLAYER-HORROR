@@ -10,17 +10,26 @@ public class HoldObject : MonoBehaviourPunCallbacks
     public bool canInteractRak = false;
 
     public bool triggerBathup;
+    public bool triggerRak;
 
     public Transform bathupObject;
     public Transform bathupTarget;
+    public Transform rakObject;
+    public Transform rakTarget;
     public float moveSpeed = 1f;
     private void Start()
     {
         GameObject bathupObj = GameObject.FindGameObjectWithTag("Bathup");
         GameObject targetBathup = GameObject.FindGameObjectWithTag("BathupTarget");
 
+        GameObject rakObj = GameObject.FindGameObjectWithTag("Rak");
+        GameObject targetRak = GameObject.FindGameObjectWithTag("RakTarget");
+
         bathupObject = bathupObj.transform;
         bathupTarget = targetBathup.transform;
+        
+        rakObject = rakObj.transform;
+        rakTarget = targetRak.transform;
     }
 
     private void Update()
@@ -28,6 +37,11 @@ public class HoldObject : MonoBehaviourPunCallbacks
         if (canInteractBathup && triggerBathup && Input.GetKey(KeyCode.E))
         {
             bathupObject.position = Vector3.MoveTowards(bathupObject.position, bathupTarget.position, moveSpeed * Time.deltaTime);
+        }
+
+        if (canInteractRak && triggerRak && Input.GetKey(KeyCode.E))
+        {
+            rakObject.position = Vector3.MoveTowards(rakObject.position, rakTarget.position, moveSpeed * Time.deltaTime);
         }
     }
 
@@ -37,6 +51,10 @@ public class HoldObject : MonoBehaviourPunCallbacks
         {
             triggerBathup = true;
         }
+        if (other.CompareTag("Rak"))
+        {
+            triggerRak = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -44,6 +62,10 @@ public class HoldObject : MonoBehaviourPunCallbacks
         if (other.CompareTag("Bathup"))
         {
             triggerBathup = false;
+        }
+        if (other.CompareTag("Rak"))
+        {
+            triggerRak = false;
         }
     }
 

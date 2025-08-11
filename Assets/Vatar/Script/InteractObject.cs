@@ -30,10 +30,9 @@ public class InteractObject : MonoBehaviourPunCallbacks
         {
             PhotonView view = p.GetComponent<PhotonView>();
 
-            // Cari player lain (bukan kita sendiri)
             if (view != null && !view.IsMine)
             {
-                view.RPC(rpcName, view.Owner, null); // panggil hanya ke player tersebut
+                view.RPC(rpcName, view.Owner, null);
                 break;
             }
         }

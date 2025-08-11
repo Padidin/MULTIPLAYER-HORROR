@@ -110,12 +110,12 @@ public class Playere : MonoBehaviourPunCallbacks
             Cursor.visible = false;
         }
 
-        if (!photonView.IsMine)
+        /*if (!photonView.IsMine)
         {
             // Nonaktifkan komponen yang hanya boleh untuk local player
             GetComponentInChildren<Camera>().enabled = false;
             GetComponentInChildren<AudioListener>().enabled = false;
-        }
+        }*/
     }
 
     void Update()
