@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 17465271}
   - component: {fileID: 17465272}
   - component: {fileID: 17465273}
-  - component: {fileID: 17465274}
   m_Layer: 0
   m_Name: ======MANAGER SCENE=========================
   m_TagString: Untagged
@@ -230,27 +229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f24cc065bef38dd478227c8af68b5384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &17465274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17465264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7c4897ee9bf40a41b00f52b63ff8263, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  items:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  uiSlots: []
-  playerHandTransform: {fileID: 0}
 --- !u!1 &41251984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,6 +1273,8 @@ GameObject:
   - component: {fileID: 153443549}
   - component: {fileID: 153443551}
   - component: {fileID: 153443550}
+  - component: {fileID: 153443553}
+  - component: {fileID: 153443552}
   m_Layer: 5
   m_Name: PUNYA IRUL
   m_TagString: IrulInventory
@@ -1362,6 +1342,47 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153443548}
   m_CullTransparentMesh: 1
+--- !u!114 &153443552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153443548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d8700c22a9ac74f9d8cb422c4d476f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  uiSlots:
+  - {fileID: 877085255}
+  - {fileID: 84936568}
+  - {fileID: 212551065}
+  - {fileID: 314438774}
+  - {fileID: 1153857227}
+  - {fileID: 393280742}
+  playerHandTransform: {fileID: 0}
+--- !u!114 &153443553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153443548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7973a93be713f3419de891a7c0270b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactText: {fileID: 2760673541791711037}
+  notificationText: {fileID: 8129342246041435548}
 --- !u!1 &163010442
 GameObject:
   m_ObjectHideFlags: 0
@@ -2367,6 +2388,8 @@ GameObject:
   - component: {fileID: 335112358}
   - component: {fileID: 335112360}
   - component: {fileID: 335112359}
+  - component: {fileID: 335112362}
+  - component: {fileID: 335112361}
   m_Layer: 5
   m_Name: PUNYA ARGHA
   m_TagString: ArghaInventory
@@ -2434,6 +2457,47 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335112357}
   m_CullTransparentMesh: 1
+--- !u!114 &335112361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335112357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c4897ee9bf40a41b00f52b63ff8263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  uiSlots:
+  - {fileID: 1386796244}
+  - {fileID: 1119983924}
+  - {fileID: 350145821}
+  - {fileID: 712806293}
+  - {fileID: 2082311318}
+  - {fileID: 484890885}
+  playerHandTransform: {fileID: 0}
+--- !u!114 &335112362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335112357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7973a93be713f3419de891a7c0270b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactText: {fileID: 902040612780286598}
+  notificationText: {fileID: 2455255747828903312}
 --- !u!1 &340067508
 GameObject:
   m_ObjectHideFlags: 0
@@ -7913,7 +7977,7 @@ Transform:
   m_GameObject: {fileID: 1148741138}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.309, y: 4.4719095, z: -16.043}
+  m_LocalPosition: {x: -4.86, y: 1.075, z: -8.17}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8257,7 +8321,7 @@ Transform:
   m_GameObject: {fileID: 1277768885}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.756, y: 4.357178, z: -17.631}
+  m_LocalPosition: {x: -2.3069997, y: 0.96026886, z: -9.758001}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27036,7 +27100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1387684940246819595, guid: 202429cd7acf89f47a33a8f803e7a7eb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3236933536377609446, guid: 202429cd7acf89f47a33a8f803e7a7eb, type: 3}
       propertyPath: sceneViewId
@@ -50537,7 +50601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1999622253029298016, guid: 0e0e77854a1d04b45b0c81b2ba5516df, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4040436315935445511, guid: 0e0e77854a1d04b45b0c81b2ba5516df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -68631,7 +68695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7412185371185732918, guid: 2c54fbef5c1fbc741b2efbab97864073, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8015161314913218488, guid: 2c54fbef5c1fbc741b2efbab97864073, type: 3}
       propertyPath: m_Camera
@@ -78096,7 +78160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7178120308383653374, guid: 9f699ca8711b28241bc754dd3430368c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8953238463491404843, guid: 9f699ca8711b28241bc754dd3430368c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -91212,12 +91276,12 @@ SceneRoots:
   - {fileID: 1002935993}
   - {fileID: 1477022375}
   - {fileID: 1453665125}
+  - {fileID: 7842471664089848869}
   - {fileID: 4433559424170759082}
   - {fileID: 6748518912272913821}
   - {fileID: 1604067737023834510}
   - {fileID: 8822846326905823999}
   - {fileID: 6506389619898075024}
-  - {fileID: 7842471664089848869}
   - {fileID: 4945886362562652376}
   - {fileID: 419737216}
   - {fileID: 1174147533}

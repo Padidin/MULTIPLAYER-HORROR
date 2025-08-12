@@ -4,17 +4,20 @@ using UnityEngine;
 public class PickupItem : MonoBehaviourPun
 {
     public InventoryItem itemData;
-    public InventoryManagerBase InventoryManager;
+
+    private InventoryManagerBase inventoryManager;
     private bool playerInRange = false;
 
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (InventoryManager.HasEmptySlot())
+            if (inventoryManager != null && inventoryManager.HasEmptySlot())
             {
-                photonView.RPC("OnPickedUp", RpcTarget.AllBuffered);
-                InventoryManager.AddItem(itemData);
+                photonView.RPC("RPC_RequestDestroy", RpcTarget.MasterClient);
+
+                inventoryManager.AddItem(itemData);
+
                 UIManager.Instance.ShowInteractText(false);
             }
             else
@@ -25,18 +28,33 @@ public class PickupItem : MonoBehaviourPun
     }
 
     [PunRPC]
-    void OnPickedUp()
+    void RPC_RequestDestroy()
     {
-        PhotonNetwork.Destroy(gameObject);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
+        PhotonView pv = other.GetComponent<PhotonView>();
+
+        if (pv != null && pv.IsMine)
         {
+            if (other.CompareTag("Argha"))
+            {
+                inventoryManager = GameObject.FindGameObjectWithTag("ArghaInventory")?.GetComponent<InventoryManagerBase>();
+            }
+            else if (other.CompareTag("Irul"))
+            {
+                inventoryManager = GameObject.FindGameObjectWithTag("IrulInventory")?.GetComponent<InventoryManagerBase>();
+            }
+
             playerInRange = true;
 
-            if (!InventoryManager.IsHoldingItem())
+            if (inventoryManager != null && !inventoryManager.IsHoldingItem())
             {
                 UIManager.Instance.ShowInteractText(true);
             }
@@ -45,10 +63,13 @@ public class PickupItem : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
+        PhotonView pv = other.GetComponent<PhotonView>();
+
+        if (pv != null && pv.IsMine)
         {
             playerInRange = false;
             UIManager.Instance.ShowInteractText(false);
+            inventoryManager = null;
         }
     }
 
