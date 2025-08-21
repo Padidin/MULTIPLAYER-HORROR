@@ -1,12 +1,31 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
-public class InventoryManagerBase : MonoBehaviour
+public class InventoryManagerBase : MonoBehaviourPun
 {
     public InventoryItem[] items = new InventoryItem[6];
     public InventorySlotUI[] uiSlots;
     public Transform playerHandTransform;
     private GameObject heldItemInstance;
     private int currentHeldIndex = -1;
+
+    void Update()
+    {
+        // Ganti slot (Alpha1 = slot 0, Alpha2 = slot 1, dst.)
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                ToggleItem(i);
+            }
+        }
+
+        // Drop item
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            DropCurrentItem();
+        }
+    }
 
     public bool AddItem(InventoryItem item)
     {
@@ -23,35 +42,21 @@ public class InventoryManagerBase : MonoBehaviour
         return false;
     }
 
-    void Update()
-    {
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-            {
-                ToggleItem(i);
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            DropCurrentItem();
-        }
-    }
-
     void ToggleItem(int index)
     {
         if (items[index] == null)
             return;
 
+        // Kalau slot yang sama → unequip
         if (currentHeldIndex == index)
         {
             UnequipItem();
         }
         else
         {
-            UnequipItem();
+            UnequipItem(); // lepas dulu item sebelumnya
 
+            // Spawn item di tangan
             heldItemInstance = Instantiate(items[index].prefab, playerHandTransform);
             heldItemInstance.transform.localPosition = Vector3.zero;
             heldItemInstance.transform.localRotation = Quaternion.identity;
@@ -70,32 +75,36 @@ public class InventoryManagerBase : MonoBehaviour
 
     public void DropCurrentItem()
     {
-        if (heldItemInstance != null && currentHeldIndex != -1)
+        if (currentHeldIndex == -1 || items[currentHeldIndex] == null)
+            return;
+
+        // Spawn item di dunia (Photon)
+        GameObject droppedItem = PhotonNetwork.Instantiate(
+            items[currentHeldIndex].prefab.name,
+            playerHandTransform.position + playerHandTransform.forward * 0.5f,
+            Quaternion.identity
+        );
+
+        // Kasih physics
+        Rigidbody rb = droppedItem.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            GameObject droppedItem = Instantiate(items[currentHeldIndex].prefab, playerHandTransform.position + playerHandTransform.forward * 0.5f, Quaternion.identity);
-            Rigidbody rb = droppedItem.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.isKinematic = false;
-                rb.useGravity = true;
-                rb.interpolation = RigidbodyInterpolation.Interpolate;
-
-                rb.AddForce(playerHandTransform.forward * 2f, ForceMode.Impulse);
-
-                Vector3 randomTorque = new Vector3(
-                    Random.Range(-5f, 5f),
-                    Random.Range(-5f, 5f),
-                    Random.Range(-5f, 5f)
-                );
-                rb.AddTorque(randomTorque, ForceMode.Impulse);
-            }
-
-            Destroy(heldItemInstance);
-            heldItemInstance = null;
-            items[currentHeldIndex] = null;
-            uiSlots[currentHeldIndex].Clear();
-            currentHeldIndex = -1;
+            rb.isKinematic = false;
+            rb.useGravity = true;
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
+            rb.AddForce(playerHandTransform.forward * 2f, ForceMode.Impulse);
+            rb.AddTorque(Random.insideUnitSphere * 5f, ForceMode.Impulse);
         }
+
+        // Bersihkan slot
+        items[currentHeldIndex] = null;
+        if (uiSlots[currentHeldIndex] != null)
+            uiSlots[currentHeldIndex].Clear();
+
+        Destroy(heldItemInstance);
+        heldItemInstance = null;
+        currentHeldIndex = -1;
+        ResetAllSlotColors();
     }
 
     void UnequipItem()
@@ -138,40 +147,5 @@ public class InventoryManagerBase : MonoBehaviour
     public bool IsHoldingItem()
     {
         return currentHeldIndex != -1;
-    }
-
-    public void ReplaceHeldItem(InventoryItem newItem)
-    {
-        if (IsHoldingItem())
-        {
-            AddItem(newItem);
-        }
-        else
-        {
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i] == null)
-                {
-                    items[i] = newItem;
-                    if (uiSlots[i] != null)
-                        uiSlots[i].SetIcon(newItem.icon);
-
-                    heldItemInstance = Instantiate(newItem.prefab, playerHandTransform);
-                    heldItemInstance.transform.localPosition = Vector3.zero;
-                    heldItemInstance.transform.localRotation = Quaternion.identity;
-
-                    Rigidbody rb = heldItemInstance.GetComponent<Rigidbody>();
-                    if (rb != null)
-                    {
-                        rb.isKinematic = true;
-                        rb.useGravity = false;
-                    }
-
-                    currentHeldIndex = i;
-                    HighlightSlot(i);
-                    break;
-                }
-            }
-        }
     }
 }

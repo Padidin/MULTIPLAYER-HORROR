@@ -10,15 +10,19 @@ public class PickupItem : MonoBehaviourPun
 
     void Update()
     {
+        // Pickup hanya boleh dilakukan oleh player yang sedang dalam jangkauan
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             if (inventoryManager != null && inventoryManager.HasEmptySlot())
             {
-                photonView.RPC("RPC_RequestDestroy", RpcTarget.MasterClient);
-
+                // Tambahkan ke inventory lokal player
                 inventoryManager.AddItem(itemData);
 
+                // Destroy item di semua client via MasterClient
+                photonView.RPC("RPC_RequestDestroy", RpcTarget.MasterClient);
+
                 UIManager.Instance.ShowInteractText(false);
+                playerInRange = false;
             }
             else
             {
@@ -36,12 +40,12 @@ public class PickupItem : MonoBehaviourPun
         }
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
-        PhotonView pv = other.GetComponent<PhotonView>();
+        PhotonView playerPV = other.GetComponent<PhotonView>();
 
-        if (pv != null && pv.IsMine)
+        // Pastikan ini player kita (local player) yang masuk trigger
+        if (playerPV != null && playerPV.IsMine)
         {
             if (other.CompareTag("Argha"))
             {
@@ -52,20 +56,20 @@ public class PickupItem : MonoBehaviourPun
                 inventoryManager = GameObject.FindGameObjectWithTag("IrulInventory")?.GetComponent<InventoryManagerBase>();
             }
 
-            playerInRange = true;
-
             if (inventoryManager != null && !inventoryManager.IsHoldingItem())
             {
                 UIManager.Instance.ShowInteractText(true);
             }
+
+            playerInRange = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        PhotonView pv = other.GetComponent<PhotonView>();
+        PhotonView playerPV = other.GetComponent<PhotonView>();
 
-        if (pv != null && pv.IsMine)
+        if (playerPV != null && playerPV.IsMine)
         {
             playerInRange = false;
             UIManager.Instance.ShowInteractText(false);
