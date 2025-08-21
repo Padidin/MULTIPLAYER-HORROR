@@ -2,19 +2,31 @@
 using System.Collections;
 using Photon.Pun;
 
-public class Playere : MonoBehaviour
+public class Playere : MonoBehaviourPunCallbacks
 {
     [Header("Basic Movement")]
     public float moveSpeed = 5f;
     public float crouchSpeed = 2.5f;
     public float mouseSensitivity = 1f;
     public float jumpForce = 6f;
-    public Transform cameraTransform;
 
     [Header("Ground Check")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.5f;
     public LayerMask groundMask;
+
+    [Header("Audio")]
+    public AudioClip walkClip;
+    public AudioClip jumpClip;
+
+    [Header("Camera Follow")]
+    public Transform cameraTransform;
+    public Transform cameraFollowTarget;
+    public Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
+    public float cameraFollowSpeed = 5f;
+
+    private AudioSource walkSource;
+    private AudioSource sfxSource;
 
     private Rigidbody rb;
     private Animator anim;
@@ -28,59 +40,100 @@ public class Playere : MonoBehaviour
     private Vector3 crouchCamLocalPos;
     private float xRotation = 0f;
 
+    public GameObject canvasInventory;
+
     private KeyCode crouchKey = KeyCode.C;
 
-    PhotonView view;
+    private void Awake()
+    {
+        if (photonView.IsMine)
+        {
+            canvasInventory.SetActive(true);
+        }
+
+        /*if (!photonView.IsMine)
+        {
+            canvasInventory.SetActive(false);
+        }
+        else
+        {
+            canvasInventory.SetActive(true);
+        }*/
+    }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-        view = GetComponent<PhotonView>();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        walkSource = gameObject.AddComponent<AudioSource>();
+        walkSource.loop = true;
+        walkSource.playOnAwake = false;
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
 
         standCamLocalPos = cameraTransform.localPosition;
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
 
-        if (!view.IsMine)
+        if (!photonView.IsMine)
         {
             cameraTransform.gameObject.SetActive(false);
         }
         else
         {
-            cameraTransform.gameObject.SetActive(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+        if (!photonView.IsMine)
+        {
+            // Nonaktifkan komponen yang hanya boleh untuk local player
+            GetComponentInChildren<Camera>().enabled = false;
+            GetComponentInChildren<AudioListener>().enabled = false;
         }
     }
 
     void Update()
     {
-        if (view.IsMine)
+        if (!photonView.IsMine || PauseManager.GameIsPaused) return;
+
+        LookAround();
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            LookAround();
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Jump();
-            }
-
-            if (Input.GetKeyDown(crouchKey))
-            {
-                StartCoroutine(CrouchRoutine());
-            }
-
-            UpdateAnimation();
+            Jump();
         }
+
+        if (Input.GetKeyDown(crouchKey))
+        {
+            StartCoroutine(CrouchRoutine());
+        }
+
+        UpdateAnimation();
+    }
+
+    void LateUpdate()
+    {
+        if (!photonView.IsMine || PauseManager.GameIsPaused) return;
+
+        SmoothFollowCamera();
+    }
+
+    void SmoothFollowCamera()
+    {
+        if (cameraTransform == null || cameraFollowTarget == null) return;
+
+        Vector3 targetPosition = cameraFollowTarget.position + cameraOffset;
+        cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, cameraFollowSpeed * Time.deltaTime);
     }
 
     void FixedUpdate()
     {
-        if (view.IsMine)
-        {
-            CheckGround();
-            Move();
-        }
+        if (!photonView.IsMine || PauseManager.GameIsPaused) return;
+
+        CheckGround();
+        Move();
     }
 
     void Move()
@@ -94,9 +147,7 @@ public class Playere : MonoBehaviour
         Vector3 currentVelocity = rb.velocity;
         Vector3 targetVelocity = move * speed;
         rb.velocity = new Vector3(targetVelocity.x, currentVelocity.y, targetVelocity.z);
-
     }
-
 
     void LookAround()
     {
@@ -105,7 +156,6 @@ public class Playere : MonoBehaviour
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -60f, 60f);
-
 
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
@@ -139,6 +189,11 @@ public class Playere : MonoBehaviour
         rb.velocity = jumpVelocity;
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        if (AudioManager.Instance != null && jumpClip != null)
+        {
+            sfxSource.PlayOneShot(jumpClip, AudioManager.Instance.sfxVolume);
+        }
     }
 
     IEnumerator CrouchRoutine()
@@ -151,14 +206,12 @@ public class Playere : MonoBehaviour
             anim.SetTrigger("ToCrouch");
             yield return new WaitForSeconds(0.4f);
             isCrouching = true;
-            //cameraTransform.localPosition = crouchCamLocalPos;
         }
         else
         {
             anim.SetTrigger("ToStand");
             yield return new WaitForSeconds(0.4f);
             isCrouching = false;
-           // cameraTransform.localPosition = standCamLocalPos;
         }
 
         isCrouchTransitioning = false;
@@ -172,6 +225,20 @@ public class Playere : MonoBehaviour
 
         anim.SetFloat("MoveSpeed", speed);
         anim.SetBool("IsCrouching", isCrouching);
+
+        float sfxVolume = AudioManager.Instance != null ? AudioManager.Instance.sfxVolume : 1f;
+        walkSource.volume = sfxVolume;
+
+        if (isGrounded && !walkSource.isPlaying && speed > 0.1f && sfxVolume > 0f)
+        {
+            walkSource.clip = walkClip;
+            walkSource.Play();
+        }
+        else if (speed <= 0.1f || !isGrounded || sfxVolume <= 0f)
+        {
+            if (walkSource.clip == walkClip)
+                walkSource.Stop();
+        }
     }
 
     void OnDrawGizmosSelected()
