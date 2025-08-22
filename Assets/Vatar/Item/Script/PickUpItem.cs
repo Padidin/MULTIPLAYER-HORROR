@@ -10,15 +10,14 @@ public class PickupItem : MonoBehaviourPun
 
     void Update()
     {
-        // Pickup hanya boleh dilakukan oleh player yang sedang dalam jangkauan
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (!playerInRange || inventoryManager == null) return;
+
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (inventoryManager != null && inventoryManager.HasEmptySlot())
+            if (inventoryManager.HasEmptySlot())
             {
-                // Tambahkan ke inventory lokal player
                 inventoryManager.AddItem(itemData);
 
-                // Destroy item di semua client via MasterClient
                 photonView.RPC("RPC_RequestDestroy", RpcTarget.MasterClient);
 
                 UIManager.Instance.ShowInteractText(false);
@@ -26,10 +25,11 @@ public class PickupItem : MonoBehaviourPun
             }
             else
             {
-                UIManager.Instance.ShowNotification("Inventory Penuh");
+                UIManager.Instance.ShowNotification("Inventory penuh");
             }
         }
     }
+
 
     [PunRPC]
     void RPC_RequestDestroy()
@@ -44,26 +44,34 @@ public class PickupItem : MonoBehaviourPun
     {
         PhotonView playerPV = other.GetComponent<PhotonView>();
 
-        // Pastikan ini player kita (local player) yang masuk trigger
         if (playerPV != null && playerPV.IsMine)
         {
             if (other.CompareTag("Argha"))
             {
-                inventoryManager = GameObject.FindGameObjectWithTag("ArghaInventory")?.GetComponent<InventoryManagerBase>();
+                GameObject go = GameObject.FindGameObjectWithTag("ArghaInventory");
+                if (go != null)
+                    inventoryManager = go.GetComponent<InventoryManagerBase>();
             }
             else if (other.CompareTag("Irul"))
             {
-                inventoryManager = GameObject.FindGameObjectWithTag("IrulInventory")?.GetComponent<InventoryManagerBase>();
+                GameObject go = GameObject.FindGameObjectWithTag("IrulInventory");
+                if (go != null)
+                    inventoryManager = go.GetComponent<InventoryManagerBase>();
             }
 
             if (inventoryManager != null && !inventoryManager.IsHoldingItem())
             {
                 UIManager.Instance.ShowInteractText(true);
             }
+            else
+            {
+                Debug.LogWarning("InventoryManager tidak ditemukan untuk player ini!");
+            }
 
             playerInRange = true;
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {

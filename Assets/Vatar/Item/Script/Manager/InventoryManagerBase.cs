@@ -3,7 +3,14 @@ using Photon.Pun;
 
 public class InventoryManagerBase : MonoBehaviourPun
 {
-    public InventoryItem[] items = new InventoryItem[6];
+    [System.Serializable]
+    public class InventorySlot
+    {
+        public InventoryItem item;     // Data item (icon, prefab reference)
+        public string prefabName;      // Nama prefab untuk Photon.Instantiate
+    }
+
+    public InventorySlot[] slots = new InventorySlot[6];
     public InventorySlotUI[] uiSlots;
     public Transform playerHandTransform;
     private GameObject heldItemInstance;
@@ -12,7 +19,7 @@ public class InventoryManagerBase : MonoBehaviourPun
     void Update()
     {
         // Ganti slot (Alpha1 = slot 0, Alpha2 = slot 1, dst.)
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
@@ -29,11 +36,12 @@ public class InventoryManagerBase : MonoBehaviourPun
 
     public bool AddItem(InventoryItem item)
     {
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (items[i] == null)
+            if (slots[i].item == null)
             {
-                items[i] = item;
+                slots[i].item = item;
+                slots[i].prefabName = item.prefab.name; // simpan nama prefab
                 if (uiSlots[i] != null)
                     uiSlots[i].SetIcon(item.icon);
                 return true;
@@ -44,7 +52,7 @@ public class InventoryManagerBase : MonoBehaviourPun
 
     void ToggleItem(int index)
     {
-        if (items[index] == null)
+        if (slots[index].item == null)
             return;
 
         // Kalau slot yang sama → unequip
@@ -56,11 +64,19 @@ public class InventoryManagerBase : MonoBehaviourPun
         {
             UnequipItem(); // lepas dulu item sebelumnya
 
-            // Spawn item di tangan
-            heldItemInstance = Instantiate(items[index].prefab, playerHandTransform);
+            // Spawn item di tangan pakai Photon (agar sinkron)
+            heldItemInstance = PhotonNetwork.Instantiate(
+                slots[index].prefabName,
+                playerHandTransform.position,
+                playerHandTransform.rotation
+            );
+
+            // Parent ke tangan
+            heldItemInstance.transform.SetParent(playerHandTransform);
             heldItemInstance.transform.localPosition = Vector3.zero;
             heldItemInstance.transform.localRotation = Quaternion.identity;
 
+            // Disable physics saat di tangan
             Rigidbody rb = heldItemInstance.GetComponent<Rigidbody>();
             if (rb != null)
             {
@@ -75,12 +91,12 @@ public class InventoryManagerBase : MonoBehaviourPun
 
     public void DropCurrentItem()
     {
-        if (currentHeldIndex == -1 || items[currentHeldIndex] == null)
+        if (currentHeldIndex == -1 || slots[currentHeldIndex].item == null)
             return;
 
         // Spawn item di dunia (Photon)
         GameObject droppedItem = PhotonNetwork.Instantiate(
-            items[currentHeldIndex].prefab.name,
+            slots[currentHeldIndex].prefabName,
             playerHandTransform.position + playerHandTransform.forward * 0.5f,
             Quaternion.identity
         );
@@ -97,11 +113,14 @@ public class InventoryManagerBase : MonoBehaviourPun
         }
 
         // Bersihkan slot
-        items[currentHeldIndex] = null;
+        slots[currentHeldIndex].item = null;
+        slots[currentHeldIndex].prefabName = null;
         if (uiSlots[currentHeldIndex] != null)
             uiSlots[currentHeldIndex].Clear();
 
-        Destroy(heldItemInstance);
+        if (heldItemInstance != null)
+            PhotonNetwork.Destroy(heldItemInstance);
+
         heldItemInstance = null;
         currentHeldIndex = -1;
         ResetAllSlotColors();
@@ -110,8 +129,9 @@ public class InventoryManagerBase : MonoBehaviourPun
     void UnequipItem()
     {
         if (heldItemInstance != null)
-            Destroy(heldItemInstance);
+            PhotonNetwork.Destroy(heldItemInstance);
 
+        heldItemInstance = null;
         currentHeldIndex = -1;
         ResetAllSlotColors();
     }
@@ -136,9 +156,9 @@ public class InventoryManagerBase : MonoBehaviourPun
 
     public bool HasEmptySlot()
     {
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (items[i] == null)
+            if (slots[i].item == null)
                 return true;
         }
         return false;
