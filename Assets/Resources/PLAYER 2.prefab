@@ -917,6 +917,7 @@ GameObject:
   - component: {fileID: 9193578771543733650}
   - component: {fileID: 7660043855459947530}
   - component: {fileID: 3353666417068791015}
+  - component: {fileID: 9139438237294853854}
   m_Layer: 0
   m_Name: PLAYER 2
   m_TagString: Irul
@@ -998,9 +999,6 @@ MonoBehaviour:
   cameraFollowTarget: {fileID: 0}
   cameraOffset: {x: 0, y: 0, z: 0}
   cameraFollowSpeed: 5
-  ArghaInventory: {fileID: 0}
-  IrulInventory: {fileID: 0}
-  canvasInventory: {fileID: 0}
 --- !u!136 &2508687119643688509
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1137,6 +1135,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nicknameText: {fileID: 9049471133706734022}
+--- !u!114 &9139438237294853854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984704693674800734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a354341a8f8084ab3ec2db34c94fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 2475793627075130282}
+  objectGrabPointTransform: {fileID: 5596906809569044276}
+  pickUpLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  pickUpDistance: 3
+  walkAudio: {fileID: 0}
+  runAudio: {fileID: 0}
 --- !u!1 &1999949036410433955
 GameObject:
   m_ObjectHideFlags: 0

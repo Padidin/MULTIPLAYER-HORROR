@@ -3153,6 +3153,7 @@ GameObject:
   - component: {fileID: 8171551198833217433}
   - component: {fileID: 2235522711855913267}
   - component: {fileID: 3397491338147242469}
+  - component: {fileID: 7079562465947731225}
   m_Layer: 0
   m_Name: PLAYER 1
   m_TagString: Argha
@@ -3235,9 +3236,6 @@ MonoBehaviour:
   cameraFollowTarget: {fileID: 0}
   cameraOffset: {x: 0, y: 0, z: 0}
   cameraFollowSpeed: 5
-  ArghaInventory: {fileID: 0}
-  IrulInventory: {fileID: 0}
-  canvasInventory: {fileID: 0}
 --- !u!136 &3583412016400072393
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3374,6 +3372,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nicknameText: {fileID: 3675735799610002856}
+--- !u!114 &7079562465947731225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261622813337619660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a354341a8f8084ab3ec2db34c94fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 8101706952659979994}
+  objectGrabPointTransform: {fileID: 6902614597022106253}
+  pickUpLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  pickUpDistance: 3
+  walkAudio: {fileID: 0}
+  runAudio: {fileID: 0}
 --- !u!1 &8582684751976077431
 GameObject:
   m_ObjectHideFlags: 0

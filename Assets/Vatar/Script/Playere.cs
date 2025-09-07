@@ -25,9 +25,9 @@ public class Playere : MonoBehaviourPunCallbacks
     public Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
     public float cameraFollowSpeed = 5f;
 
-    [Header("Canvas Inventory")]
+    /*[Header("Canvas Inventory")]
     public GameObject ArghaInventory;
-    public GameObject IrulInventory;
+    public GameObject IrulInventory;*/
 
     private AudioSource walkSource;
     private AudioSource sfxSource;
@@ -44,7 +44,7 @@ public class Playere : MonoBehaviourPunCallbacks
     private Vector3 crouchCamLocalPos;
     private float xRotation = 0f;
 
-    public GameObject canvasInventory;
+    //public GameObject canvasInventory;
 
     private KeyCode crouchKey = KeyCode.C;
 
@@ -56,7 +56,7 @@ public class Playere : MonoBehaviourPunCallbacks
         }*/
 
 
-        ArghaInventory = GameObject.FindGameObjectWithTag("ArghaInventory");
+        /*ArghaInventory = GameObject.FindGameObjectWithTag("ArghaInventory");
         IrulInventory = GameObject.FindGameObjectWithTag("IrulInventory");
 
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("ChosenCharacter"))
@@ -73,7 +73,7 @@ public class Playere : MonoBehaviourPunCallbacks
                 ArghaInventory.SetActive(false);
                 IrulInventory.SetActive(true);
             }
-        }
+        }*/
 
         /*if (!photonView.IsMine)
         {
