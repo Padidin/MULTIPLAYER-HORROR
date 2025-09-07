@@ -740,6 +740,7 @@ GameObject:
   - component: {fileID: 8101706952659979994}
   - component: {fileID: 52583483423865344}
   - component: {fileID: 4770274861274630068}
+  - component: {fileID: 884536609222579480}
   m_Layer: 0
   m_Name: Camera 1 (1)
   m_TagString: Untagged
@@ -822,6 +823,39 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584655754163358435}
   m_Enabled: 1
+--- !u!114 &884536609222579480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584655754163358435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78da3f00f3328541b4526c0b0b5ec5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineThickness: 1.25
+  lineIntensity: 0.5
+  fillAmount: 0.2
+  lineColor0: {r: 1, g: 0, b: 0, a: 1}
+  lineColor1: {r: 0.98929596, g: 1, b: 0, a: 1}
+  lineColor2: {r: 0, g: 0, b: 1, a: 1}
+  additiveRendering: 0
+  backfaceCulling: 1
+  fillColor: {r: 0, g: 0, b: 1, a: 1}
+  useFillColor: 0
+  cornerOutlines: 0
+  addLinesBetweenColors: 0
+  scaleWithScreenSize: 1
+  alphaCutoff: 0.5
+  flipY: 0
+  sourceCamera: {fileID: 52583483423865344}
+  autoEnableOutlines: 0
+  outlineCamera: {fileID: 0}
+  outlineShaderMaterial: {fileID: 0}
+  renderTexture: {fileID: 0}
+  extraRenderTexture: {fileID: 0}
 --- !u!1 &1601676310140467676
 GameObject:
   m_ObjectHideFlags: 0
@@ -3385,13 +3419,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 8101706952659979994}
-  objectGrabPointTransform: {fileID: 6902614597022106253}
   pickUpLayerMask:
     serializedVersion: 2
     m_Bits: 1024
   pickUpDistance: 3
-  walkAudio: {fileID: 0}
-  runAudio: {fileID: 0}
+  objectGrabPointTransform: {fileID: 6902614597022106253}
 --- !u!1 &8582684751976077431
 GameObject:
   m_ObjectHideFlags: 0

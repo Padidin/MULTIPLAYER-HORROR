@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using cakeslice;
 
 public class NetworkPlayerPickUpDrop : MonoBehaviourPun
 {
@@ -88,12 +89,14 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
                 {
                     detectedObject = grabbable;
                     InteractShow.instance.Show();
+                    Outline.instance.eraseRenderer = false;
                 }
             }
         }
         else
         {
             InteractShow.instance.Hide();
+            Outline.instance.eraseRenderer = true;
         }
     }
 }
