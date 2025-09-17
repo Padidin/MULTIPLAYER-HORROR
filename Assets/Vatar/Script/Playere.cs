@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Photon.Pun;
+using cakeslice;
+using UnityEditor;
 
 public class Playere : MonoBehaviourPunCallbacks
 {
@@ -29,6 +31,12 @@ public class Playere : MonoBehaviourPunCallbacks
     public GameObject ArghaInventory;
     public GameObject IrulInventory;*/
 
+    [Header("Mini Map")]
+    public GameObject CanvasMap;
+    public GameObject CanvasMap2;
+    public bool showMap1;
+
+
     private AudioSource walkSource;
     private AudioSource sfxSource;
 
@@ -43,6 +51,8 @@ public class Playere : MonoBehaviourPunCallbacks
     private Vector3 standCamLocalPos;
     private Vector3 crouchCamLocalPos;
     private float xRotation = 0f;
+
+    private OutlineEffect outlineEffect;
 
     //public GameObject canvasInventory;
 
@@ -100,6 +110,12 @@ public class Playere : MonoBehaviourPunCallbacks
         standCamLocalPos = cameraTransform.localPosition;
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
 
+        OutlineEffect outlineEffect = cameraTransform.GetComponent<OutlineEffect>();
+        if (outlineEffect != null && !photonView.IsMine)
+        {
+            Destroy(outlineEffect);
+        }
+
         if (!photonView.IsMine)
         {
             cameraTransform.gameObject.SetActive(false);
@@ -134,7 +150,34 @@ public class Playere : MonoBehaviourPunCallbacks
             StartCoroutine(CrouchRoutine());
         }
 
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (showMap1)
+            {
+                CanvasMap.SetActive(!CanvasMap.activeSelf);
+                CanvasMap2.SetActive(false);
+            }
+            else
+            {
+                CanvasMap2.SetActive(!CanvasMap2.activeSelf);
+                CanvasMap.SetActive(false);
+            }
+        }
+
         UpdateAnimation();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Lantai 1"))
+        {
+            showMap1 = true;
+        }
+
+        if (other.CompareTag("Lantai 2"))
+        {
+            showMap1 = false;
+        }
     }
 
     void LateUpdate()

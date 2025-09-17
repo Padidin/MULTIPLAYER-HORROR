@@ -564,7 +564,7 @@ Transform:
   m_GameObject: {fileID: 986241428205905621}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.095, y: 0.063, z: 0.379}
+  m_LocalPosition: {x: 0.239, y: -0.178, z: 0.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -756,7 +756,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584655754163358435}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.05059448, y: -0.008166964, z: 0.0056353784, w: 0.99867004}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.141, y: 1.398, z: 0.075}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1065,7 +1065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &533536711034933357
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3185,7 +3185,7 @@ GameObject:
   - component: {fileID: 8352192222984106561}
   - component: {fileID: 422101924107173161}
   - component: {fileID: 8171551198833217433}
-  - component: {fileID: 2235522711855913267}
+  - component: {fileID: 5856006160744278540}
   - component: {fileID: 3397491338147242469}
   - component: {fileID: 7079562465947731225}
   m_Layer: 0
@@ -3263,7 +3263,7 @@ MonoBehaviour:
   groundCheckRadius: 0.5
   groundMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 1032
   walkClip: {fileID: 8300000, guid: 44d75ef5900972146b768b408cd38b86, type: 3}
   jumpClip: {fileID: 8300000, guid: f9e54b96511ea7f46ad69e662ed71e87, type: 3}
   cameraTransform: {fileID: 8101706952659979994}
@@ -3351,7 +3351,7 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: ToStand
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 0
 --- !u!114 &8171551198833217433
 MonoBehaviour:
@@ -3373,11 +3373,11 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 422101924107173161}
-  - {fileID: 2235522711855913267}
+  - {fileID: 5856006160744278540}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2235522711855913267
+--- !u!114 &5856006160744278540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
