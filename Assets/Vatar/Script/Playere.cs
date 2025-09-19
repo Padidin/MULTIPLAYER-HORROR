@@ -40,26 +40,16 @@ public class Playere : MonoBehaviourPunCallbacks
     private Vector3 crouchCamLocalPos;
     private float xRotation = 0f;
 
-    public GameObject canvasInventory;
-
     private KeyCode crouchKey = KeyCode.C;
 
-    private void Awake()
-    {
-        if (photonView.IsMine)
-        {
-            canvasInventory.SetActive(true);
-        }
+    public float walkSpeed = 3f;
+    public float climbSpeed = 2f;
+    public float gravity = -9.81f;
 
-        /*if (!photonView.IsMine)
-        {
-            canvasInventory.SetActive(false);
-        }
-        else
-        {
-            canvasInventory.SetActive(true);
-        }*/
-    }
+    private CharacterController controller;
+    private Animator animator;
+    private Vector3 velocity;
+    private bool isClimbing = false;
 
     void Start()
     {
@@ -92,6 +82,11 @@ public class Playere : MonoBehaviourPunCallbacks
             GetComponentInChildren<Camera>().enabled = false;
             GetComponentInChildren<AudioListener>().enabled = false;
         }
+
+        {
+            controller = GetComponent<CharacterController>();
+            animator = GetComponent<Animator>();
+        }
     }
 
     void Update()
@@ -111,6 +106,32 @@ public class Playere : MonoBehaviourPunCallbacks
         }
 
         UpdateAnimation();
+
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        if (isClimbing)
+        {
+            Vector3 climbMove = new Vector3(0, vertical * climbSpeed, 0);
+            controller.Move(climbMove * Time.deltaTime);
+
+            // Aktifkan animasi climbing hanya jika ada input
+            animator.SetBool("isClimbing", Mathf.Abs(vertical) > 0.1f);
+        }
+        else
+        {
+            // Movement biasa
+            Vector3 move = transform.right * horizontal + transform.forward * vertical;
+            controller.Move(move * walkSpeed * Time.deltaTime);
+
+            // Gravity
+            if (controller.isGrounded && velocity.y < 0)
+                velocity.y = -2f;
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(Vector3.up * velocity.y * Time.deltaTime);
+
+            animator.SetBool("isClimbing", false);
+        }
     }
 
     void LateUpdate()
@@ -247,6 +268,33 @@ public class Playere : MonoBehaviourPunCallbacks
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
+            isClimbing = true;
+            velocity.y = 0f;
+            controller.stepOffset = 0f;
+        }
+        else if (other.CompareTag("LadderExit"))
+        {
+            // Paksa keluar dari mode climbing
+            isClimbing = false;
+            controller.stepOffset = 0.3f;
+            animator.SetBool("isClimbing", false);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
+            isClimbing = false;
+            controller.stepOffset = 0.3f;
+            animator.SetBool("isClimbing", false);
         }
     }
 }
