@@ -3,6 +3,7 @@ using System.Collections;
 using Photon.Pun;
 using cakeslice;
 using UnityEditor;
+using UnityEngine.Rendering.PostProcessing;
 
 public class Playere : MonoBehaviourPunCallbacks
 {
@@ -27,6 +28,8 @@ public class Playere : MonoBehaviourPunCallbacks
     public Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
     public float cameraFollowSpeed = 5f;
 
+    public PostProcessLayer postLayer;
+
     /*[Header("Canvas Inventory")]
     public GameObject ArghaInventory;
     public GameObject IrulInventory;*/
@@ -34,8 +37,11 @@ public class Playere : MonoBehaviourPunCallbacks
     [Header("Mini Map")]
     public GameObject CanvasMap;
     public GameObject CanvasMap2;
+    public GameObject markPlayer1;
+    public GameObject markPlayer2;
+    public GameObject arrow1;
+    public GameObject arrow2;
     public bool showMap1;
-
 
     private AudioSource walkSource;
     private AudioSource sfxSource;
@@ -60,6 +66,18 @@ public class Playere : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        CanvasMap = GameObject.Find("Minimap");
+        CanvasMap2 = GameObject.Find("Minimap2");
+
+        //postLayer = Camera.main.GetComponent<PostProcessLayer>();
+
+        if (CanvasMap != null ||  CanvasMap2 != null && photonView.IsMine)
+        {
+            CanvasMap.SetActive(false);
+            CanvasMap2.SetActive(false);
+        }
+
+
         /*if (photonView.IsMine)
         {
             canvasInventory.SetActive(true);
@@ -162,6 +180,33 @@ public class Playere : MonoBehaviourPunCallbacks
                 CanvasMap2.SetActive(!CanvasMap2.activeSelf);
                 CanvasMap.SetActive(false);
             }
+        }
+
+        if (postLayer != null)
+        {
+            postLayer.enabled = CanvasMap.activeSelf || CanvasMap2.activeSelf;
+        }
+
+        if (photonView.IsMine)
+        {
+            arrow1.SetActive(markPlayer1);
+            arrow2.SetActive(markPlayer2);
+        }
+        else if (!photonView.IsMine)
+        {
+            arrow1.SetActive(false);
+            arrow2.SetActive(false);
+        }
+
+        if (showMap1)
+        {
+            markPlayer1.SetActive(true);
+            markPlayer2.SetActive(false);
+        }
+        else
+        {
+            markPlayer1.SetActive(false);
+            markPlayer2.SetActive(true);
         }
 
         UpdateAnimation();
