@@ -1,15 +1,24 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using cakeslice;
 
 public class ObjectGrabbable : MonoBehaviourPun
 {
     private Rigidbody objectRigidbody;
     private Transform objectGrabPointTransform;
+    private Outline outline;
     private bool isBeingGrabbed = false;
 
     private void Awake()
     {
         objectRigidbody = GetComponent<Rigidbody>();
+        outline = GetComponent<Outline>();
+    }
+
+    private void Start()
+    {
+        outline.enabled = false;
+        outline.eraseRenderer = false;
     }
 
     // ✅ UBAH NAMA METHOD MENJADI "NetworkGrab"

@@ -66,12 +66,12 @@ public class Playere : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        CanvasMap = GameObject.Find("Minimap");
-        CanvasMap2 = GameObject.Find("Minimap2");
+        /*CanvasMap = GameObject.Find("Minimap");
+        CanvasMap2 = GameObject.Find("Minimap2");*/
 
         //postLayer = Camera.main.GetComponent<PostProcessLayer>();
 
-        if (CanvasMap != null ||  CanvasMap2 != null && photonView.IsMine)
+        if (CanvasMap != null ||  CanvasMap2 != null)
         {
             CanvasMap.SetActive(false);
             CanvasMap2.SetActive(false);
@@ -85,18 +85,18 @@ public class Playere : MonoBehaviourPunCallbacks
 
 
         /*ArghaInventory = GameObject.FindGameObjectWithTag("ArghaInventory");
-        IrulInventory = GameObject.FindGameObjectWithTag("IrulInventory");
+        IrulInventory = GameObject.FindGameObjectWithTag("IrulInventory");*/
 
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("ChosenCharacter"))
+        /*if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("ChosenCharacter"))
         {
             string chosenChar = PhotonNetwork.LocalPlayer.CustomProperties["ChosenCharacter"].ToString();
 
-            if(chosenChar == "Karakter1" && photonView.IsMine)
+            if (chosenChar == "Karakter1" && photonView.IsMine)
             {
                 ArghaInventory.SetActive(true);
                 IrulInventory.SetActive(false);
             }
-            else if(chosenChar == "Karakter2" && photonView.IsMine)
+            else if (chosenChar == "Karakter2" && photonView.IsMine)
             {
                 ArghaInventory.SetActive(false);
                 IrulInventory.SetActive(true);
@@ -198,6 +198,14 @@ public class Playere : MonoBehaviourPunCallbacks
             arrow2.SetActive(false);
         }
 
+        photonView.RPC("ToggleMarker", RpcTarget.All, showMap1);
+
+        UpdateAnimation();
+    }
+
+    [PunRPC]
+    void ToggleMarker(bool showMap1)
+    {
         if (showMap1)
         {
             markPlayer1.SetActive(true);
@@ -208,8 +216,6 @@ public class Playere : MonoBehaviourPunCallbacks
             markPlayer1.SetActive(false);
             markPlayer2.SetActive(true);
         }
-
-        UpdateAnimation();
     }
 
     private void OnTriggerEnter(Collider other)

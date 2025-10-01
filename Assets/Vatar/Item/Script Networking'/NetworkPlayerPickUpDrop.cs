@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using cakeslice;
+using cakeslice; // <-- Pastikan using ini ada
 
 public class NetworkPlayerPickUpDrop : MonoBehaviourPun
 {
@@ -12,9 +12,11 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
 
     private ObjectGrabbable objectGrabbable;
     private ObjectGrabbable detectedObject;
+    private ObjectGrabbable lastDetectedObject; // <-- Variabel ini sudah ada, bagus!
 
     void Update()
     {
+        // Hanya player lokal yang bisa mendeteksi & berinteraksi
         if (!photonView.IsMine) return;
 
         DetectObject();
@@ -23,12 +25,19 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
         {
             if (objectGrabbable == null && detectedObject != null)
             {
-                // Grab object via network - KIRIM POSISI, BUKAN TRANSFORM
+                // Ambil objek
                 photonView.RPC("RPC_GrabObject", RpcTarget.All, detectedObject.photonView.ViewID);
+
+                // Langsung matikan outline setelah menekan tombol E
+                if (lastDetectedObject != null)
+                {
+                    lastDetectedObject.GetComponent<Outline>().enabled = false;
+                    lastDetectedObject = null;
+                }
             }
             else if (objectGrabbable != null)
             {
-                // Drop object via network
+                // Jatuhkan objek
                 Vector3 dropPosition = objectGrabPointTransform.position;
                 photonView.RPC("RPC_DropObject", RpcTarget.All, dropPosition);
             }
@@ -46,7 +55,7 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
             {
                 objectGrabbable = grabbable;
 
-                // ✅ KIRIM DATA POSISI, BUKAN TRANSFORM
+                // Kirim RPC ke objek untuk diambil
                 objectGrabbable.photonView.RPC("NetworkGrab", RpcTarget.All,
                     photonView.ViewID,
                     objectGrabPointTransform.position,
@@ -68,35 +77,61 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
             objectGrabbable.photonView.RPC("NetworkDrop", RpcTarget.All, dropPosition);
             objectGrabbable = null;
 
-            if (photonView.IsMine)
-            {
-                InteractShow.instance.Hide();
-            }
+            // UI di-handle oleh DetectObject() di frame berikutnya
         }
     }
-
+    
+    // --- FUNGSI DETEKSI YANG DIPERBAIKI ---
     private void DetectObject()
     {
-        if (!photonView.IsMine) return;
-
-        detectedObject = null;
-
-        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out RaycastHit hit, pickUpDistance, pickUpLayerMask))
+        // Jika sedang membawa objek, jangan deteksi outline apa pun
+        if (objectGrabbable != null)
         {
-            if (hit.transform.TryGetComponent(out ObjectGrabbable grabbable))
+            ClearLastDetectedObject(); // Pastikan tidak ada outline yang menyala
+            return;
+        }
+
+        RaycastHit hit;
+        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, pickUpDistance, pickUpLayerMask))
+        {
+            if (hit.transform.TryGetComponent(out ObjectGrabbable grabbable) && grabbable.CanBeGrabbed())
             {
-                if (objectGrabbable == null && grabbable.CanBeGrabbed())
+                detectedObject = grabbable;
+
+                // Cek jika kita melihat objek baru
+                if (detectedObject != lastDetectedObject) 
                 {
-                    detectedObject = grabbable;
-                    InteractShow.instance.Show();
-                    Outline.instance.eraseRenderer = false;
+                    // Matikan outline di objek lama (jika ada)
+                    if (lastDetectedObject != null)
+                    {
+                        lastDetectedObject.GetComponent<Outline>().enabled = false;
+                    }
+
+                    // Nyalakan outline di objek baru
+                    detectedObject.GetComponent<Outline>().enabled = true;
+                    lastDetectedObject = detectedObject;
                 }
+                
+                InteractShow.instance.Show();
+                return;
             }
         }
-        else
+
+        // Jika raycast tidak mengenai objek yang bisa diambil
+        ClearLastDetectedObject();
+    }
+
+    // --- FUNGSI BANTUAN BARU ---
+    private void ClearLastDetectedObject()
+    {
+        if (lastDetectedObject != null)
         {
-            InteractShow.instance.Hide();
-            Outline.instance.eraseRenderer = true;
+            // Matikan outline di objek terakhir yang kita lihat
+            lastDetectedObject.GetComponent<Outline>().enabled = false;
+            lastDetectedObject = null;
         }
+
+        detectedObject = null;
+        InteractShow.instance.Hide();
     }
 }
