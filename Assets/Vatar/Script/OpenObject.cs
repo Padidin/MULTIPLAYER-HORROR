@@ -9,7 +9,9 @@ public class OpenObject : MonoBehaviour
 
     [SerializeField] private Transform playerCamera;
     [SerializeField] private Animator animatorDoor;
+    [SerializeField] private Animator animatorLaci;
     [SerializeField] private bool isOpenDoor;
+    [SerializeField] private bool isOpenLaci;
 
     private void Update()
     {
@@ -28,6 +30,21 @@ public class OpenObject : MonoBehaviour
                         isOpenDoor = !isOpenDoor;
 
                         animatorDoor.SetBool("IsOpen", isOpenDoor);
+                    }
+                }
+            }
+
+            if (hit.collider.CompareTag("Laci"))
+            {
+                animatorLaci = hit.collider.GetComponent<Animator>();
+
+                if (Input.GetKeyDown(interactButton))
+                {
+                    if (animatorLaci != null)
+                    {
+                        isOpenLaci = !isOpenLaci;
+
+                        animatorLaci.SetBool("IsOpen", isOpenLaci);
                     }
                 }
             }
