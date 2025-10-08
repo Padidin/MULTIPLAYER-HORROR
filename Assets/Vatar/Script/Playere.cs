@@ -28,7 +28,9 @@ public class Playere : MonoBehaviourPunCallbacks
     public Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
     public float cameraFollowSpeed = 5f;
 
-    public PostProcessLayer postLayer;
+    public PostProcessVolume postVolume;
+    public PostProcessProfile profileBlurEffect;
+    public PostProcessProfile profileNormal;
 
     /*[Header("Canvas Inventory")]
     public GameObject ArghaInventory;
@@ -182,10 +184,15 @@ public class Playere : MonoBehaviourPunCallbacks
             }
         }
 
-        if (postLayer != null)
+        if (CanvasMap.activeInHierarchy || CanvasMap2.activeInHierarchy)
         {
-            postLayer.enabled = CanvasMap.activeSelf || CanvasMap2.activeSelf;
+            postVolume.profile = profileBlurEffect;
         }
+        else
+        {
+            postVolume.profile = profileNormal;
+        }
+
 
         if (photonView.IsMine)
         {
