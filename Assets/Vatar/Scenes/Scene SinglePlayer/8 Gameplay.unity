@@ -14211,6 +14211,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 52583483423865344, guid: b8fc3eefe9e77d54dad60d89a9ad7f5a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 124927
+      objectReference: {fileID: 0}
     - target: {fileID: 1584655754163358435, guid: b8fc3eefe9e77d54dad60d89a9ad7f5a, type: 3}
       propertyPath: m_TagString
       value: MainCamera
@@ -14257,15 +14261,15 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 902fbdec018c2ab4fbe83ab14f62bbfe, type: 2}
     - target: {fileID: 8785676806787225206, guid: b8fc3eefe9e77d54dad60d89a9ad7f5a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.598885
+      value: -18.59888
       objectReference: {fileID: 0}
     - target: {fileID: 8785676806787225206, guid: b8fc3eefe9e77d54dad60d89a9ad7f5a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0552001
+      value: 0.066
       objectReference: {fileID: 0}
     - target: {fileID: 8785676806787225206, guid: b8fc3eefe9e77d54dad60d89a9ad7f5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.01
+      value: 6.27
       objectReference: {fileID: 0}
     - target: {fileID: 8785676806787225206, guid: b8fc3eefe9e77d54dad60d89a9ad7f5a, type: 3}
       propertyPath: m_LocalRotation.w

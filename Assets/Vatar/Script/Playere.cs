@@ -158,6 +158,7 @@ public class Playere : MonoBehaviourPunCallbacks
     {
         if (!photonView.IsMine || PauseManager.GameIsPaused) return;
 
+        HoldingItemHand();
         LookAround();
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -208,6 +209,14 @@ public class Playere : MonoBehaviourPunCallbacks
         photonView.RPC("ToggleMarker", RpcTarget.All, showMap1);
 
         UpdateAnimation();
+    }
+
+    public void HoldingItemHand()
+    {
+        if (Input.GetKey(KeyCode.Q))
+        {
+            anim.SetBool("Holding", true);
+        }
     }
 
     [PunRPC]
