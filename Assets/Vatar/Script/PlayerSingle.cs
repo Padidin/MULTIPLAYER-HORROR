@@ -131,20 +131,6 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
 
         OutlineEffect outlineEffect = cameraTransform.GetComponent<OutlineEffect>();
-        if (outlineEffect != null && !photonView.IsMine)
-        {
-            Destroy(outlineEffect);
-        }
-
-        if (!photonView.IsMine)
-        {
-            cameraTransform.gameObject.SetActive(false);
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
 
         /*if (!photonView.IsMine)
         {

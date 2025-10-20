@@ -8,6 +8,7 @@ public class DoorWood : MonoBehaviour
     public bool open;
     public bool terjangkau;
     public bool haveKey;
+    public AudioSource bukaPintu;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +28,7 @@ public class DoorWood : MonoBehaviour
                     {
                         open = false;
                         animasi.SetBool("open", false);
+                        bukaPintu.Stop();
                     }
                 }
                 else
@@ -35,6 +37,7 @@ public class DoorWood : MonoBehaviour
                     {
                         open = true;
                         animasi.SetBool("open", true);
+                        bukaPintu.Play();
                     }
                 }
             }
