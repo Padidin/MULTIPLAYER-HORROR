@@ -131,6 +131,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
 
         OutlineEffect outlineEffect = cameraTransform.GetComponent<OutlineEffect>();
+        Cursor.visible = false;
 
         /*if (!photonView.IsMine)
         {

@@ -9,26 +9,12 @@ public class LightSwitch : MonoBehaviour
     public bool terjangkau;
     public bool Nyala;
     public Outline[] Outline;
+    public AudioSource lightSwitch;
+    public float interactDistance = 3f; 
 
     // Update is called once per frame
     void Update()
     {
-        if (terjangkau)
-        {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                if (Nyala)
-                {
-                    cahayaLampu.SetActive(false);
-                }
-                else
-                {
-                    cahayaLampu.SetActive(true);
-                }
-                
-            }
-        }
-
         if (cahayaLampu != null)
         {
             if (cahayaLampu.activeInHierarchy)
@@ -40,31 +26,74 @@ public class LightSwitch : MonoBehaviour
                 Nyala = false;
             }
         }
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Argha") || other.CompareTag("Irul"))
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactDistance))
         {
-            terjangkau = true;
-
-            foreach (Outline garisTepi in Outline)
+            LightSwitch saklar = hit.collider.GetComponent<LightSwitch>();
+            if (saklar != null && saklar == this)
             {
-                garisTepi.eraseRenderer = false;
+                foreach (Outline garisTepi in Outline)
+                {
+                    garisTepi.eraseRenderer = false;
+                }
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (Nyala)
+                    {
+                        cahayaLampu.SetActive(false);
+                        lightSwitch.Play();
+                    }
+                    else
+                    {
+                        cahayaLampu.SetActive(true);
+                        lightSwitch.Play();
+                    }
+                }
+            }
+            else
+            {
+                foreach (Outline garisTepi in Outline)
+                {
+                    garisTepi.eraseRenderer = true;
+                }
             }
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Argha") || other.CompareTag("Irul"))
+        else
         {
-            terjangkau = false;
-
             foreach (Outline garisTepi in Outline)
             {
                 garisTepi.eraseRenderer = true;
             }
         }
     }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Argha") || other.CompareTag("Irul"))
+    //    {
+    //        terjangkau = true;
+
+    //        foreach (Outline garisTepi in Outline)
+    //        {
+    //            garisTepi.eraseRenderer = false;
+    //        }
+    //    }
+    //}
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Argha") || other.CompareTag("Irul"))
+    //    {
+    //        terjangkau = false;
+
+    //        foreach (Outline garisTepi in Outline)
+    //        {
+    //            garisTepi.eraseRenderer = true;
+    //        }
+    //    }
+    //}
 }
