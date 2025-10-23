@@ -1,3 +1,4 @@
+using cakeslice;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,48 +11,78 @@ public class DoorWood : MonoBehaviour
     public bool haveKey;
     public AudioSource bukaPintu;
     public AudioSource tutupPintu;
+
+    public Outline[] Outline;
+
+    public float interactDistance = 1.5f;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (terjangkau)
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactDistance))
         {
-            if (haveKey)
+            DoorWood pintu = hit.collider.GetComponent<DoorWood>();
+            if (pintu != null && pintu == this)
             {
-                if (open)
+                foreach (Outline garisTepi in Outline)
                 {
-                    if (Input.GetKeyDown(KeyCode.E))
+                    garisTepi.eraseRenderer = false;
+                }
+
+                if (haveKey)
+                {
+                    if (open)
                     {
-                        open = false;
-                        animasi.SetBool("open", false);
-                        bukaPintu.Stop();
-                        tutupPintu.PlayDelayed(1.3f);
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            open = false;
+                            animasi.SetBool("open", false);
+                            bukaPintu.Stop();
+                            tutupPintu.PlayDelayed(1.3f);
+                        }
+                    }
+                    else
+                    {
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            open = true;
+                            animasi.SetBool("open", true);
+                            bukaPintu.Play();
+                            tutupPintu.Stop();
+                        }
                     }
                 }
                 else
                 {
-                    if (Input.GetKeyDown(KeyCode.E))
-                    {
-                        open = true;
-                        animasi.SetBool("open", true);
-                        bukaPintu.Play();
-                        tutupPintu.Stop();
-                    }
+                    // Mainkan Suara terkunci
                 }
             }
             else
             {
-                // ini nanti ngeluarin efek suara pintu kekunci
+                foreach (Outline garisTepi in Outline)
+                {
+                    garisTepi.eraseRenderer = true;
+                }
+            }
+        }
+        else
+        {
+            foreach (Outline garisTepi in Outline)
+            {
+                garisTepi.eraseRenderer = true;
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Argha") || other.CompareTag("Irul"))
         {
@@ -65,5 +96,5 @@ public class DoorWood : MonoBehaviour
         {
             terjangkau = false;
         }
-    }
+    }*/
 }

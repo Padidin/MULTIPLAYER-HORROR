@@ -44,12 +44,18 @@ public class LightSwitch : MonoBehaviour
                 {
                     if (Nyala)
                     {
-                        cahayaLampu.SetActive(false);
+                        if (cahayaLampu != null)
+                        {
+                            cahayaLampu.SetActive(false);
+                        }
                         lightSwitch.Play();
                     }
                     else
                     {
-                        cahayaLampu.SetActive(true);
+                        if (cahayaLampu != null)
+                        {
+                            cahayaLampu.SetActive(true);
+                        }
                         lightSwitch.Play();
                     }
                 }

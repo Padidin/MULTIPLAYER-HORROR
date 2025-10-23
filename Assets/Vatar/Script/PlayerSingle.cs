@@ -32,10 +32,6 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     public PostProcessProfile profileBlurEffect;
     public PostProcessProfile profileNormal;
 
-    /*[Header("Canvas Inventory")]
-    public GameObject ArghaInventory;
-    public GameObject IrulInventory;*/
-
     [Header("Mini Map")]
     public GameObject CanvasMap;
     public GameObject CanvasMap2;
@@ -44,6 +40,10 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     public GameObject arrow1;
     public GameObject arrow2;
     public bool showMap1;
+
+    [Header("Crouch Collider")]
+    [SerializeField] private Collider coliderBerdiri;
+    [SerializeField] private Collider coliderJongkok;
 
     private AudioSource walkSource;
     private AudioSource sfxSource;
@@ -62,8 +62,6 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
 
     private OutlineEffect outlineEffect;
 
-    //public GameObject canvasInventory;
-
     private KeyCode crouchKey = KeyCode.C;
 
     private void Awake()
@@ -78,41 +76,6 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
             CanvasMap.SetActive(false);
             CanvasMap2.SetActive(false);
         }
-
-
-        /*if (photonView.IsMine)
-        {
-            canvasInventory.SetActive(true);
-        }*/
-
-
-        /*ArghaInventory = GameObject.FindGameObjectWithTag("ArghaInventory");
-        IrulInventory = GameObject.FindGameObjectWithTag("IrulInventory");*/
-
-        /*if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("ChosenCharacter"))
-        {
-            string chosenChar = PhotonNetwork.LocalPlayer.CustomProperties["ChosenCharacter"].ToString();
-
-            if (chosenChar == "Karakter1" && photonView.IsMine)
-            {
-                ArghaInventory.SetActive(true);
-                IrulInventory.SetActive(false);
-            }
-            else if (chosenChar == "Karakter2" && photonView.IsMine)
-            {
-                ArghaInventory.SetActive(false);
-                IrulInventory.SetActive(true);
-            }
-        }*/
-
-        /*if (!photonView.IsMine)
-        {
-            canvasInventory.SetActive(false);
-        }
-        else
-        {
-            canvasInventory.SetActive(true);
-        }*/
     }
 
     void Start()
@@ -131,14 +94,6 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
 
         OutlineEffect outlineEffect = cameraTransform.GetComponent<OutlineEffect>();
-        Cursor.visible = false;
-
-        /*if (!photonView.IsMine)
-        {
-            // Nonaktifkan komponen yang hanya boleh untuk local player
-            GetComponentInChildren<Camera>().enabled = false;
-            GetComponentInChildren<AudioListener>().enabled = false;
-        }*/
     }
 
     void Update()
@@ -147,6 +102,8 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
 
         HoldingItemHand();
         LookAround();
+        CursorStatus();
+        CrouchStatus();
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -187,6 +144,12 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         ToggleMarker(showMap1);
 
         UpdateAnimation();
+    }
+
+    void CursorStatus()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void HoldingItemHand()
@@ -324,6 +287,20 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         }
 
         isCrouchTransitioning = false;
+    }
+
+    void CrouchStatus()
+    {
+        if (isCrouching)
+        {
+            coliderBerdiri.enabled = false;
+            coliderJongkok.enabled = true;
+        }
+        else
+        {
+            coliderBerdiri.enabled = true;
+            coliderJongkok.enabled = false;
+        }
     }
 
     void UpdateAnimation()
