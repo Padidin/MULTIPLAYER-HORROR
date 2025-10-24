@@ -109,8 +109,8 @@ namespace cakeslice
 			m.SetColor("_Color", emissionColor);
 			m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
 			m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-			m.SetInt("_ZWrite", 0);
-			m.DisableKeyword("_ALPHATEST_ON");
+            m.SetInt("_ZWrite", 0);
+            m.DisableKeyword("_ALPHATEST_ON");
 			m.EnableKeyword("_ALPHABLEND_ON");
 			m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
 			m.renderQueue = 3000;
