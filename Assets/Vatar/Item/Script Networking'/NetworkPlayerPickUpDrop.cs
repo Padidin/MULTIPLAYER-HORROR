@@ -12,11 +12,9 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
 
     private ObjectGrabbable objectGrabbable;
     private ObjectGrabbable detectedObject;
-    private ObjectGrabbable lastDetectedObject; // <-- Variabel ini sudah ada, bagus!
-
+    private ObjectGrabbable lastDetectedObject;
     void Update()
     {
-        // Hanya player lokal yang bisa mendeteksi & berinteraksi
         if (!photonView.IsMine) return;
 
         DetectObject();
@@ -25,10 +23,8 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
         {
             if (objectGrabbable == null && detectedObject != null)
             {
-                // Ambil objek
                 photonView.RPC("RPC_GrabObject", RpcTarget.All, detectedObject.photonView.ViewID);
 
-                // Langsung matikan outline setelah menekan tombol E
                 if (lastDetectedObject != null)
                 {
                     lastDetectedObject.GetComponent<Outline>().enabled = false;
@@ -37,7 +33,6 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
             }
             else if (objectGrabbable != null)
             {
-                // Jatuhkan objek
                 Vector3 dropPosition = objectGrabPointTransform.position;
                 photonView.RPC("RPC_DropObject", RpcTarget.All, dropPosition);
             }
@@ -55,7 +50,6 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
             {
                 objectGrabbable = grabbable;
 
-                // Kirim RPC ke objek untuk diambil
                 objectGrabbable.photonView.RPC("NetworkGrab", RpcTarget.All,
                     photonView.ViewID,
                     objectGrabPointTransform.position,
@@ -81,13 +75,11 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
         }
     }
     
-    // --- FUNGSI DETEKSI YANG DIPERBAIKI ---
     private void DetectObject()
     {
-        // Jika sedang membawa objek, jangan deteksi outline apa pun
         if (objectGrabbable != null)
         {
-            ClearLastDetectedObject(); // Pastikan tidak ada outline yang menyala
+            ClearLastDetectedObject();
             return;
         }
 
@@ -98,16 +90,13 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
             {
                 detectedObject = grabbable;
 
-                // Cek jika kita melihat objek baru
                 if (detectedObject != lastDetectedObject) 
                 {
-                    // Matikan outline di objek lama (jika ada)
                     if (lastDetectedObject != null)
                     {
                         lastDetectedObject.GetComponent<Outline>().enabled = false;
                     }
 
-                    // Nyalakan outline di objek baru
                     detectedObject.GetComponent<Outline>().enabled = true;
                     lastDetectedObject = detectedObject;
                 }
@@ -117,16 +106,13 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
             }
         }
 
-        // Jika raycast tidak mengenai objek yang bisa diambil
         ClearLastDetectedObject();
     }
 
-    // --- FUNGSI BANTUAN BARU ---
     private void ClearLastDetectedObject()
     {
         if (lastDetectedObject != null)
         {
-            // Matikan outline di objek terakhir yang kita lihat
             lastDetectedObject.GetComponent<Outline>().enabled = false;
             lastDetectedObject = null;
         }
