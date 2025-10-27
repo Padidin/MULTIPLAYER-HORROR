@@ -55,6 +55,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     private bool isCrouching = false;
     private bool isCrouchTransitioning = false;
     private bool isJumpingFromCrouch = false;
+    public bool canWalk = true;
 
     private Vector3 standCamLocalPos;
     private Vector3 crouchCamLocalPos;
@@ -104,40 +105,13 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         LookAround();
         CursorStatus();
         CrouchStatus();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump();
-        }
+        Jump();
+        MapStatus();
 
         if (Input.GetKeyDown(crouchKey))
         {
             StartCoroutine(CrouchRoutine());
         }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            if (showMap1)
-            {
-                CanvasMap.SetActive(!CanvasMap.activeSelf);
-                CanvasMap2.SetActive(false);
-            }
-            else
-            {
-                CanvasMap2.SetActive(!CanvasMap2.activeSelf);
-                CanvasMap.SetActive(false);
-            }
-        }
-
-        if (CanvasMap.activeInHierarchy || CanvasMap2.activeInHierarchy)
-        {
-            postVolume.profile = profileBlurEffect;
-        }
-        else
-        {
-            postVolume.profile = profileNormal;
-        }
-
 
         arrow1.SetActive(markPlayer1);
 
@@ -205,6 +179,8 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         if (PauseManager.GameIsPaused) return;
 
         CheckGround();
+
+        if (!canWalk) return;
         Move();
     }
 
@@ -247,6 +223,13 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
 
     void Jump()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            JumpFunction();
+        }
+    }
+    void JumpFunction()
+    {
         if (!isGrounded || isCrouchTransitioning) return;
 
         if (isCrouching)
@@ -268,10 +251,38 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         }
     }
 
+    void MapStatus()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (showMap1)
+            {
+                CanvasMap.SetActive(!CanvasMap.activeSelf);
+                CanvasMap2.SetActive(false);
+            }
+            else
+            {
+                CanvasMap2.SetActive(!CanvasMap2.activeSelf);
+                CanvasMap.SetActive(false);
+            }
+        }
+
+        if (CanvasMap.activeInHierarchy || CanvasMap2.activeInHierarchy)
+        {
+            postVolume.profile = profileBlurEffect;
+        }
+        else
+        {
+            postVolume.profile = profileNormal;
+        }
+    }
+
     IEnumerator CrouchRoutine()
     {
         if (isCrouchTransitioning) yield break;
         isCrouchTransitioning = true;
+        
+        canWalk = false;
 
         if (!isCrouching)
         {
@@ -284,7 +295,11 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
             anim.SetTrigger("ToStand");
             yield return new WaitForSeconds(0.4f);
             isCrouching = false;
-        }
+        }   
+
+        yield return new WaitForSeconds(0.7f);
+
+        canWalk = true;
 
         isCrouchTransitioning = false;
     }
@@ -308,6 +323,15 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         float inputX = Input.GetAxis("Horizontal");
         float inputZ = Input.GetAxis("Vertical");
         float speed = new Vector2(inputX, inputZ).magnitude;
+
+        if (!canWalk)
+        {
+            speed = 0f;
+        }
+        else
+        {
+            speed = new Vector2(inputX, inputZ).magnitude;
+        }
 
         anim.SetFloat("MoveSpeed", speed);
         anim.SetBool("IsCrouching", isCrouching);
