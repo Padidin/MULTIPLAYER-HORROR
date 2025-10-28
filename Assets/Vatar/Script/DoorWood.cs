@@ -6,15 +6,19 @@ using UnityEngine;
 public class DoorWood : MonoBehaviour
 {
     public Animator animasi;
-    public bool open;
-    public bool terjangkau;
+
+    public bool gotKey = true;
     public bool haveKey;
+
     public AudioSource bukaPintu;
     public AudioSource tutupPintu;
+    public AudioSource pintuTerkunci;
+    public AudioSource membukaKunci;
 
     public Outline[] Outline;
 
     public float interactDistance = 1.5f;
+    private bool open;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +39,25 @@ public class DoorWood : MonoBehaviour
                 foreach (Outline garisTepi in Outline)
                 {
                     garisTepi.eraseRenderer = false;
+                }
+
+                if (gotKey && !haveKey)
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        Invoke(nameof(SetHaveKeyTrue), 0.8f);
+                        membukaKunci.Play();
+                    }
+                }
+                else if (!gotKey)
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        if (!pintuTerkunci.isPlaying)
+                        {
+                            pintuTerkunci.Play();
+                        }
+                    }
                 }
 
                 if (haveKey)
@@ -60,10 +83,6 @@ public class DoorWood : MonoBehaviour
                         }
                     }
                 }
-                else
-                {
-                    // Mainkan Suara terkunci
-                }
             }
             else
             {
@@ -80,6 +99,11 @@ public class DoorWood : MonoBehaviour
                 garisTepi.eraseRenderer = true;
             }
         }
+    }
+
+    void SetHaveKeyTrue()
+    {
+        haveKey = true;
     }
 
     /*private void OnTriggerEnter(Collider other)
