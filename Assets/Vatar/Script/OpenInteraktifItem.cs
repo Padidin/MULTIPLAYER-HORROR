@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrawerKitchen : MonoBehaviour
+public class OpenInteraktifItem : MonoBehaviour
 {
     public Animator animasi;
     public bool open;
+    public float delaySound;
     public AudioSource bukaLaci;
     public AudioSource tutupLaci;
 
@@ -27,7 +28,7 @@ public class DrawerKitchen : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactDistance))
         {
-            DrawerKitchen laci = hit.collider.GetComponent<DrawerKitchen>();
+            OpenInteraktifItem laci = hit.collider.GetComponent<OpenInteraktifItem>();
             if (laci != null && laci == this)
             {
                 Outline.eraseRenderer = false;
@@ -38,8 +39,11 @@ public class DrawerKitchen : MonoBehaviour
                     {
                         open = false;
                         animasi.SetBool("open", false);
-                        bukaLaci.Stop();
-                        tutupLaci.PlayDelayed(0.3f);
+                        if (bukaLaci != null && tutupLaci)
+                        {
+                            bukaLaci.Stop();
+                            tutupLaci.PlayDelayed(delaySound);
+                        }
                     }
                 }
                 else
@@ -48,8 +52,12 @@ public class DrawerKitchen : MonoBehaviour
                     {
                         open = true;
                         animasi.SetBool("open", true);
-                        bukaLaci.Play();
-                        tutupLaci.Stop();
+
+                        if (bukaLaci != null && tutupLaci)
+                        {
+                            bukaLaci.Play();
+                            tutupLaci.Stop();
+                        }
                     }
                 }
             }
