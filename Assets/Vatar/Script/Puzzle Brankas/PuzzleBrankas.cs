@@ -25,9 +25,11 @@ public class PuzzleBrankas : MonoBehaviour
 
     public float correctHoldTime = 1.5f; // berapa detik harus berhenti di angka benar
     private float holdTimer = 0f;
+    public bool focused;
 
     void Update()
     {
+        if (!focused) return;
         if (isUnlocked) return;
 
         float input = Input.GetAxis("Mouse X");
