@@ -7,6 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerSingle : MonoBehaviourPunCallbacks
 {
+    public static PlayerSingle instance;
     [Header("Basic Movement")]
     public float moveSpeed = 5f;
     public float crouchSpeed = 2.5f;
@@ -77,6 +78,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
             CanvasMap.SetActive(false);
             CanvasMap2.SetActive(false);
         }
+        instance = this;
     }
 
     void Start()
@@ -101,6 +103,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     {
         if (PauseManager.GameIsPaused) return;
 
+        if (!canWalk) return;
         HoldingItemHand();
         LookAround();
         CursorStatus();

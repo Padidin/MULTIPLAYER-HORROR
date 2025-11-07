@@ -9,13 +9,15 @@ public class PuzzleBrankas : MonoBehaviour
     public float snapAngle = 6f;
     public AudioSource clickSound;
     public AudioSource trueClickSound;
+    public handle Handle;
 
     [Header("Combination (0–60)")]
     public int[] combination = { 28, 11, 25 };
     public float tolerance = 0f;
     public AudioSource unlockSound;
+    public DialTrigger trigger;
 
-    private int currentIndex = 0;
+    public int currentIndex = 0;
     private bool isUnlocked = false;
     private int targetNumber = 0;
     private int lastNumber = -1;
@@ -115,6 +117,8 @@ public class PuzzleBrankas : MonoBehaviour
     {
         if (isUnlocked) return;
         isUnlocked = true;
+        Handle.terbuka = true;
+        trigger.unFocus();
 
         Debug.Log("BRANKAS KEBUKA BRO!");
         if (unlockSound != null)
