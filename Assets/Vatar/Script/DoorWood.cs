@@ -46,7 +46,11 @@ public class DoorWood : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         Invoke(nameof(SetHaveKeyTrue), 0.8f);
-                        membukaKunci.Play();
+                        if (membukaKunci != null)
+                        {
+                            membukaKunci.Play();
+                        }
+                        
                     }
                 }
                 else if (!gotKey)
@@ -68,8 +72,14 @@ public class DoorWood : MonoBehaviour
                         {
                             open = false;
                             animasi.SetBool("open", false);
-                            bukaPintu.Stop();
-                            tutupPintu.PlayDelayed(1.3f);
+                            if (bukaPintu != null && tutupPintu != null)
+                            {
+                                bukaPintu.Stop();
+                            }
+                            if (tutupPintu != null)
+                            {
+                                tutupPintu.PlayDelayed(1.3f);
+                            }
                         }
                     }
                     else
@@ -78,8 +88,15 @@ public class DoorWood : MonoBehaviour
                         {
                             open = true;
                             animasi.SetBool("open", true);
-                            bukaPintu.Play();
-                            tutupPintu.Stop();
+
+                            if (bukaPintu != null)
+                            {
+                                bukaPintu.Play();
+                            }
+                            if (tutupPintu != null)
+                            {
+                                tutupPintu.Stop();
+                            }
                         }
                     }
                 }

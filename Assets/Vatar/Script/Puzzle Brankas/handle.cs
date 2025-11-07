@@ -10,6 +10,7 @@ public class handle : MonoBehaviour
     public Animator animator;
     public bool terbuka;
     public bool sudahBukaBrankas;
+    public AudioSource openSfx;
     
     void Start()
     {
@@ -33,6 +34,7 @@ public class handle : MonoBehaviour
                 {
                     animator.SetTrigger("open");
                     sudahBukaBrankas = true;
+                    openSfx.Play();
                 }
             }
             else

@@ -18,7 +18,7 @@ public class PuzzleBrankas : MonoBehaviour
     public DialTrigger trigger;
 
     public int currentIndex = 0;
-    private bool isUnlocked = false;
+    public bool isUnlocked = false;
     private int targetNumber = 0;
     private int lastNumber = -1;
     private float nextInputTime = 0f;

@@ -24,7 +24,7 @@ public class DialTrigger : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactDistance) && !Handle.sudahBukaBrankas)
+        if (Physics.Raycast(ray, out hit, interactDistance) && !puzzleBrankas.isUnlocked)
         {
             DialTrigger laci = hit.collider.GetComponent<DialTrigger>();
             if (laci != null && laci == this)
