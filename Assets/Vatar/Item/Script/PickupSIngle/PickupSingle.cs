@@ -1,3 +1,4 @@
+﻿using cakeslice;
 using UnityEngine;
 
 public class PickUpSingle : MonoBehaviour
@@ -14,11 +15,35 @@ public class PickUpSingle : MonoBehaviour
     void Update()
     {
         DetectGrabbableObject();
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (objectGrabbable == null && targetedObject != null)
+            {
+                targetedObject.Grab(objectGrabPointTransform);
+                objectGrabbable = targetedObject;
+                targetedObject = null;
+                Debug.Log("Picked up object.");
+                //InteractShow.instance.Hide();
+            }
+            else if (objectGrabbable != null)
+            {
+                Vector3 dropPosition = objectGrabPointTransform.position;
+
+                objectGrabbable.Drop();
+
+
+                objectGrabbable = null;
+
+                Debug.Log("Dropped object at: " + dropPosition);
+                //InteractShow.instance.Hide();
+            }
+
+        }
     }
 
     private void DetectGrabbableObject()
     {
-        targetedObject = null;
 
         if (objectGrabbable != null)
         {
@@ -29,14 +54,42 @@ public class PickUpSingle : MonoBehaviour
         {
             if (hit.transform.TryGetComponent(out ObjectGrab grabbable))
             {
-                targetedObject = grabbable;
+                if (targetedObject != grabbable)
+                {
+                    if (targetedObject != null)
+                    {
+                        targetedObject.OutlineHilang();
+                    }
+
+                    targetedObject = grabbable;
+                    targetedObject.OutlineMuncul();
+
+                   /* if (currentOutline != null)
+                    {
+                        currentOutline.eraseRenderer = true;
+                    }
+
+                    if (hit.transform.TryGetComponent(out Outline outlineBaru))
+                    {
+                        currentOutline = outlineBaru;
+                        currentOutline.eraseRenderer = false;
+                    }*/
+
+                }
                 return;
             }
         }
 
+        if (targetedObject != null)
+        {
+            targetedObject.OutlineMuncul();
+            targetedObject = null;
+        }
+
+        targetedObject = null;
     }
 
-    public void OnPickupButtonPressed()
+    /*public void OnPickupButtonPressed()
     {
         if (objectGrabbable == null && targetedObject != null)
         {
@@ -48,7 +101,7 @@ public class PickUpSingle : MonoBehaviour
             objectGrabbable.Drop();
             objectGrabbable = null;
         }
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
