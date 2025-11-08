@@ -117348,7 +117348,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -117858,13 +117858,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a78da3f00f3328541b4526c0b0b5ec5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineThickness: 2.3
+  lineThickness: 1
   lineIntensity: 1.6
-  fillAmount: 0.16
+  fillAmount: 0.02
   lineColor0: {r: 1, g: 0, b: 0, a: 1}
   lineColor1: {r: 0.98929596, g: 1, b: 0, a: 1}
   lineColor2: {r: 0, g: 0, b: 1, a: 1}
-  additiveRendering: 0
+  additiveRendering: 1
   backfaceCulling: 1
   fillColor: {r: 0, g: 0, b: 1, a: 1}
   useFillColor: 0
@@ -117873,7 +117873,7 @@ MonoBehaviour:
   scaleWithScreenSize: 1
   alphaCutoff: 0.5
   flipY: 0
-  sourceCamera: {fileID: 52583483665387789}
+  sourceCamera: {fileID: 0}
   autoEnableOutlines: 0
   outlineCamera: {fileID: 0}
   outlineShaderMaterial: {fileID: 0}
@@ -123570,16 +123570,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cf3d50a576521469a1ca35dfea1577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  crouchSpeed: 1.5
+  moveSpeed: 2
+  crouchSpeed: 1.2
   mouseSensitivity: 1
-  jumpForce: 5
+  jumpForce: 0
   groundCheck: {fileID: 1433817852243287019}
   groundCheckRadius: 0.5
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  walkClip: {fileID: 8300000, guid: 44d75ef5900972146b768b408cd38b86, type: 3}
+  walkClip: {fileID: 8300000, guid: d054d83fb71ad7749ab6c98cf47c69fd, type: 3}
   jumpClip: {fileID: 8300000, guid: f9e54b96511ea7f46ad69e662ed71e87, type: 3}
   cameraTransform: {fileID: 8101706952364123607}
   cameraFollowTarget: {fileID: 7563563371965934501}
