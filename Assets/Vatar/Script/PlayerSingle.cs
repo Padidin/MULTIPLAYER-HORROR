@@ -103,6 +103,8 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     {
         if (PauseManager.GameIsPaused) return;
 
+        UpdateAnimation();
+
         if (!canWalk) return;
         HoldingItemHand();
         LookAround();
@@ -120,7 +122,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
 
         ToggleMarker(showMap1);
 
-        UpdateAnimation();
+        
     }
 
     void CursorStatus()
@@ -284,25 +286,21 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     {
         if (isCrouchTransitioning) yield break;
         isCrouchTransitioning = true;
-        
-        canWalk = false;
 
         if (!isCrouching)
         {
             anim.SetTrigger("ToCrouch");
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(1f);
             isCrouching = true;
         }
         else
         {
             anim.SetTrigger("ToStand");
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(1f);
             isCrouching = false;
         }   
 
         yield return new WaitForSeconds(0.7f);
-
-        canWalk = true;
 
         isCrouchTransitioning = false;
     }
@@ -326,15 +324,6 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         float inputX = Input.GetAxis("Horizontal");
         float inputZ = Input.GetAxis("Vertical");
         float speed = new Vector2(inputX, inputZ).magnitude;
-
-        if (!canWalk)
-        {
-            speed = 0f;
-        }
-        else
-        {
-            speed = new Vector2(inputX, inputZ).magnitude;
-        }
 
         anim.SetFloat("MoveSpeed", speed);
         anim.SetBool("IsCrouching", isCrouching);
