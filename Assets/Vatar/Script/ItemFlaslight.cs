@@ -7,6 +7,7 @@ public class ItemFlaslight : MonoBehaviour
 {
     public Outline Outline;
     public Flashlight Flashlight;
+    public AudioSource PickupSfx;
 
     public float interactDistance = 1.5f;
 
@@ -25,6 +26,7 @@ public class ItemFlaslight : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     Flashlight.haveFlashlight = true;
+                    AudioSource.PlayClipAtPoint(PickupSfx.clip, transform.position);
                     Destroy(gameObject);
                 }
 

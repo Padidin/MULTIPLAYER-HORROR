@@ -6,6 +6,7 @@ public class Flashlight : MonoBehaviour
 {
     public bool haveFlashlight;
     public GameObject cahaya;
+    public AudioSource turnSfx;
 
     private void Update()
     {
@@ -16,10 +17,12 @@ public class Flashlight : MonoBehaviour
             if (cahaya.activeInHierarchy)
             {
                 cahaya.SetActive(false);
+                turnSfx.Play();
             }
             else
             {
                 cahaya.SetActive(true);
+                turnSfx.Play();
             }
         }
     }
