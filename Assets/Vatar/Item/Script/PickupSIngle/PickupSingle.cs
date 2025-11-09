@@ -82,7 +82,7 @@ public class PickUpSingle : MonoBehaviour
 
         if (targetedObject != null)
         {
-            targetedObject.OutlineMuncul();
+            targetedObject.OutlineHilang();
             targetedObject = null;
         }
 
