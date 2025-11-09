@@ -38,8 +38,6 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     public GameObject CanvasMap2;
     public GameObject markPlayer1;
     public GameObject markPlayer2;
-    public GameObject arrow1;
-    public GameObject arrow2;
     public bool showMap1;
 
     [Header("Crouch Collider")]
@@ -112,17 +110,12 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         CrouchStatus();
         Jump();
         MapStatus();
+        ToggleMarker(showMap1);
 
         if (Input.GetKeyDown(crouchKey))
         {
             StartCoroutine(CrouchRoutine());
         }
-
-        arrow1.SetActive(markPlayer1);
-
-        ToggleMarker(showMap1);
-
-        
     }
 
     void CursorStatus()
