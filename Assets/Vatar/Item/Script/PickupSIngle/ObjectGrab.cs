@@ -10,6 +10,8 @@ public class ObjectGrab : MonoBehaviour
     private Transform objectGrabPointTransform;
 
     public Outline[] outlineObject;
+    public MeshRenderer[] renderObjek;
+    public Collider colliderObjek;
     public QuestPlayer questPlayer;
     public bool inGrab;
     public string namaBenda;
@@ -48,6 +50,13 @@ public class ObjectGrab : MonoBehaviour
         inGrab = true;
         OutlineHilang();
         questPlayer.GrabObject(namaBenda);
+
+        foreach (MeshRenderer render in renderObjek)
+        {
+            render.enabled = false;
+        }
+
+        colliderObjek.enabled = false;
     }
 
     public void Drop()
@@ -58,6 +67,13 @@ public class ObjectGrab : MonoBehaviour
         objectRigidbody.constraints = RigidbodyConstraints.None;
         inGrab = false;
         questPlayer.DropObject(namaBenda);
+
+        foreach(MeshRenderer render in renderObjek)
+        {
+            render.enabled = true;
+        }
+
+        colliderObjek.enabled = true;
     }
 
     private void FixedUpdate()
