@@ -1,14 +1,24 @@
 fileFormatVersion: 2
-guid: b109800f3335b9a418c65ba09e6611c2
+guid: 56e06f49474bee84fa71c9c6e3981d7f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: painting02
+    second: {fileID: 2100000, guid: 6d17794bf5c4c7c4fb3911b0871ade23, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: painting02_base
+    second: {fileID: 2100000, guid: 877df008e10e43f4197a4ec0f8ac59f2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

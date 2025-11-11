@@ -31,6 +31,7 @@ public class MovingObject : MonoBehaviour
     {
         if (sudahTergeser)
         {
+            canvasUi.SetActive(false);
             foreach (cakeslice.Outline outline in Outline)
             {
                 outline.eraseRenderer = true;

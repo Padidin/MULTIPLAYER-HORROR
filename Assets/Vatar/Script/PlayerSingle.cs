@@ -324,7 +324,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         float sfxVolume = AudioManager.Instance != null ? AudioManager.Instance.sfxVolume : 1f;
         walkSource.volume = sfxVolume;
 
-        if (isGrounded && !walkSource.isPlaying && speed > 0.1f && sfxVolume > 0f)
+        if (isGrounded && !walkSource.isPlaying && speed > 0.1f && sfxVolume > 0f && canWalk)
         {
             walkSource.clip = walkClip;
             walkSource.Play();

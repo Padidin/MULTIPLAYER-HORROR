@@ -3,18 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedKeyPuzzle : MonoBehaviour
+public class FotoKeluarga : MonoBehaviour
 {
-    public DoorWood ScriptPintu;
-    public AudioSource PickupSfx;
-
     public Outline Outline;
-
     public float interactDistance = 1.5f;
-
+    public AudioSource PickupSfx;
     private Transform holder;
-    private Rigidbody rb;
 
+    private Rigidbody rb;
+    // Start is called before the first frame update
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,14 +25,13 @@ public class RedKeyPuzzle : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactDistance))
         {
-            RedKeyPuzzle laci = hit.collider.GetComponent<RedKeyPuzzle>();
+            FotoKeluarga laci = hit.collider.GetComponent<FotoKeluarga>();
             if (laci != null && laci == this)
             {
                 Outline.eraseRenderer = false;
 
                 if (Input.GetKeyDown(KeyCode.E) && ItemInspectManager.Instance.currentItem == null)
                 {
-                    ScriptPintu.gotKey = true;
                     PickupItem();
                 }
 
@@ -57,7 +53,7 @@ public class RedKeyPuzzle : MonoBehaviour
     {
         rb.isKinematic = true;
         gameObject.transform.SetParent(holder);
-        transform.position = holder.position;
+        gameObject.transform.position = holder.position;
         PickupSfx.Play();
     }
 
@@ -69,8 +65,6 @@ public class RedKeyPuzzle : MonoBehaviour
         {
             ItemInspectManager.Instance.DropItem();
             rb.isKinematic = false;
-            ScriptPintu.gotKey = false;
         }
     }
 }
-

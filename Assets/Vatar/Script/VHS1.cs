@@ -3,40 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedKeyPuzzle : MonoBehaviour
+public class VHS1 : MonoBehaviour
 {
-    public DoorWood ScriptPintu;
-    public AudioSource PickupSfx;
-
     public Outline Outline;
-
+    public AudioSource pickupSfx;
     public float interactDistance = 1.5f;
+    public Transform inspectHolder;
 
-    private Transform holder;
     private Rigidbody rb;
-
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
-        holder = GameObject.Find("Inspect Holder").transform;
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
+        DropItem();
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, interactDistance))
         {
-            RedKeyPuzzle laci = hit.collider.GetComponent<RedKeyPuzzle>();
+            VHS1 laci = hit.collider.GetComponent<VHS1>();
             if (laci != null && laci == this)
             {
                 Outline.eraseRenderer = false;
 
                 if (Input.GetKeyDown(KeyCode.E) && ItemInspectManager.Instance.currentItem == null)
                 {
-                    ScriptPintu.gotKey = true;
-                    PickupItem();
+                    rb.isKinematic = true;
+                    gameObject.transform.SetParent(inspectHolder);
+                    transform.position = inspectHolder.position;
+                    pickupSfx.Play();
                 }
 
             }
@@ -49,28 +48,18 @@ public class RedKeyPuzzle : MonoBehaviour
         {
             Outline.eraseRenderer = true;
         }
-
-        DropItem();
-    }
-
-    void PickupItem()
-    {
-        rb.isKinematic = true;
-        gameObject.transform.SetParent(holder);
-        transform.position = holder.position;
-        PickupSfx.Play();
     }
 
     void DropItem()
     {
+        Transform holder = GameObject.Find("Inspect Holder").transform;
+
         if (!transform.IsChildOf(holder)) return;
 
         if (Input.GetKeyDown(KeyCode.G))
         {
             ItemInspectManager.Instance.DropItem();
             rb.isKinematic = false;
-            ScriptPintu.gotKey = false;
         }
     }
 }
-
