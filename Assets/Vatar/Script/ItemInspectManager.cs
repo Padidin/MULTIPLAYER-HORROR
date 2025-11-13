@@ -13,6 +13,7 @@ public class ItemInspectManager : MonoBehaviour
     public GameObject CrossBar;
     public GameObject UiItem;
     public GameObject UiNotHoldingAnyItem;
+    public GameObject UiIndikator;
 
     void Awake()
     {
@@ -60,6 +61,7 @@ public class ItemInspectManager : MonoBehaviour
         }
 
         CrossBar.SetActive(false);
+        UiIndikator.SetActive(false);
         PlayerSingle.instance.canWalk = false;
         isInspecting = true;
         Cursor.visible = true;
@@ -72,6 +74,7 @@ public class ItemInspectManager : MonoBehaviour
         UiItem.SetActive(false);
         UiNotHoldingAnyItem.SetActive(false);
         CrossBar.SetActive(true);
+        UiIndikator.SetActive(true);
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
