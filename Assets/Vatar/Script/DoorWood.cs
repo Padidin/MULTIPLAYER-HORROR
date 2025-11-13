@@ -53,7 +53,7 @@ public class DoorWood : MonoBehaviour
                         
                     }
                 }
-                else if (!gotKey)
+                else if (!gotKey && !haveKey)
                 {
                     if (Input.GetKeyDown(KeyCode.E))
                     {
