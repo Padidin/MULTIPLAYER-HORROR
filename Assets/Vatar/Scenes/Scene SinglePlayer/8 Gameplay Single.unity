@@ -20558,7 +20558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &318222074
 Transform:
   m_ObjectHideFlags: 0
@@ -20585,7 +20585,7 @@ PlayableDirector:
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: b9475121f88f03c43a91f6d3bb359081, type: 2}
   m_InitialState: 1
-  m_WrapMode: 2
+  m_WrapMode: 0
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
@@ -115259,7 +115259,11 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 21c690f7df38f394ba9a07b050c1b56c, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 4033125cac530344ea1652991d5c53ab, type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 21c690f7df38f394ba9a07b050c1b56c, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 21c690f7df38f394ba9a07b050c1b56c, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 1
