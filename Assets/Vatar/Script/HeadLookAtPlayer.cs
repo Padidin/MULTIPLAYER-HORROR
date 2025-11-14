@@ -1,64 +1,53 @@
 using UnityEngine;
 
-public class HeadRotateToPlayer : MonoBehaviour
+public class HeadLookSimple : MonoBehaviour
 {
-    public Transform headBone;      // drag bone kepala (biasanya mixamorig:Head)
-    public Transform player;        // drag player
-    public float lookRadius = 8f;   // jarak maksimal buat nengok
-    public float rotateSpeed = 5f;  // kecepatan rotasi kepala
-    public float maxHeadTurn = 60f; // biar kepala gak muter kayak burung hantu 
+    public Transform headBone;     // mixamorig:Head
+    public Transform followTarget; // biasanya player HEAD / camera
+    public float smooth = 6f;
 
-    private Quaternion initialRotation;
+    [Header("Clamp")]
+    public float maxYaw = 60f;     // kiri-kanan
+    public float maxPitch = 30f;   // atas-bawah
+
+    private Quaternion defaultRot;
 
     void Start()
     {
-        if (headBone == null)
-        {
-            Debug.LogWarning("Belum assign headBone di inspector!");
-            return;
-        }
-
-        initialRotation = headBone.localRotation;
+        defaultRot = headBone.localRotation; // simpan rotasi awal
     }
 
-    void Update()
+    void LateUpdate()
     {
-        if (headBone == null || player == null) return;
+        if (headBone == null || followTarget == null) return;
 
-        float distance = Vector3.Distance(transform.position, player.position);
+        // arah target dalam LOCAL SPACE head parent
+        Vector3 localDir = headBone.parent.InverseTransformPoint(followTarget.position);
 
-        if (distance <= lookRadius)
-        {
-            Vector3 lookDir = player.position - headBone.position;
-            lookDir.y = 0; // biar gak nunduk / mendongak berlebihan
-            Quaternion targetRotation = Quaternion.LookRotation(lookDir);
-            Quaternion limitedRotation = LimitHeadRotation(targetRotation);
+        // dapatkan rotasi yang diinginkan
+        Quaternion lookRot = Quaternion.LookRotation(localDir);
 
-            headBone.rotation = Quaternion.Slerp(
-                headBone.rotation,
-                limitedRotation,
-                Time.deltaTime * rotateSpeed
-            );
-        }
-        else
-        {
-            // balik ke posisi awal
-            headBone.localRotation = Quaternion.Slerp(
-                headBone.localRotation,
-                initialRotation,
-                Time.deltaTime * rotateSpeed
-            );
-        }
-    }
+        // convert ke Euler biar bisa di-clamp
+        Vector3 euler = lookRot.eulerAngles;
 
-    Quaternion LimitHeadRotation(Quaternion target)
-    {
-        Quaternion localTarget = Quaternion.Inverse(transform.rotation) * target;
-        Vector3 euler = localTarget.eulerAngles;
-
+        // Benerin nilai jadi -180 sampai 180
         if (euler.y > 180) euler.y -= 360;
-        euler.y = Mathf.Clamp(euler.y, -maxHeadTurn, maxHeadTurn);
+        if (euler.x > 180) euler.x -= 360;
 
-        return transform.rotation * Quaternion.Euler(0, euler.y, 0);
+        // clamp kanan-kiri (yaw)
+        euler.y = Mathf.Clamp(euler.y, -maxYaw, maxYaw);
+
+        // clamp atas-bawah (pitch)
+        euler.x = Mathf.Clamp(euler.x, -maxPitch, maxPitch);
+
+        // gabung lagi
+        Quaternion clampedRot = Quaternion.Euler(euler);
+
+        // apply smooth
+        headBone.localRotation = Quaternion.Slerp(
+            headBone.localRotation,
+            defaultRot * clampedRot,
+            Time.deltaTime * smooth
+        );
     }
 }
