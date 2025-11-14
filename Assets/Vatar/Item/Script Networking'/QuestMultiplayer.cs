@@ -2,64 +2,54 @@ using cakeslice;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class QuestPlayer : MonoBehaviour
+public class QuestMultiplayer : MonoBehaviourPunCallbacks
 {
     public GameObject letakPisau;
     public GameObject letakPel;
     public Outline[] outlinePisau;
     public Outline[] outlinePel;
-    public QuestCanvas quest;
-
-    public bool itemPertama = false;
-
-    private void Awake()
-    {
-        quest = GetComponent<QuestCanvas>();
-    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Pisau"))
         {
-            letakPisau.SetActive(true);
-            Destroy(other.gameObject);
-
-            quest.AddProgress(1);
+            //letakPisau.SetActive(true);
+            photonView.RPC("PisauAktif", RpcTarget.All);
+            PhotonNetwork.Destroy(other.gameObject);
+            
         }
         if (other.CompareTag("Pel"))
         {
-            letakPel.SetActive(true);
-            Destroy(other.gameObject);
-
-            quest.AddProgress(1);
+            photonView.RPC("PelAktif", RpcTarget.All);
+            PhotonNetwork.Destroy(other.gameObject);
         }
     }
 
+    [PunRPC]
+    void PisauAktif()
+    {
+        letakPisau.SetActive(true);
+    }
+
+    [PunRPC]
+    void PelAktif()
+    {
+        letakPel.SetActive(true);
+    }
     public void GrabObject(string bendaApa)
     {
         if (bendaApa == "Pisau")
         {
-            if (!itemPertama)
-            {
-                //Timeline dialog muncul quest mencari bukti
-
-                itemPertama = true;
-            }
-
             foreach (var objek in outlinePisau)
             {
                 objek.eraseRenderer = false;
             }
-        }else if (bendaApa == "Pel")
+        }
+        else if (bendaApa == "Pel")
         {
-            if (!itemPertama)
-            {
-                //Timeline dialog muncul quest mencari bukti
-
-                itemPertama = true;
-            }
-
             foreach (var objek in outlinePel)
             {
                 objek.eraseRenderer = false;
@@ -75,7 +65,8 @@ public class QuestPlayer : MonoBehaviour
             {
                 objek.eraseRenderer = true;
             }
-        }else if (bendaApa == "Pel")
+        }
+        else if (bendaApa == "Pel")
         {
             foreach (var objek in outlinePel)
             {

@@ -56,7 +56,7 @@ public class ObjectGrab : MonoBehaviour
             render.enabled = false;
         }
 
-        colliderObjek.enabled = false;
+        colliderObjek.isTrigger = true;
     }
 
     public void Drop()
@@ -73,7 +73,7 @@ public class ObjectGrab : MonoBehaviour
             render.enabled = true;
         }
 
-        colliderObjek.enabled = true;
+        colliderObjek.isTrigger = false;
     }
 
     private void FixedUpdate()

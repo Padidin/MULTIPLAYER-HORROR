@@ -4,6 +4,10 @@ using cakeslice;
 
 public class ObjectGrabbable : MonoBehaviourPun
 {
+    public string namaBenda;
+    public Outline[] outlineObjek;
+    public QuestPlayer questPlayer;
+
     private Rigidbody objectRigidbody;
     private Transform objectGrabPointTransform;
     private Outline outline;
@@ -13,12 +17,36 @@ public class ObjectGrabbable : MonoBehaviourPun
     {
         objectRigidbody = GetComponent<Rigidbody>();
         outline = GetComponent<Outline>();
+
+        GameObject questObjek = GameObject.Find("Quest Object");
+        questPlayer = questObjek.GetComponent<QuestPlayer>();
     }
 
     private void Start()
     {
         outline.enabled = false;
-        outline.eraseRenderer = false;
+        outline.eraseRenderer = true;
+
+        foreach (Outline garisObjek in  outlineObjek)
+        {
+            garisObjek.eraseRenderer = true;
+        }
+    }
+
+    public void GarisMuncul()
+    {
+        foreach (Outline garisObjek in outlineObjek)
+        {
+            garisObjek.eraseRenderer = false;
+        }
+    }
+
+    public void GarisHilang()
+    {
+        foreach (Outline garisObjek in outlineObjek)
+        {
+            garisObjek.eraseRenderer = true;
+        }
     }
 
     // ✅ UBAH NAMA METHOD MENJADI "NetworkGrab"
@@ -49,12 +77,13 @@ public class ObjectGrabbable : MonoBehaviourPun
             objectRigidbody.isKinematic = true;
             isBeingGrabbed = true;
 
+            questPlayer.GrabObject(namaBenda);
+
             // ✅ TRANSFER OWNERSHIP YANG BENAR
             photonView.RequestOwnership();
         }
     }
 
-    // ✅ UBAH NAMA METHOD MENJADI "NetworkDrop"
     [PunRPC]
     public void NetworkDrop(Vector3 dropPosition)
     {
@@ -67,6 +96,8 @@ public class ObjectGrabbable : MonoBehaviourPun
 
         transform.position = dropPosition + Vector3.up * 0.1f;
         objectRigidbody.AddForce(Random.insideUnitSphere * 1f, ForceMode.Impulse);
+
+        questPlayer.DropObject(namaBenda);
     }
 
     private void FixedUpdate()

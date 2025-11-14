@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using cakeslice; // <-- Pastikan using ini ada
+using cakeslice;
 
 public class NetworkPlayerPickUpDrop : MonoBehaviourPun
 {
@@ -27,8 +27,7 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
 
                 if (lastDetectedObject != null)
                 {
-                    lastDetectedObject.GetComponent<Outline>().enabled = false;
-                    lastDetectedObject = null;
+                    lastDetectedObject.GarisHilang();
                 }
             }
             else if (objectGrabbable != null)
@@ -70,8 +69,6 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
         {
             objectGrabbable.photonView.RPC("NetworkDrop", RpcTarget.All, dropPosition);
             objectGrabbable = null;
-
-            // UI di-handle oleh DetectObject() di frame berikutnya
         }
     }
     
@@ -94,10 +91,10 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
                 {
                     if (lastDetectedObject != null)
                     {
-                        lastDetectedObject.GetComponent<Outline>().enabled = false;
+                        lastDetectedObject.GarisHilang();
                     }
 
-                    detectedObject.GetComponent<Outline>().enabled = true;
+                    detectedObject.GarisMuncul();
                     lastDetectedObject = detectedObject;
                 }
                 
@@ -113,7 +110,7 @@ public class NetworkPlayerPickUpDrop : MonoBehaviourPun
     {
         if (lastDetectedObject != null)
         {
-            lastDetectedObject.GetComponent<Outline>().enabled = false;
+            lastDetectedObject.GarisHilang();
             lastDetectedObject = null;
         }
 
