@@ -3004,6 +3004,22 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c8e4cd717a1b5ac43b605ae1caa96a75, type: 2}
+    - target: {fileID: -9153572958596185397, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -9153572958596185397, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -9153572958596185397, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -9153572958596185397, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.706
@@ -3041,6 +3057,58 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7471964760970041724, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7471964760970041724, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7471964760970041724, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7471964760970041724, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7471964760970041724, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7471964760970041724, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2973283718405154916, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8841333
+      objectReference: {fileID: 0}
+    - target: {fileID: -2973283718405154916, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.46723488
+      objectReference: {fileID: 0}
+    - target: {fileID: -2973283718405154916, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0000000074505815
+      objectReference: {fileID: 0}
+    - target: {fileID: -2973283718405154916, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000000100582845
+      objectReference: {fileID: 0}
+    - target: {fileID: -2973283718405154916, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 55.71
+      objectReference: {fileID: 0}
+    - target: {fileID: -2973283718405154916, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2973283718405154916, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
@@ -22961,11 +23029,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cdbd0161848de4ead3ce59349ec9d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 3
-  anim: {fileID: 2134924201}
   headBone: {fileID: 1129848170}
-  lookTarget: {fileID: 3422854974530416632}
-  director: {fileID: 318222075}
+  followTarget: {fileID: 3422854974530416632}
+  smooth: 6
+  maxYaw: 60
+  maxPitch: 30
 --- !u!82 &369080145
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24292,7 +24360,7 @@ Transform:
   m_GameObject: {fileID: 385246621}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0296, y: 1.653, z: 0.0715}
+  m_LocalPosition: {x: 0.0305, y: 1.653, z: 0.0723}
   m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -62015,7 +62083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7a076698f06542d4998fd788f80bf10e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8181767583356758097, guid: 714efae5bdb3ee74fbf04875150bc5b7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -116558,17 +116626,10 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 21c690f7df38f394ba9a07b050c1b56c, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 880ee1e59f0745a4c9f3157f3dd0d265, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 21c690f7df38f394ba9a07b050c1b56c, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig9:LeftHandRing3'\n\tTransform 'mixamorig9:RightHandRing1'\n\tTransform
-        'mixamorig9:LeftHandPinky3'\n\tTransform 'mixamorig9:LeftHandIndex2'\n\tTransform
-        'mixamorig9:RightHandThumb2'\n\tTransform 'mixamorig9:LeftForeArm'\n\tTransform
-        'mixamorig9:LeftFoot'\n\tTransform 'mixamorig9:RightHandThumb3'\n\tTransform
-        'mixamorig9:RightHandPinky1'\n\tTransform 'mixamorig9:RightHandMiddle1'\n\tand
-        more ..."
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 21c690f7df38f394ba9a07b050c1b56c, type: 3}
       propertyPath: m_ApplyRootMotion
