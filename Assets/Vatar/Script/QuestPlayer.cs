@@ -11,7 +11,7 @@ public class QuestPlayer : MonoBehaviour
     public Outline[] outlinePisau;
     public Outline[] outlinePel;
     public QuestCanvas[] quests;
-    public GameObject timelineQuestAwal;
+    public GameObject timelineDialogQuest;
 
     public TextMeshProUGUI textQuest;
     public string textName;
@@ -23,9 +23,9 @@ public class QuestPlayer : MonoBehaviour
     private void Awake()
     {
         quests = FindObjectsOfType<QuestCanvas>();
-        timelineQuestAwal = GameObject.Find("Timeline Item Pertama");
+        timelineDialogQuest = GameObject.Find("Timeline Item Pertama");
 
-        timelineQuestAwal.SetActive(false);
+        timelineDialogQuest.SetActive(false);
 
         itemTerkumpul = 0;
 
@@ -56,7 +56,7 @@ public class QuestPlayer : MonoBehaviour
         {
             if (!itemPertama)
             {
-                timelineQuestAwal.SetActive(true);
+                timelineDialogQuest.SetActive(true);
 
                 itemPertama = true;
             }
