@@ -1,6 +1,7 @@
 using cakeslice;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class QuestPlayer : MonoBehaviour
@@ -9,15 +10,28 @@ public class QuestPlayer : MonoBehaviour
     public GameObject letakPel;
     public Outline[] outlinePisau;
     public Outline[] outlinePel;
-    public QuestCanvas quest;
+    public QuestCanvas[] quests;
+    public GameObject timelineQuestAwal;
+
+    public TextMeshProUGUI textQuest;
+    public string textName;
+    public int itemTerkumpul;
+    public int maxItem = 6;
 
     public bool itemPertama = false;
 
     private void Awake()
     {
-        quest = GetComponent<QuestCanvas>();
-    }
+        quests = FindObjectsOfType<QuestCanvas>();
+        timelineQuestAwal = GameObject.Find("Timeline Item Pertama");
 
+        timelineQuestAwal.SetActive(false);
+
+        itemTerkumpul = 0;
+
+        UpdateUI();
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Pisau"))
@@ -25,14 +39,14 @@ public class QuestPlayer : MonoBehaviour
             letakPisau.SetActive(true);
             Destroy(other.gameObject);
 
-            quest.AddProgress(1);
+            AddProgress(1);
         }
         if (other.CompareTag("Pel"))
         {
             letakPel.SetActive(true);
             Destroy(other.gameObject);
 
-            quest.AddProgress(1);
+            AddProgress(1);
         }
     }
 
@@ -42,7 +56,7 @@ public class QuestPlayer : MonoBehaviour
         {
             if (!itemPertama)
             {
-                //Timeline dialog muncul quest mencari bukti
+                timelineQuestAwal.SetActive(true);
 
                 itemPertama = true;
             }
@@ -82,5 +96,18 @@ public class QuestPlayer : MonoBehaviour
                 objek.eraseRenderer = true;
             }
         }
+    }
+
+    public void AddProgress(int jumlah)
+    {
+        itemTerkumpul += jumlah;
+
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        textQuest.text = $"{textName} ({itemTerkumpul}) ";
+
     }
 }

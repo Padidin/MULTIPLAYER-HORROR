@@ -5,32 +5,19 @@ using TMPro;
 
 public class QuestCanvas : MonoBehaviour
 {
-    public TextMeshProUGUI textQuest;
-    public string textName;
-    public int itemTerkumpul;
-    public int maxItem = 6;
+    public bool questMuncul;
+    public GameObject timelineQuest;
+
     private void Start()
     {
-        itemTerkumpul = 0;
-
-        UpdateUI();
+        timelineQuest.SetActive(false);
     }
-
     private void Update()
     {
-
+        if (questMuncul)
+        {
+            timelineQuest.SetActive(true);
+        }
     }
 
-    public void AddProgress(int jumlah)
-    {
-        itemTerkumpul += jumlah;
-
-        UpdateUI();
-    }
-
-    public void UpdateUI()
-    {
-        textQuest.text = $"{textName} ({itemTerkumpul}) ";
-
-    }
 }
