@@ -13,10 +13,7 @@ public class QuestPlayer : MonoBehaviour
     public QuestCanvas[] quests;
     public GameObject timelineDialogQuest;
 
-    public TextMeshProUGUI textQuest;
-    public string textName;
-    public int itemTerkumpul;
-    public int maxItem = 6;
+
 
     public bool itemPertama = false;
 
@@ -26,10 +23,6 @@ public class QuestPlayer : MonoBehaviour
         timelineDialogQuest = GameObject.Find("Timeline Item Pertama");
 
         timelineDialogQuest.SetActive(false);
-
-        itemTerkumpul = 0;
-
-        UpdateUI();
     }
     
     private void OnTriggerEnter(Collider other)
@@ -39,14 +32,20 @@ public class QuestPlayer : MonoBehaviour
             letakPisau.SetActive(true);
             Destroy(other.gameObject);
 
-            AddProgress(1);
+            foreach(QuestCanvas canvasQuest in quests)
+            {
+                canvasQuest.AddProgress(1);
+            }
         }
         if (other.CompareTag("Pel"))
         {
             letakPel.SetActive(true);
             Destroy(other.gameObject);
 
-            AddProgress(1);
+            foreach (QuestCanvas canvasQuest in quests)
+            {
+                canvasQuest.AddProgress(1);
+            }
         }
     }
 
@@ -96,18 +95,5 @@ public class QuestPlayer : MonoBehaviour
                 objek.eraseRenderer = true;
             }
         }
-    }
-
-    public void AddProgress(int jumlah)
-    {
-        itemTerkumpul += jumlah;
-
-        UpdateUI();
-    }
-
-    public void UpdateUI()
-    {
-        textQuest.text = $"{textName} ({itemTerkumpul}) ";
-
     }
 }
