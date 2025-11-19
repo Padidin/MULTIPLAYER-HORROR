@@ -13,7 +13,9 @@ public class RandomSpawnItem : MonoBehaviour
 
         Transform titikSpawnTerpilih = spawnPoint[randomIndex];
 
+        transform.parent = titikSpawnTerpilih;
         transform.position = titikSpawnTerpilih.position;
+
     }
 
 }
