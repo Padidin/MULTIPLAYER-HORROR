@@ -44,10 +44,6 @@ public class ItemInspectManager : MonoBehaviour
             inspectCamera.fieldOfView -= scroll * zoomSpeed;
             inspectCamera.fieldOfView = Mathf.Clamp(inspectCamera.fieldOfView, 20f, 60f);
         }
-        else
-        {
-            PlayerSingle.instance.canWalk = true;
-        }
     }
     void OpenInspect()
     {
@@ -75,6 +71,7 @@ public class ItemInspectManager : MonoBehaviour
         UiNotHoldingAnyItem.SetActive(false);
         CrossBar.SetActive(true);
         UiIndikator.SetActive(true);
+        PlayerSingle.instance.canWalk = true;
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
