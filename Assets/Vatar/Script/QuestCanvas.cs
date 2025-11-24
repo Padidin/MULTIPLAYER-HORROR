@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Playables;
 
 public class QuestCanvas : MonoBehaviour
 {
     public bool questMuncul;
-    public GameObject timelineQuest;
+    public PlayableDirector timelineQuest;
 
     public TextMeshProUGUI textQuest;
     public string textName;
@@ -15,7 +16,7 @@ public class QuestCanvas : MonoBehaviour
 
     private void Start()
     {
-        timelineQuest.SetActive(false);
+        timelineQuest.Stop();
 
         itemTerkumpul = 0;
         UpdateUI();
@@ -24,7 +25,7 @@ public class QuestCanvas : MonoBehaviour
     {
         if (questMuncul)
         {
-            timelineQuest.SetActive(true);
+            timelineQuest.Play();
         }
     }
 

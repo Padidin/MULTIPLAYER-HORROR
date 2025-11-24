@@ -1626,6 +1626,7 @@ GameObject:
   m_Component:
   - component: {fileID: 33871485}
   - component: {fileID: 33871484}
+  - component: {fileID: 33871486}
   m_Layer: 0
   m_Name: Timeline Item Pertama
   m_TagString: Untagged
@@ -1652,6 +1653,8 @@ PlayableDirector:
     value: {fileID: 935754622}
   - key: {fileID: 8208876393784208246, guid: b3ecc36a6e8128f4e903c2ada204522d, type: 2}
     value: {fileID: 1369648133}
+  - key: {fileID: 7671204465722801069, guid: b3ecc36a6e8128f4e903c2ada204522d, type: 2}
+    value: {fileID: 33871486}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &33871485
@@ -1669,6 +1672,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &33871486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33871483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 74978feabb5cb0240ae92f6be765c25d, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1493705188}
+          m_TargetAssemblyTypeName: QuestPlayer, Assembly-CSharp
+          m_MethodName: QuestMunculRor
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &38197279
 GameObject:
   m_ObjectHideFlags: 0
@@ -2209,8 +2242,8 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: b9c946dab1a4fa44796e4005b092e2fa, type: 2}
-  m_InitialState: 1
-  m_WrapMode: 2
+  m_InitialState: 0
+  m_WrapMode: 0
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
@@ -2247,8 +2280,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -82313,10 +82346,6 @@ MonoBehaviour:
   outlinePel: []
   quests: []
   timelineDialogQuest: {fileID: 0}
-  textQuest: {fileID: 0}
-  textName: 
-  itemTerkumpul: 0
-  maxItem: 6
   itemPertama: 0
 --- !u!1 &1494467259
 GameObject:
@@ -125145,9 +125174,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questMuncul: 0
-  timelineQuest: {fileID: 863802140}
-  textQuest: {fileID: 0}
-  textName: 
+  timelineQuest: {fileID: 47003881}
+  textQuest: {fileID: 47003882}
+  textName: '- Carilah benda yang mencurigakan di rumah ini'
   itemTerkumpul: 0
   maxItem: 6
 --- !u!4 &8838758468041565518

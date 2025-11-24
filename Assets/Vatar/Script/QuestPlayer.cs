@@ -96,4 +96,19 @@ public class QuestPlayer : MonoBehaviour
             }
         }
     }
+
+    public void QuestMunculRor()
+    {
+        foreach (QuestCanvas canvasQuest in quests)
+        {
+            canvasQuest.questMuncul = true;
+        }
+    }
+    public void QuestHilangRor()
+    {
+        foreach (QuestCanvas canvasQuest in quests)
+        {
+            canvasQuest.questMuncul = false;
+        }
+    }
 }
