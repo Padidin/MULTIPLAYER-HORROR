@@ -55,6 +55,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     private bool isCrouchTransitioning = false;
     private bool isJumpingFromCrouch = false;
     public bool canWalk = true;
+    private bool lastCanWalkState;
 
     private Vector3 standCamLocalPos;
     private Vector3 crouchCamLocalPos;
@@ -63,6 +64,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     private OutlineEffect outlineEffect;
 
     private KeyCode crouchKey = KeyCode.C;
+    public GameObject cantMoveobj;
 
     private void Awake()
     {
@@ -100,7 +102,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
     void Update()
     {
         if (PauseManager.GameIsPaused) return;
-
+        canmoveStatus();
         UpdateAnimation();
 
         if (!canWalk) return;
@@ -117,6 +119,19 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
             StartCoroutine(CrouchRoutine());
         }
     }
+
+    void canmoveStatus()
+    {
+        bool newState = !cantMoveobj.activeInHierarchy;
+
+        if (newState != lastCanWalkState)
+        {
+            canWalk = newState;
+        }
+
+        lastCanWalkState = newState;
+    }
+
 
     void CursorStatus()
     {

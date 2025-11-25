@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1696683877829304808}
   - component: {fileID: 6239083038511394992}
   - component: {fileID: 7153938557857980950}
+  - component: {fileID: 5277036792394366752}
   m_Layer: 0
   m_Name: papanpintu1.008
   m_TagString: Untagged
@@ -106,6 +107,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3264875591081620631, guid: 8b8b1e1b24a55184c86e00a2ac13d5ef, type: 3}
+--- !u!114 &5277036792394366752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935394450581378210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 1
+  eraseRenderer: 1
 --- !u!1 &4640495689839184530
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,11 +609,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animasi: {fileID: 8507886493282414724}
-  open: 0
-  terjangkau: 0
+  gotKey: 1
   haveKey: 1
   bukaPintu: {fileID: 3695015424469543772}
   tutupPintu: {fileID: 5838951067652096108}
+  pintuTerkunci: {fileID: 0}
+  membukaKunci: {fileID: 0}
   Outline:
   - {fileID: 4301436348840223056}
   interactDistance: 1.5
