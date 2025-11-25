@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class InspectMultiplayer : MonoBehaviour
 {
+    [Header("Komponent Inspect")]
     public Camera inspectCamera;
     public Transform inspectHolder;
     public Transform dropPoint;
+    public string namaInspect;
+    public string namaHolder;
     public float zoomSpeed = 2f;
 
     public Playere player;
 
+    [Header("Item dan UI")]
     public GameObject currentItem;
     public bool isInspecting = false;
     public GameObject CrossBar;
@@ -18,7 +22,13 @@ public class InspectMultiplayer : MonoBehaviour
 
     void Awake()
     {
+        GameObject inspectObject = GameObject.Find(namaInspect);
+        inspectHolder = GameObject.Find(namaHolder).transform;
 
+        if (inspectObject != null)
+        {
+            inspectCamera = inspectObject.GetComponent<Camera>();
+        }
     }
 
     void Start()
@@ -59,6 +69,8 @@ public class InspectMultiplayer : MonoBehaviour
         else
         {
             UiItem.SetActive(true);
+            RotateInspectMulti itemRotate = currentItem.GetComponent<RotateInspectMulti>();
+            itemRotate.bisaRotate = true;
         }
 
         CrossBar.SetActive(false);
@@ -79,6 +91,12 @@ public class InspectMultiplayer : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        if (currentItem != null)
+        {
+            RotateInspectMulti itemRotate = currentItem.GetComponent<RotateInspectMulti>();
+            itemRotate.bisaRotate = false;
+        }
     }
 
     void CheckItemHold()
@@ -91,9 +109,9 @@ public class InspectMultiplayer : MonoBehaviour
             {
                 currentItem = firstChild;
                 
-                if (currentItem.GetComponent<RotateInspectItem>() == null)
+                if (currentItem.GetComponent<RotateInspectMulti>() == null)
                 {
-                    currentItem.AddComponent<RotateInspectItem>();
+                    currentItem.AddComponent<RotateInspectMulti>();
                 }
             }
         }
@@ -107,7 +125,7 @@ public class InspectMultiplayer : MonoBehaviour
     {
         CloseInspect();
         currentItem.transform.position = dropPoint.position;
-        currentItem.transform.SetParent(null); 
+        currentItem.transform.SetParent(null);
     }
 
 }

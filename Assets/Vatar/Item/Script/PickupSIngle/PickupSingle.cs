@@ -4,10 +4,12 @@ using UnityEngine.UI;
 
 public class PickUpSingle : MonoBehaviour
 {
+    [Header("Player Setting")]
     [SerializeField] private Transform playerCamera;
     [SerializeField] private Transform objectGrabPointTransform;
     [SerializeField] private LayerMask pickUpLayerMask;
     [SerializeField] private float pickUpDistance = 3f;
+    public string namaPlayer;
 
     private ObjectGrab objectGrabbable;
     private ObjectGrab targetedObject;
@@ -34,7 +36,7 @@ public class PickUpSingle : MonoBehaviour
         {
             if (objectGrabbable == null && targetedObject != null)
             {
-                targetedObject.Grab(objectGrabPointTransform);
+                targetedObject.Grab(namaPlayer);
                 objectGrabbable = targetedObject;
                 targetedObject = null;
                 if (objectGrabbable.namaBenda == "Pisau")
@@ -46,20 +48,14 @@ public class PickUpSingle : MonoBehaviour
             }
             else if (objectGrabbable != null)
             {
-                Vector3 dropPosition = objectGrabPointTransform.position;
-
-                objectGrabbable.Drop();
+                objectGrabbable.Drop(namaPlayer);
                 if (objectGrabbable.namaBenda == "Pisau")
                 {
                     iniPisau = false;
                 }
 
                 objectGrabbable = null;
-
-                Debug.Log("Dropped object at: " + dropPosition);
-                //InteractShow.instance.Hide();
             }
-
         }
     }
 
@@ -95,7 +91,7 @@ public class PickUpSingle : MonoBehaviour
                         currentOutline = outlineBaru;
                         currentOutline.eraseRenderer = false;
                     }*/
-
+                    
                 }
                 return;
             }
@@ -124,7 +120,7 @@ public class PickUpSingle : MonoBehaviour
         }
     }*/
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Object"))
         {
@@ -137,5 +133,5 @@ public class PickUpSingle : MonoBehaviour
         {
             //outlineErase.OutlineHilang(other.gameObject);
         }
-    }
+    }*/
 }

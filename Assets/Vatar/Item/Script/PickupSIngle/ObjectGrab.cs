@@ -9,10 +9,12 @@ public class ObjectGrab : MonoBehaviour
     private Rigidbody objectRigidbody;
     private Transform objectGrabPointTransform;
 
+    [SerializeField] private InspectMultiplayer inspectMulti;
     public Outline[] outlineObject;
     public MeshRenderer[] renderObjek;
     public Collider colliderObjek;
     public QuestPlayer questPlayer;
+    public Transform holderTrans;
     public bool inGrab;
     public string namaBenda;
 
@@ -22,6 +24,7 @@ public class ObjectGrab : MonoBehaviour
 
         GameObject questObjek = GameObject.Find("Quest Object");
         questPlayer = questObjek.GetComponent<QuestPlayer>();
+        holderTrans = GameObject.Find("Inspect Holder").transform;
 
         OutlineHilang();
     }
@@ -41,42 +44,52 @@ public class ObjectGrab : MonoBehaviour
         }
     }
 
-    public void Grab(Transform objectGrabPointTransform)
+    public void Grab(string namaPlayer)
     {
-        this.objectGrabPointTransform = objectGrabPointTransform;
         objectRigidbody.useGravity = false;
 
-        objectRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        objectRigidbody.isKinematic = true;
         inGrab = true;
         OutlineHilang();
         questPlayer.GrabObject(namaBenda);
 
-        foreach (MeshRenderer render in renderObjek)
-        {
-            render.enabled = false;
-        }
+        //foreach (MeshRenderer render in renderObjek)
+        //{
+        //    render.enabled = false;
+        //}
+
+        gameObject.transform.SetParent(holderTrans);
+        transform.position = holderTrans.position;
 
         colliderObjek.isTrigger = true;
+
+        if (namaPlayer == "Argha")
+        {
+            GameObject inspect = GameObject.Find(namaPlayer);
+
+            if (inspect != null)
+            {
+                inspectMulti = inspect.GetComponent<InspectMultiplayer>();
+            }
+        }
     }
 
-    public void Drop()
+    public void Drop(string namaPlayer)
     {
-        this.objectGrabPointTransform = null;
-        objectRigidbody.useGravity = true;
+        if (inspectMulti != null)
+            inspectMulti.DropItem();
 
-        objectRigidbody.constraints = RigidbodyConstraints.None;
+        objectRigidbody.useGravity = true;
+        objectRigidbody.isKinematic = false;
         inGrab = false;
         questPlayer.DropObject(namaBenda);
 
-        foreach(MeshRenderer render in renderObjek)
-        {
-            render.enabled = true;
-        }
-
         colliderObjek.isTrigger = false;
+
     }
 
-    private void FixedUpdate()
+
+    /*private void FixedUpdate()
     {
         if (objectGrabPointTransform != null)
         {
@@ -87,5 +100,5 @@ public class ObjectGrab : MonoBehaviour
             Quaternion newRotation = Quaternion.Lerp(transform.rotation, objectGrabPointTransform.rotation, Time.deltaTime * lerpSpeed);
             objectRigidbody.MoveRotation(newRotation);
         }
-    }
+    }*/
 }
