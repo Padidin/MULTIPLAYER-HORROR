@@ -69238,7 +69238,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259545294}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa6edee42b5e90849b117775211391ea, type: 3}
   m_Name: 
@@ -69364,9 +69364,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f98ad090fd1fe9d4c821004694f8cda1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  namaBenda: 
-  outlineObjek: []
-  questPlayer: {fileID: 0}
+  namaBenda: Pisau
+  outlineObjek:
+  - {fileID: 1259545301}
+  - {fileID: 1259545299}
+  questPlayer: {fileID: 1493705188}
 --- !u!1 &1261069062
 GameObject:
   m_ObjectHideFlags: 0

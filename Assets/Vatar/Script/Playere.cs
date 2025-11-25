@@ -12,6 +12,7 @@ public class Playere : MonoBehaviourPunCallbacks
     public float crouchSpeed = 2.5f;
     public float mouseSensitivity = 1f;
     public float jumpForce = 6f;
+    public bool canWalk;
 
     [Header("Ground Check")]
     public Transform groundCheck;

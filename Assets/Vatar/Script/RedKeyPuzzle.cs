@@ -73,4 +73,3 @@ public class RedKeyPuzzle : MonoBehaviour
         }
     }
 }
-
