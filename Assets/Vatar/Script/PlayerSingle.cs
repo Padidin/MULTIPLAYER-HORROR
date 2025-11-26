@@ -65,6 +65,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
 
     private KeyCode crouchKey = KeyCode.C;
     public GameObject cantMoveobj;
+    public GameObject soundNonActive;
 
     private void Awake()
     {
@@ -339,7 +340,7 @@ public class PlayerSingle : MonoBehaviourPunCallbacks
         float sfxVolume = AudioManager.Instance != null ? AudioManager.Instance.sfxVolume : 1f;
         walkSource.volume = sfxVolume;
 
-        if (isGrounded && !walkSource.isPlaying && speed > 0.1f && sfxVolume > 0f && canWalk)
+        if (isGrounded && !walkSource.isPlaying && speed > 0.1f && sfxVolume > 0f && canWalk && !soundNonActive.activeInHierarchy)
         {
             walkSource.clip = walkClip;
             walkSource.Play();
