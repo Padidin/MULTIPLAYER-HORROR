@@ -158,6 +158,7 @@ public class Playere : MonoBehaviourPunCallbacks
     void Update()
     {
         if (!photonView.IsMine || PauseManager.GameIsPaused) return;
+        if (!canWalk) return;
 
         HoldingItemHand();
         LookAround();

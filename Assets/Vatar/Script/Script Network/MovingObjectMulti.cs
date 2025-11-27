@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Playables;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Playables;
+using Photon.Pun;
 
-public class MovingObjectMulti : MonoBehaviour, IInteractable
+public class MovingObjectMulti : MonoBehaviourPun, IInteractable
 {
     [Header("Config")]
     public float maxBar;
@@ -13,7 +12,7 @@ public class MovingObjectMulti : MonoBehaviour, IInteractable
     public float kekuatanDorong;
     public cakeslice.Outline[] Outline;
 
-    [Header("UI")]
+    [Header("UI (Local Only)")]
     public GameObject canvasUi;
     public Image barUi;
 
@@ -24,6 +23,16 @@ public class MovingObjectMulti : MonoBehaviour, IInteractable
     private float delayMenghilang = 3f;
     private float maxDelay = 3f;
 
+    void Start()
+    {
+        // Pastikan kalau player join belakangan, state timeline ikut
+        if (sudahTergeser)
+        {
+            geserBenda.time = geserBenda.duration;
+            geserBenda.Evaluate();
+        }
+    }
+
     void Update()
     {
         if (sudahTergeser)
@@ -33,8 +42,8 @@ public class MovingObjectMulti : MonoBehaviour, IInteractable
             return;
         }
 
-        Mekanik();
-        UpdateBarUI();
+        MekanikLocal();      // tetap lokal tapi akan sync via RPC
+        UpdateBarUI();       // hanya local
     }
 
     // ===============================
@@ -57,25 +66,46 @@ public class MovingObjectMulti : MonoBehaviour, IInteractable
     {
         if (sudahTergeser) return;
 
-        // tekan E → dorong objek
-        currentBar += kekuatanDorong;
+        // local effect
         canvasUi.SetActive(true);
         delayMenghilang = maxDelay;
+
+        // Tell all players to add dorongan
+        photonView.RPC("RPC_AddDorongan", RpcTarget.All, kekuatanDorong);
     }
 
     // ===============================
-    //  MEKANIK ORIGINAL
+    //     MULTIPLAYER RPC
     // ===============================
 
-    void Mekanik()
+    [PunRPC]
+    void RPC_AddDorongan(float amount)
     {
-        if (currentBar >= maxBar)
-        {
-            geserBenda.Play();
-            sudahTergeser = true;
-            return;
-        }
+        currentBar += amount;
 
+        // Check apakah sudah geser → notify semua client
+        if (currentBar >= maxBar && !sudahTergeser)
+        {
+            photonView.RPC("RPC_PlayTimeline", RpcTarget.AllBuffered);
+        }
+    }
+
+    [PunRPC]
+    void RPC_PlayTimeline()
+    {
+        sudahTergeser = true;
+
+        geserBenda.Play();        // timeline jalan ke semua client
+        HideOutline();
+        canvasUi.SetActive(false);
+    }
+
+    // ===============================
+    // LOCAL MECHANIC ONLY
+    // ===============================
+
+    void MekanikLocal()
+    {
         if (currentBar > 0 && currentBar <= maxBar)
             currentBar -= Time.deltaTime * beratBenda;
 
