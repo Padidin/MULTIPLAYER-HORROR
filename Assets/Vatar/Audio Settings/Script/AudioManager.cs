@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
 
             // Load saved volume
             bgmVolume = PlayerPrefs.GetFloat("BGMVolume", 1f);
