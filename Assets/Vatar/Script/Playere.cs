@@ -128,6 +128,8 @@ public class Playere : MonoBehaviourPunCallbacks
         sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.playOnAwake = false;
 
+        groundCheck = transform.Find("GroundCheck").GetComponent<Transform>();
+
         standCamLocalPos = cameraTransform.localPosition;
         crouchCamLocalPos = standCamLocalPos + new Vector3(0, -0.4f, 0);
 
