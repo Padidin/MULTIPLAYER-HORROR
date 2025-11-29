@@ -29,7 +29,7 @@ public class ItemInspectManager : MonoBehaviour
     {
         CheckItemHold();
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && PlayerSingle.instance.canWalk)
         {
             if (isInspecting)
                 CloseInspect();
