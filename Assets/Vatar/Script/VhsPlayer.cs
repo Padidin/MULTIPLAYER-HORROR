@@ -9,16 +9,19 @@ public class VhsPlayer : MonoBehaviour
     public float interactDistance = 1.5f;
     public Outline Outline;
     public Transform inspectHolder;
-    public GameObject VHSlog1;
-    public GameObject VHSlog2;
+    public GameObject VHSLog1;
+    public GameObject VHSLog2;
 
-    public PlayableDirector VHStaper1;
-    public PlayableDirector VHStaper2;
+    public PlayableDirector VHSTaper1;
+    public PlayableDirector VHSTaper2;
 
     private void Update()
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
+
+        if (inspectHolder.childCount <= 0) return;
+        GameObject children = inspectHolder.GetChild(0).gameObject;
 
         if (Physics.Raycast(ray, out hit, interactDistance))
         {
@@ -29,15 +32,13 @@ public class VhsPlayer : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    GameObject children = inspectHolder.GetChild(0).gameObject;
-
-                    if (children = VHSlog1)
+                    if (children == VHSLog1)
                     {
-                        VHStaper1.Play();
+                        VHSTaper1.Play();
                     }
-                    if (children = VHSlog2)
+                    if (children == VHSLog2)
                     {
-                        VHStaper2.Play();
+                        VHSTaper2.Play();
                     }
                 }
 
