@@ -43,36 +43,38 @@ public class QuestSingle : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other == Pisau)
+        if (other.gameObject == Pisau)
         {
             Pisau.transform.position = letakPisau.transform.position;
             Pisau.transform.rotation = letakPisau.transform.rotation;
             itemPertama = true;
         }
 
-        if (other == Pel)
+        if (other.gameObject == Pel)
         {
+            Pel.transform.position = letakPel.transform.position;
+            Pel.transform.rotation = letakPel.transform.rotation;
             itemKedua = true;
         }
 
-        if (other == VHS1)
+        if (other.gameObject == VHS1)
         {
             VHS1.transform.position = letakVHS1.transform.position;
             VHS1.transform.rotation = letakVHS1.transform.rotation;
             itemKetiga = true;
         }
 
-        if (other == VHS2)
+        if (other.gameObject == VHS2)
         {
             itemKeempat = true;
         }
 
-        if (other == Foto)
+        if (other.gameObject == Foto)
         {
             itemKelima = true;
         }
 
-        if (other == Jurnal)
+        if (other.gameObject == Jurnal)
         {
             itemKeenam = true;
         }
