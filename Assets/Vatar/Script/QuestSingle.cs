@@ -71,11 +71,15 @@ public class QuestSingle : MonoBehaviour
 
         if (other.gameObject == Foto)
         {
+            Foto.transform.position = letakFoto.transform.position;
+            Foto.transform.rotation = letakFoto.transform.rotation;
             itemKelima = true;
         }
 
         if (other.gameObject == Jurnal)
         {
+            Jurnal.transform.position = letakJurnal.transform.position;
+            Jurnal.transform.rotation = letakJurnal.transform.rotation;
             itemKeenam = true;
         }
     }
