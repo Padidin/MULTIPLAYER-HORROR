@@ -11,7 +11,6 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     {
         string prefabName = "DefaultPlayer";
 
-        // ambil prefab dari custom properties
         object prefabProp;
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("prefabName", out prefabProp))
         {
