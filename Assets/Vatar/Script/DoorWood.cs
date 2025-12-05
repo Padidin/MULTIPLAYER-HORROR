@@ -18,6 +18,8 @@ public class DoorWood : MonoBehaviour
     public Outline[] Outline;
 
     public float interactDistance = 1.5f;
+
+    public GameObject key;
     private bool open;
     // Start is called before the first frame update
     void Start()
@@ -49,6 +51,7 @@ public class DoorWood : MonoBehaviour
                         if (membukaKunci != null)
                         {
                             membukaKunci.Play();
+                            Destroy(key);
                         }
                         
                     }
