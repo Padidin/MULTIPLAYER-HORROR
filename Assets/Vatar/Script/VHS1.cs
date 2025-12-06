@@ -37,6 +37,10 @@ public class VHS1 : MonoBehaviour
                     transform.position = inspectHolder.position;
                     pickupSfx.Play();
                 }
+                else if (Input.GetKeyDown(KeyCode.E) && ItemInspectManager.Instance.currentItem != null)
+                {
+                    WarningFull.instance.StartShowing();
+                }
 
             }
             else

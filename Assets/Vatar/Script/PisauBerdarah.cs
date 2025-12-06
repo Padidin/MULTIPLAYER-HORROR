@@ -38,6 +38,10 @@ public class PisauBerdarah : MonoBehaviour
                 {
                     PickupItem();
                 }
+                else if (Input.GetKeyDown(KeyCode.E) && ItemInspectManager.Instance.currentItem != null)
+                {
+                    WarningFull.instance.StartShowing();
+                }
 
             }
             else

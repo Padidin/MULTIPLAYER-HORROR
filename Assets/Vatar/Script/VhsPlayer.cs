@@ -23,6 +23,9 @@ public class VhsPlayer : MonoBehaviour
         if (inspectHolder.childCount <= 0) return;
         GameObject children = inspectHolder.GetChild(0).gameObject;
 
+        if (children != VHSLog1 && children != VHSLog2) return;
+
+
         if (Physics.Raycast(ray, out hit, interactDistance))
         {
             VhsPlayer laci = hit.collider.GetComponent<VhsPlayer>();

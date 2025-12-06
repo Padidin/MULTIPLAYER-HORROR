@@ -40,6 +40,10 @@ public class Pel : MonoBehaviour
                     transform.position = inspectHolder.position;
                     pickupSfx.Play();
                 }
+                else if (Input.GetKeyDown(KeyCode.E) && ItemInspectManager.Instance.currentItem != null)
+                {
+                    WarningFull.instance.StartShowing();
+                }
 
             }
             else
