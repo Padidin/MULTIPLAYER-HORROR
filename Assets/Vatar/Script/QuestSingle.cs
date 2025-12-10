@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class QuestSingle : MonoBehaviour
 {
     public Transform InspectHolder;
+    public PlayableDirector mulaiRekon;
 
     [Header("Objek Di Meja")]
     public GameObject letakPisau;
@@ -89,7 +91,7 @@ public class QuestSingle : MonoBehaviour
         statusOutlineItem();
         if (itemPertama && itemKedua && itemKetiga && itemKeempat && itemKelima && itemKeenam)
         {
-
+            mulaiRekon.Play();
         }
     }
 
@@ -115,19 +117,33 @@ public class QuestSingle : MonoBehaviour
                 }
             }
 
-            if (children == VHS1)
+            if (children == VHS1 && VHS1.activeInHierarchy)
             {
                 foreach (Outline line in outlineVHS1)
                 {
                     line.eraseRenderer = false;
                 }
             }
+            else
+            {
+                foreach (Outline line in outlineVHS1)
+                {
+                    line.eraseRenderer = true;
+                }
+            }
 
-            if (children == VHS2)
+            if (children == VHS2 && VHS2.activeInHierarchy)
             {
                 foreach (Outline line in outlineVHS2)
                 {
                     line.eraseRenderer = false;
+                }
+            }
+            else
+            {
+                foreach (Outline line in outlineVHS2)
+                {
+                    line.eraseRenderer = true;
                 }
             }
 

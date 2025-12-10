@@ -46,7 +46,20 @@ public class PickUpSingle : MonoBehaviour
                 Debug.Log("Picked up object.");
                 //InteractShow.instance.Hide();
             }
-            else if (objectGrabbable != null)
+            /*else if (objectGrabbable != null)
+            {
+                objectGrabbable.Drop(namaPlayer);
+                if (objectGrabbable.namaBenda == "Pisau")
+                {
+                    iniPisau = false;
+                }
+
+                objectGrabbable = null;
+            }*/
+        }
+        if (Input.GetKeyDown (KeyCode.G))
+        {
+            if (objectGrabbable != null)
             {
                 objectGrabbable.Drop(namaPlayer);
                 if (objectGrabbable.namaBenda == "Pisau")

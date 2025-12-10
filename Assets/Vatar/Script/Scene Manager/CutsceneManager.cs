@@ -7,23 +7,16 @@ using UnityEngine.SceneManagement;
 public class CutsceneManager : MonoBehaviour
 {
     public string namaScene;
-    public int delaySkip;
     public GameObject buttonSkip;
 
-    public void Start()
+    private void Update()
     {
-        buttonSkip.SetActive(false);
-        StartCoroutine(DelaySkip());
-    }
-
-    IEnumerator DelaySkip()
-    {
-        yield return new WaitForSeconds(delaySkip);
-        buttonSkip.SetActive(true);
-    }
-
-    public void PerpindahanScene()
-    {
-        SceneManager.LoadScene(namaScene);
+        if (buttonSkip.activeInHierarchy)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene(namaScene);
+            }
+        }
     }
 }

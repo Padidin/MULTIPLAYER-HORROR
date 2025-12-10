@@ -4,125 +4,99 @@ using cakeslice;
 
 public class ObjectGrabbable : MonoBehaviourPun
 {
-    public string namaBenda;
-    public Outline[] outlineObjek;
-    public QuestPlayer questPlayer;
-
     private Rigidbody objectRigidbody;
-    private Transform objectGrabPointTransform;
-    private Outline outline;
-    private bool isBeingGrabbed = false;
+    private InspectMultiplayer inspectMulti;
+    public Outline[] outlineObject;
+    public MeshRenderer[] renderObjek;
+    public Collider colliderObjek;
+    public QuestPlayer questPlayer;
+    public Transform holderTrans;
+    public bool inGrab;
+    public string namaBenda;
 
     private void Awake()
     {
         objectRigidbody = GetComponent<Rigidbody>();
-        outline = GetComponent<Outline>();
 
         GameObject questObjek = GameObject.Find("Quest Object");
-        questPlayer = questObjek.GetComponent<QuestPlayer>();
+        if (questObjek != null)
+            questPlayer = questObjek.GetComponent<QuestPlayer>();
+
+        holderTrans = GameObject.Find("Inspect Holder").transform;
+
+        OutlineHilang();
     }
 
-    private void Start()
+    // OUTLINE LOKAL ONLY
+    public void OutlineMuncul()
     {
-        outline.enabled = false;
-        outline.eraseRenderer = true;
-
-        foreach (Outline garisObjek in  outlineObjek)
-        {
-            garisObjek.eraseRenderer = true;
-        }
+        foreach (Outline outline in outlineObject)
+            outline.eraseRenderer = false;
     }
 
-    public void GarisMuncul()
+    public void OutlineHilang()
     {
-        foreach (Outline garisObjek in outlineObjek)
-        {
-            garisObjek.eraseRenderer = false;
-        }
+        foreach (Outline outline in outlineObject)
+            outline.eraseRenderer = true;
     }
 
-    public void GarisHilang()
+    // ================================
+    //  GRAB MULTIPLAYER
+    // ================================
+    public void Grab(string namaPlayer)
     {
-        foreach (Outline garisObjek in outlineObjek)
-        {
-            garisObjek.eraseRenderer = true;
-        }
-    }
+        // Request ownership supaya object bisa dikontrol player ini
+        photonView.RequestOwnership();
 
-    // ✅ UBAH NAMA METHOD MENJADI "NetworkGrab"
-    [PunRPC]
-    public void NetworkGrab(int playerViewID, Vector3 grabPosition, Quaternion grabRotation)
-    {
-        if (isBeingGrabbed) return;
-
-        PhotonView playerView = PhotonView.Find(playerViewID);
-        if (playerView != null)
-        {
-            // ✅ CARI grabPointTransform DARI PLAYER
-            NetworkPlayerPickUpDrop playerPickup = playerView.GetComponent<NetworkPlayerPickUpDrop>();
-            if (playerPickup != null)
-            {
-                this.objectGrabPointTransform = playerPickup.objectGrabPointTransform;
-            }
-            else
-            {
-                // Fallback: buat temporary transform
-                GameObject tempGrabPoint = new GameObject("TempGrabPoint");
-                tempGrabPoint.transform.position = grabPosition;
-                tempGrabPoint.transform.rotation = grabRotation;
-                this.objectGrabPointTransform = tempGrabPoint.transform;
-            }
-
-            objectRigidbody.useGravity = false;
-            objectRigidbody.isKinematic = true;
-            isBeingGrabbed = true;
-
-            questPlayer.GrabObject(namaBenda);
-
-            // ✅ TRANSFER OWNERSHIP YANG BENAR
-            photonView.RequestOwnership();
-        }
+        // Panggil RPC ke semua client (buffered biar join belakangan tetap kayak real-time)
+        photonView.RPC("RPC_Grab", RpcTarget.AllBuffered, namaPlayer);
     }
 
     [PunRPC]
-    public void NetworkDrop(Vector3 dropPosition)
+    void RPC_Grab(string namaPlayer)
     {
-        if (!isBeingGrabbed) return;
+        objectRigidbody.useGravity = false;
+        objectRigidbody.isKinematic = true;
+        inGrab = true;
 
-        this.objectGrabPointTransform = null;
+        OutlineHilang();
+        questPlayer.GrabObject(namaBenda);
+
+        transform.SetParent(holderTrans);
+        transform.position = holderTrans.position;
+        colliderObjek.isTrigger = true;
+
+        if (namaPlayer == "Argha")
+        {
+            GameObject inspect = GameObject.Find(namaPlayer);
+            if (inspect != null)
+            {
+                inspectMulti = inspect.GetComponent<InspectMultiplayer>();
+            }
+        }
+    }
+
+    // ================================
+    //  DROP MULTIPLAYER
+    // ================================
+    public void Drop(string namaPlayer)
+    {
+        photonView.RPC("RPC_Drop", RpcTarget.AllBuffered, namaPlayer);
+    }
+
+    [PunRPC]
+    void RPC_Drop(string namaPlayer)
+    {
+        if (inspectMulti != null)
+            inspectMulti.DropItem();
+
         objectRigidbody.useGravity = true;
         objectRigidbody.isKinematic = false;
-        isBeingGrabbed = false;
-
-        transform.position = dropPosition + Vector3.up * 0.1f;
-        objectRigidbody.AddForce(Random.insideUnitSphere * 1f, ForceMode.Impulse);
+        inGrab = false;
 
         questPlayer.DropObject(namaBenda);
-    }
+        colliderObjek.isTrigger = false;
 
-    private void FixedUpdate()
-    {
-        if (objectGrabPointTransform != null && isBeingGrabbed)
-        {
-            float lerpSpeed = 10f;
-            Vector3 newPosition = Vector3.Lerp(transform.position, objectGrabPointTransform.position, Time.deltaTime * lerpSpeed);
-            objectRigidbody.MovePosition(newPosition);
-
-            Quaternion newRotation = Quaternion.Lerp(transform.rotation, objectGrabPointTransform.rotation, Time.deltaTime * lerpSpeed);
-            objectRigidbody.MoveRotation(newRotation);
-        }
-    }
-
-    public bool CanBeGrabbed()
-    {
-        return !isBeingGrabbed && objectRigidbody != null;
-    }
-
-    private void OnDestroy()
-    {
-        if (objectGrabPointTransform != null && objectGrabPointTransform.name == "TempGrabPoint")
-        {
-            Destroy(objectGrabPointTransform.gameObject);
-        }
+        transform.SetParent(null);
     }
 }

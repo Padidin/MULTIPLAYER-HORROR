@@ -4,117 +4,97 @@ using cakeslice;
 
 public class NetworkPlayerPickUpDrop : MonoBehaviourPun
 {
-    [Header("References")]
+    [Header("Player Setting")]
     [SerializeField] private Transform playerCamera;
+    [SerializeField] private Transform objectGrabPointTransform;
     [SerializeField] private LayerMask pickUpLayerMask;
     [SerializeField] private float pickUpDistance = 3f;
-    public Transform objectGrabPointTransform;
+    public string namaPlayer;
 
-    private ObjectGrabbable objectGrabbable;
-    private ObjectGrabbable detectedObject;
-    private ObjectGrabbable lastDetectedObject;
+    private ObjectGrab objectGrabbable;
+    private ObjectGrab targetedObject;
+
+    public GameObject logoPisau;
+    public bool iniPisau;
+    public bool iniPel;
+
     void Update()
     {
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine) return; // script ini hanya handle input & local raycast untuk player local
 
-        DetectObject();
+        DetectGrabbableObject();
+
+        logoPisau.SetActive(iniPisau);
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (objectGrabbable == null && detectedObject != null)
+            if (objectGrabbable == null && targetedObject != null)
             {
-                photonView.RPC("RPC_GrabObject", RpcTarget.All, detectedObject.photonView.ViewID);
-
-                if (lastDetectedObject != null)
+                // Request ownership and then broadcast grab
+                PhotonView targetPV = targetedObject.GetComponent<PhotonView>();
+                if (targetPV != null)
                 {
-                    lastDetectedObject.GarisHilang();
-                }
-            }
-            else if (objectGrabbable != null)
-            {
-                Vector3 dropPosition = objectGrabPointTransform.position;
-                photonView.RPC("RPC_DropObject", RpcTarget.All, dropPosition);
-            }
-        }
-    }
+                    // Request ownership first
+                    targetPV.RequestOwnership();
 
-    [PunRPC]
-    private void RPC_GrabObject(int objectViewID)
-    {
-        PhotonView objectView = PhotonView.Find(objectViewID);
-        if (objectView != null)
-        {
-            ObjectGrabbable grabbable = objectView.GetComponent<ObjectGrabbable>();
-            if (grabbable != null && grabbable.CanBeGrabbed())
-            {
-                objectGrabbable = grabbable;
+                    // Send RPC to all to set grabbed state (buffered so late joiners know it's grabbed)
+                    targetPV.RPC("RPC_Grab", RpcTarget.AllBuffered, photonView.ViewID, PhotonNetwork.LocalPlayer.ActorNumber);
+                    // store locally
+                    objectGrabbable = targetedObject;
+                    targetedObject = null;
 
-                objectGrabbable.photonView.RPC("NetworkGrab", RpcTarget.All,
-                    photonView.ViewID,
-                    objectGrabPointTransform.position,
-                    objectGrabPointTransform.rotation);
+                    if (objectGrabbable.namaBenda == "Pisau") iniPisau = true;
 
-                if (photonView.IsMine)
-                {
-                    InteractShow.instance.Hide();
+                    Debug.Log("Picked up object (sent RPC).");
                 }
             }
         }
-    }
 
-    [PunRPC]
-    private void RPC_DropObject(Vector3 dropPosition)
-    {
-        if (objectGrabbable != null)
+        if (Input.GetKeyDown(KeyCode.G))
         {
-            objectGrabbable.photonView.RPC("NetworkDrop", RpcTarget.All, dropPosition);
-            objectGrabbable = null;
-        }
-    }
-    
-    private void DetectObject()
-    {
-        if (objectGrabbable != null)
-        {
-            ClearLastDetectedObject();
-            return;
-        }
-
-        RaycastHit hit;
-        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, pickUpDistance, pickUpLayerMask))
-        {
-            if (hit.transform.TryGetComponent(out ObjectGrabbable grabbable) && grabbable.CanBeGrabbed())
+            if (objectGrabbable != null)
             {
-                detectedObject = grabbable;
-
-                if (detectedObject != lastDetectedObject) 
+                PhotonView pv = objectGrabbable.GetComponent<PhotonView>();
+                if (pv != null)
                 {
-                    if (lastDetectedObject != null)
+                    pv.RPC("RPC_Drop", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.ActorNumber);
+                }
+
+                if (objectGrabbable.namaBenda == "Pisau") iniPisau = false;
+
+                objectGrabbable = null;
+            }
+        }
+    }
+
+    private void DetectGrabbableObject()
+    {
+        if (objectGrabbable != null) return;
+
+        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out RaycastHit hit, pickUpDistance, pickUpLayerMask))
+        {
+            if (hit.transform.TryGetComponent(out ObjectGrab grabbable))
+            {
+                if (targetedObject != grabbable)
+                {
+                    if (targetedObject != null)
                     {
-                        lastDetectedObject.GarisHilang();
+                        targetedObject.OutlineHilang();
                     }
 
-                    detectedObject.GarisMuncul();
-                    lastDetectedObject = detectedObject;
+                    targetedObject = grabbable;
+                    targetedObject.OutlineMuncul();
                 }
-                
-                InteractShow.instance.Show();
                 return;
             }
         }
 
-        ClearLastDetectedObject();
-    }
-
-    private void ClearLastDetectedObject()
-    {
-        if (lastDetectedObject != null)
+        if (targetedObject != null)
         {
-            lastDetectedObject.GarisHilang();
-            lastDetectedObject = null;
+            targetedObject.OutlineHilang();
+            targetedObject = null;
         }
 
-        detectedObject = null;
-        InteractShow.instance.Hide();
+        targetedObject = null;
     }
 }
