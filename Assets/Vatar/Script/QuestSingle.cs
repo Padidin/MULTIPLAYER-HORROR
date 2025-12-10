@@ -42,6 +42,13 @@ public class QuestSingle : MonoBehaviour
     public bool itemKelima = false;
     public bool itemKeenam = false;
 
+    [Header("Rekon Bola Kuning")]
+    public bool RekonBola1;
+    public bool RekonBola2;
+    public bool RekonBola3;
+    public bool RekonBola4;
+    public bool RekonBola5;
+
     
     private void OnTriggerEnter(Collider other)
     {
@@ -91,7 +98,11 @@ public class QuestSingle : MonoBehaviour
         statusOutlineItem();
         if (itemPertama && itemKedua && itemKetiga && itemKeempat && itemKelima && itemKeenam)
         {
-            mulaiRekon.Play();
+            if (RekonBola1 == false)
+            {
+                mulaiRekon.Play();
+                RekonBola1 = true;
+            }
         }
     }
 
